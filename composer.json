@@ -1,0 +1,14 @@
+{
+  "name": "maatify/common",
+  "description": "Common DTOs and helpers for all maatify libraries",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Maatify\\Common\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=8.4"
+  }
+}
