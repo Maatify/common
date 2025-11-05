@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Maatify\Common\DTO;
+namespace Maatify\Common\Pagination\DTO;
 
 /**
  * Class PaginationResultDTO

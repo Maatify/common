@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Maatify\Common\Cron;
+namespace Maatify\Common\Lock;
 
 use Psr\Log\LoggerInterface;
 use Maatify\PsrLogger\LoggerFactory;
@@ -42,7 +42,7 @@ use Throwable;
  * $lock->release();
  * ```
  */
-final class FileCronLock implements CronLockInterface
+final class FileLockManager implements LockInterface
 {
     private string $lockFile;
     private int $ttl;

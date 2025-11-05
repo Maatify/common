@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Maatify\Common\Cron;
+namespace Maatify\Common\Lock;
 
 /**
  * Interface CronLockInterface
@@ -39,7 +39,7 @@ namespace Maatify\Common\Cron;
  * $lock->release();
  * ```
  */
-interface CronLockInterface
+interface LockInterface
 {
     /**
      * Attempt to acquire the lock for the current Cron job.

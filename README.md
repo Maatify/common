@@ -38,7 +38,7 @@ such as `maatify/mongo-activity`, `maatify/psr-logger`, and future maatify proje
 ### 🔹 Paginate Array Data
 
 ```php
-use Maatify\Common\Helpers\PaginationHelper;
+use Maatify\Common\Pagination\Helpers\PaginationHelper;
 
 $items = range(1, 100);
 
@@ -68,7 +68,7 @@ Output:
 ### 🔹 Working with `PaginationDTO`
 
 ```php
-use Maatify\Common\DTO\PaginationDTO;
+use Maatify\Common\Pagination\DTO\PaginationDTO;
 
 $pagination = new PaginationDTO(
     page: 1,
@@ -84,42 +84,134 @@ print_r($pagination->toArray());
 
 ---
 
-## 🧱 Directory Structure
+## 🔐 Lock System (New)
 
-```
-src/
-├── DTO/
-│   └── PaginationDTO.php
-├── Helpers/
-│   ├── PaginationHelper.php
-│   └── PaginationResultDTO.php
-├── Cron/
-│   ├── CronLockInterface.php
-│   ├── FileCronLock.php
-└   └── RedisCronLock.php
+Advanced locking utilities to prevent concurrent executions in Cron jobs, queue workers, or API-critical flows.
+
+---
+
+### 🔹 Available Managers
+
+| Class               | Type        | Description                                                                          |
+|---------------------|-------------|--------------------------------------------------------------------------------------|
+| `FileLockManager`   | Local       | File-based lock stored in `/tmp` or any directory                                    |
+| `RedisLockManager`  | Distributed | Uses Redis or Predis client for network-safe locking                                 |
+| `HybridLockManager` | Smart       | Automatically chooses Redis if available, otherwise falls back to file lock          |
+| `LockCleaner`       | Utility     | Cleans up stale `.lock` files after timeouts                                         |
+| `LockModeEnum`      | Enum        | Defines whether lock should `EXECUTION` (non-blocking) or `QUEUE` (waits until free) |
+
+---
+
+### 🧠 Example 1 — File Lock
+
+```php
+use Maatify\Common\Lock\FileLockManager;
+
+$lock = new FileLockManager('/tmp/maatify/cron/report.lock', 600);
+
+if (! $lock->acquire()) {
+    exit("Another job is running.\n");
+}
+
+echo "Running safely...\n";
+
+$lock->release();
 ```
 
 ---
 
-## 🕒 Cron Lock System
+### ⚙️ Example 2 — Redis Lock
+
+```php
+use Maatify\Common\Lock\RedisLockManager;
+
+$lock = new RedisLockManager('cleanup_task', ttl: 600);
+
+if ($lock->acquire()) {
+    echo "Cleaning...\n";
+    $lock->release();
+}
+```
+
+✅ Works automatically with both `phpredis` and `predis`.
+If Redis is down, it logs an error via `maatify/psr-logger`.
+
+---
+
+### 🚀 Example 3 — Hybrid Lock (Recommended)
+
+```php
+use Maatify\Common\Lock\HybridLockManager;
+use Maatify\Common\Lock\LockModeEnum;
+
+$lock = new HybridLockManager(
+    key: 'daily_summary',
+    mode: LockModeEnum::QUEUE,
+    ttl: 600
+);
+
+$lock->run(function () {
+    echo "Generating daily summary...\n";
+});
+```
+
+Automatically uses Redis if available, otherwise falls back to file lock.
+
+---
+
+### 🧹 Example 4 — Clean Old Locks
+
+```php
+use Maatify\Common\Lock\LockCleaner;
+
+LockCleaner::cleanOldLocks(sys_get_temp_dir() . '/maatify/locks', 900);
+```
+
+---
+
+### 🧾 Notes
+
+* All lock operations are fully logged (via `maatify/psr-logger`).
+* Default lock expiration (TTL) is **300 seconds (5 minutes)**.
+* Hybrid mode retries every **0.5 seconds** when using queue mode.
+
+---
+
+### 🗂 Directory (Lock Module)
+
+```
+src/Lock/
+├── LockInterface.php
+├── LockModeEnum.php
+├── FileLockManager.php
+├── RedisLockManager.php
+├── HybridLockManager.php
+└── LockCleaner.php
+```
+
+---
+
+## 🕒 Cron Lock System (Legacy Section)
 
 This module provides simple yet powerful locking mechanisms to prevent concurrent cron executions.
 
 **Available implementations :**
-- `FileCronLock` — lightweight local lock for single-host environments.  
-- `RedisCronLock` — distributed lock using Redis or Predis, automatically disabled if Redis is unavailable.
+
+* `FileCronLock` — lightweight local lock for single-host environments.
+* `RedisCronLock` — distributed lock using Redis or Predis, automatically disabled if Redis is unavailable.
 
 **Interface:**
+
 ```php
-use Maatify\Common\Cron\CronLockInterface;
-````
+use Maatify\Common\Lock\LockInterface;
+```
 
 **Example:**
 
 ```php
-use Maatify\Common\Cron\FileCronLock;
+use Maatify\Common\Lock\FileLockManager;
 
-$lock = new FileCronLock('/var/locks/daily_job.lock', 300);
+$lock = new FileLockManager('/var/locks/daily_job.lock', 300);
 
 if (! $lock->acquire()) {
     exit("Cron already running...\n");
@@ -135,15 +227,37 @@ $lock->release();
 ✅ If Redis or Predis is installed, you can use:
 
 ```php
-use Maatify\Common\Cron\RedisCronLock;
+use Maatify\Common\Lock\RedisLockManager;
 
-$lock = new RedisCronLock('daily_job');
+$lock = new RedisLockManager('daily_job');
 if ($lock->acquire()) {
     // do work
     $lock->release();
 }
 ```
+
 Redis version automatically logs a warning (and safely disables itself) if Redis isn’t available.
+
+---
+
+## 🧱 Directory Structure
+
+```
+src/
+├── Pagination/
+│   ├── DTO/
+│   │   └── PaginationDTO.php
+│   ├── Helpers/
+│   │   ├── PaginationHelper.php
+│   │   └── PaginationResultDTO.php
+└── Lock/
+    ├── LockInterface.php
+    ├── LockModeEnum.php
+    ├── FileLockManager.php
+    ├── RedisLockManager.php
+    ├── HybridLockManager.php
+    └── LockCleaner.php
+```
 
 ---
 
@@ -159,6 +273,4 @@ You’re free to use, modify, and distribute this library with attribution.
 
 **Maatify.dev**
 [https://www.Maatify.dev](https://www.Maatify.dev)
-
----
 

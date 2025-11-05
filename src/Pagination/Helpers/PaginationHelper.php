@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Maatify\Common\Helpers;
+namespace Maatify\Common\Pagination\Helpers;
 
-use Maatify\Common\DTO\PaginationDTO;
+use Maatify\Common\Pagination\DTO\PaginationDTO;
 
 /**
  * Class PaginationHelper
