@@ -91,8 +91,59 @@ src/
 ├── DTO/
 │   └── PaginationDTO.php
 └── Helpers/
-    └── PaginationHelper.php
+│   ├── PaginationHelper.php
+│   ├── PaginationResultDTO.php
+├── Cron/
+│   ├── CronLockInterface.php
+│   ├── FileCronLock.php
+│   └── RedisCronLock.php
 ```
+
+---
+
+## 🕒 Cron Lock System
+
+This module provides simple yet powerful locking mechanisms to prevent concurrent cron executions.
+
+**Available implementations :**
+- `FileCronLock` — lightweight local lock for single-host environments.  
+- `RedisCronLock` — distributed lock using Redis or Predis, automatically disabled if Redis is unavailable.
+
+**Interface:**
+```php
+use Maatify\Common\Cron\CronLockInterface;
+````
+
+**Example:**
+
+```php
+use Maatify\Common\Cron\FileCronLock;
+
+$lock = new FileCronLock('/var/locks/daily_job.lock', 300);
+
+if (! $lock->acquire()) {
+    exit("Cron already running...\n");
+}
+
+echo "Running job...\n";
+
+// ... job logic ...
+
+$lock->release();
+```
+
+✅ If Redis or Predis is installed, you can use:
+
+```php
+use Maatify\Common\Cron\RedisCronLock;
+
+$lock = new RedisCronLock('daily_job');
+if ($lock->acquire()) {
+    // do work
+    $lock->release();
+}
+```
+Redis version automatically logs a warning (and safely disables itself) if Redis isn’t available.
 
 ---
 
