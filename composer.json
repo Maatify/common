@@ -10,6 +10,6 @@
   },
   "require": {
     "php": ">=8.4",
-    "maatify/psr-logger": "^1.0"
+    "maatify/psr-logger": "dev-main"
   }
 }
