@@ -18,14 +18,20 @@ namespace Maatify\Common\DTO;
  *
  * Represents a standardized paginated result structure containing:
  * - A list of paginated data
- * - Pagination metadata (as a {@see PaginationDTO})
+ * - Pagination metadata (via {@see PaginationDTO})
+ * - Optional extra metadata (e.g. collection name, applied filters, etc.)
  *
- * This DTO provides a consistent format for API responses and inter-module data exchange.
+ * This DTO provides a consistent format for paginated API responses
+ * and inter-module data exchange within maatify projects.
  *
  * Example:
  * ```php
  * $pagination = new PaginationDTO(page: 1, perPage: 10, total: 50, totalPages: 5, hasNext: true, hasPrev: false);
- * $result = new PaginationResultDTO(data: $records, pagination: $pagination);
+ * $result = new PaginationResultDTO(
+ *     data: $records,
+ *     pagination: $pagination,
+ *     meta: ['collection' => 'users', 'filter' => 'active']
+ * );
  * return $result->toArray();
  * ```
  */
@@ -33,11 +39,13 @@ final class PaginationResultDTO
 {
     /**
      * @param array          $data        The actual paginated dataset (e.g., database records or API results).
-     * @param PaginationDTO  $pagination  The pagination metadata object describing the current state.
+     * @param PaginationDTO  $pagination  The pagination metadata describing current pagination state.
+     * @param array|null     $meta        Optional additional metadata such as collection name, applied filters, or context info.
      */
     public function __construct(
         public readonly array $data,
         public readonly PaginationDTO $pagination,
+        public readonly ?array $meta = null,
     ) {}
 
     /**
@@ -52,30 +60,39 @@ final class PaginationResultDTO
      *         total_pages: int,
      *         has_next: bool,
      *         has_prev: bool
-     *     }
+     *     },
+     *     meta?: array
      * }
      */
     public function toArray(): array
     {
-        return [
+        $result = [
             'data' => $this->data,
             'pagination' => $this->pagination->toArray(),
         ];
+
+        if (!empty($this->meta)) {
+            $result['meta'] = $this->meta;
+        }
+
+        return $result;
     }
 
     /**
      * Create a new PaginationResultDTO instance from raw data arrays.
      *
-     * @param array $data        The paginated dataset.
-     * @param array $pagination  The pagination metadata array compatible with {@see PaginationDTO::fromArray()}.
+     * @param array       $data        The paginated dataset.
+     * @param array       $pagination  The pagination metadata array compatible with {@see PaginationDTO::fromArray()}.
+     * @param array|null  $meta        Optional metadata array (e.g. filters, context, collection info).
      *
      * @return self
      */
-    public static function fromArray(array $data, array $pagination): self
+    public static function fromArray(array $data, array $pagination, ?array $meta = null): self
     {
         return new self(
             data: $data,
-            pagination: PaginationDTO::fromArray($pagination)
+            pagination: PaginationDTO::fromArray($pagination),
+            meta: $meta
         );
     }
 }
