@@ -90,13 +90,13 @@ print_r($pagination->toArray());
 src/
 ├── DTO/
 │   └── PaginationDTO.php
-└── Helpers/
+├── Helpers/
 │   ├── PaginationHelper.php
-│   ├── PaginationResultDTO.php
+│   └── PaginationResultDTO.php
 ├── Cron/
 │   ├── CronLockInterface.php
 │   ├── FileCronLock.php
-│   └── RedisCronLock.php
+└   └── RedisCronLock.php
 ```
 
 ---
