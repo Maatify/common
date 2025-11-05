@@ -240,6 +240,20 @@ Redis version automatically logs a warning (and safely disables itself) if Redis
 
 ---
 
+### 🧼 Input Sanitization
+
+Use `Maatify\Common\Security\InputSanitizer` to clean any user or system input safely.
+
+```php
+use Maatify\Common\Security\InputSanitizer;
+
+echo InputSanitizer::sanitize('<script>alert(1)</script>', 'output');
+// Output: &lt;script&gt;alert(1)&lt;/script&gt;
+```
+
+---
+
+
 ## 🧱 Directory Structure
 
 ```
@@ -250,13 +264,18 @@ src/
 │   ├── Helpers/
 │   │   ├── PaginationHelper.php
 │   │   └── PaginationResultDTO.php
-└── Lock/
+├── Lock/
     ├── LockInterface.php
     ├── LockModeEnum.php
     ├── FileLockManager.php
     ├── RedisLockManager.php
     ├── HybridLockManager.php
     └── LockCleaner.php
+├── Security/
+    └── InputSanitizer.php
+└── Traits/
+    └── SanitizesInputTrait.php
+
 ```
 
 ---

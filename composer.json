@@ -10,6 +10,9 @@
   },
   "require": {
     "php": ">=8.4",
-    "maatify/psr-logger": "dev-main"
+    "ext-mbstring": "*",
+    "ext-intl": "*",
+    "maatify/psr-logger": "dev-main",
+    "ezyang/htmlpurifier": "^4.19"
   }
 }
