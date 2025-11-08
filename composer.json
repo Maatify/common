@@ -12,7 +12,8 @@
     "php": ">=8.4",
     "ext-mbstring": "*",
     "ext-intl": "*",
-    "maatify/psr-logger": "dev-main",
+    "maatify/psr-logger": "^1.0",
+
     "ezyang/htmlpurifier": "^4.19"
   }
 }
