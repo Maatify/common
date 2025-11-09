@@ -357,9 +357,9 @@ if (SecureCompare::equals($provided, $stored)) {
 }
 ```
 
-✅ Includes full unit test coverage (`tests/Text/*`)
-✅ Cross-platform transliteration with fallback normalization
-✅ Used by other Maatify libraries for formatting, matching, and signature checks
+✅ Includes full unit test coverage (`tests/Text/*`)  
+✅ Cross-platform transliteration with fallback normalization  
+✅ Used by other Maatify libraries for formatting, matching, and signature checks  
 
 ---
 
@@ -410,10 +410,10 @@ echo DateHelper::toLocalizedString($date, 'ar', 'Africa/Cairo'); // ٩ نوفم�
 echo DateHelper::toLocalizedString($date, 'en', 'America/New_York'); // November 9, 2025, 7:00 AM
 ```
 
-✅ Supports **English (en)**, **Arabic (ar)**, and **French (fr)** locales
-✅ Handles **timezone conversion** and **localized month/day names** automatically
-✅ Backed by `IntlDateFormatter` for precise localization
-✅ Fully covered with unit tests (`tests/Date/*`)
+✅ Supports **English (en)**, **Arabic (ar)**, and **French (fr)** locales  
+✅ Handles **timezone conversion** and **localized month/day names** automatically  
+✅ Backed by `IntlDateFormatter` for precise localization  
+✅ Fully covered with unit tests (`tests/Date/*`)  
 
 ---
 
@@ -477,7 +477,7 @@ Validator::detectType('3.14');                 // 'float'
 Validator::detectType('unknown-data');         // null
 ```
 
-✅ Detects and differentiates between `slug` and `slug_path`
+✅ Detects and differentiates between `slug` and `slug_path`  
 ✅ Useful for dynamic API validation or auto-form field type detection
 
 ---
@@ -531,8 +531,8 @@ ArrayHelper::except($data, ['meta']);
 // ['user' => ['id' => 1, 'name' => 'Mohamed']]
 ```
 
-✅ Fully covered by unit tests (`tests/Validation/*`)
-✅ Integrated slugPath detection for multilingual slugs
+✅ Fully covered by unit tests (`tests/Validation/*`)  
+✅ Integrated slugPath detection for multilingual slugs  
 ✅ Ideal for preparing request payloads or DTO normalization
 
 ---
