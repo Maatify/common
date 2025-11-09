@@ -12,6 +12,19 @@
 Common Data Transfer Objects (DTOs) and helper utilities shared across all maatify libraries.
 
 ---
+## 🧩 Overview
+
+This library provides reusable building blocks (DTOs, helpers, traits) used across all maatify packages
+like `maatify/mongo-activity`, `maatify/psr-logger`, and other maatify ecosystem modules.
+
+**Core Modules:**
+
+* 🧮 Pagination Helpers (`PaginationHelper`, `PaginationDTO`)
+* 🔐 Lock System (File, Redis, Hybrid)
+* 🧼 Security Sanitization (`InputSanitizer`)
+* 🧠 Traits (`SingletonTrait`, `SanitizesInputTrait`)
+
+---
 
 ## ⚙️ Installation
 
@@ -20,16 +33,37 @@ composer require maatify/common
 ````
 
 ---
+## 🧠 New in v1.3 — SingletonTrait
 
-## 🧩 Overview
+A clean, PSR-friendly Singleton implementation to manage single-instance service classes safely.
 
-This library provides common DTOs and helper classes that are reused across all maatify packages,
-such as `maatify/mongo-activity`, `maatify/psr-logger`, and future maatify projects.
+### 🔹 Example Usage
 
-**Current modules:**
+```php
+use Maatify\Common\Traits\SingletonTrait;
 
-* `PaginationHelper` – simple array pagination logic.
-* `PaginationDTO` – unified structure for pagination metadata.
+final class ConfigManager
+{
+    use SingletonTrait;
+
+    public function get(string $key): ?string
+    {
+        return $_ENV[$key] ?? null;
+    }
+}
+
+// ✅ Always returns the same instance
+$config = ConfigManager::obj();
+
+// ♻️ Reset (for testing)
+ConfigManager::reset();
+```
+
+### ✅ Features
+
+* Prevents direct construction, cloning, and unserialization.
+* Provides static `obj()` to access the global instance.
+* Includes `reset()` for testing or reinitialization.
 
 ---
 
@@ -84,7 +118,7 @@ print_r($pagination->toArray());
 
 ---
 
-## 🔐 Lock System (New)
+## 🔐 Lock System
 
 Advanced locking utilities to prevent concurrent executions in Cron jobs, queue workers, or API-critical flows.
 
@@ -254,7 +288,7 @@ echo InputSanitizer::sanitize('<script>alert(1)</script>', 'output');
 ---
 
 
-## 🧱 Directory Structure
+## 🗂 Directory Structure
 
 ```
 src/
@@ -265,16 +299,19 @@ src/
 │   │   ├── PaginationHelper.php
 │   │   └── PaginationResultDTO.php
 ├── Lock/
-    ├── LockInterface.php
-    ├── LockModeEnum.php
-    ├── FileLockManager.php
-    ├── RedisLockManager.php
-    ├── HybridLockManager.php
-    └── LockCleaner.php
+│   ├── LockInterface.php
+│   ├── LockModeEnum.php
+│   ├── FileLockManager.php
+│   ├── RedisLockManager.php
+│   ├── HybridLockManager.php
+│   └── LockCleaner.php
 ├── Security/
-    └── InputSanitizer.php
+│   └── InputSanitizer.php
 └── Traits/
+    ├── SingletonTrait.php
     └── SanitizesInputTrait.php
+
+
 
 ```
 
