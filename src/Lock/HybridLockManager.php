@@ -1,111 +1,108 @@
 <?php
 /**
- * Created by Maatify.dev
- * User: Maatify.dev
- * Date: 2025-11-06
- * Time: 00:32
- * Project: maatify:common
- * IDE: PhpStorm
- * https://www.Maatify.dev
+ * @copyright   ©2025 Maatify.dev
+ * @Library     maatify/common
+ * @Project     maatify:common
+ * @author      Mohamed Abdulalim
+ * @since       2025-11-09
+ * @link        https://github.com/Maatify/common
  */
 
 declare(strict_types=1);
 
 namespace Maatify\Common\Lock;
 
+use Maatify\Common\Contracts\Adapter\AdapterInterface;
 use Psr\Log\LoggerInterface;
 use Maatify\PsrLogger\LoggerFactory;
 use Throwable;
 
 /**
- * Class HybridLockManager
+ * ⚙️ **Class HybridLockManager**
  *
- * 🧩 **Smart Unified Lock System**
- * A hybrid lock that automatically selects between Redis-based and File-based
- * locking mechanisms — ensuring your critical jobs never run in parallel.
+ * 🎯 **Purpose:**
+ * A smart unified lock manager that automatically chooses between:
+ * - A distributed Redis-based lock (via {@see RedisLockManager}) if available and healthy.
+ * - A file-based local lock (via {@see FileLockManager}) as a fallback.
  *
- * 🔹 Features:
- * - Auto-detects Redis availability and falls back to file locking.
- * - Supports both {@see LockModeEnum::EXECUTION} and {@see LockModeEnum::QUEUE}.
- * - PSR-3 logging for full visibility of lock source and failures.
- * - Safe for use across multiple processes or distributed environments.
+ * 🧠 **Key Features:**
+ * - Automatically detects and uses a Redis adapter if available.
+ * - Falls back seamlessly to file locks when Redis is unreachable.
+ * - Supports both **EXECUTION** (non-blocking) and **QUEUE** (blocking) operation modes.
+ * - Fully PSR-3 compliant for transparent observability.
  *
- * Example:
+ * 🧩 **Typical Use Case:**
+ * Used in systems that run on both single-server and distributed setups, providing
+ * unified locking logic without requiring configuration changes.
+ *
+ * ✅ **Example:**
  * ```php
- * $lock = new HybridLockManager('reports_generate', LockModeEnum::QUEUE);
+ * use Maatify\Common\Lock\HybridLockManager;
+ * use Maatify\Common\Lock\LockModeEnum;
+ * use Maatify\Common\Adapters\RedisAdapter;
+ *
+ * $adapter = new RedisAdapter($config);
+ * $adapter->connect();
+ *
+ * $lock = new HybridLockManager('generate_reports', LockModeEnum::QUEUE, adapter: $adapter);
  * $lock->run(function () {
- *     // critical job logic
+ *     echo "Executing safely under hybrid lock.";
  * });
  * ```
  */
 final class HybridLockManager implements LockInterface
 {
+    /** @var LockInterface Active lock driver (Redis or File). */
     private LockInterface $driver;
+
+    /** @var LoggerInterface PSR-3 logger instance. */
     private LoggerInterface $logger;
+
+    /** @var LockModeEnum Execution mode (QUEUE or EXECUTION). */
     private LockModeEnum $mode;
 
     /**
-     * HybridLockManager constructor.
+     * 🧩 **Constructor**
      *
-     * Automatically selects between Redis and File-based locking.
+     * Initializes the hybrid lock manager and automatically selects
+     * the best available lock mechanism based on adapter health.
      *
-     * @param string                $key            Unique lock identifier (shared across servers).
-     * @param LockModeEnum          $mode           Lock mode: EXECUTION (non-blocking) or QUEUE (waits until available).
-     * @param int                   $ttl            Time-to-live (in seconds) before auto-expiry (default: 300).
-     * @param LoggerInterface|null  $logger         Optional PSR-3 logger instance.
-     * @param string                $redisHost      Redis hostname (default: 127.0.0.1).
-     * @param int                   $redisPort      Redis port (default: 6379).
-     * @param string|null           $redisPassword  Optional Redis password.
-     * @param int                   $redisDb        Redis database index (default: 0).
+     * @param string                $key      Lock identifier.
+     * @param LockModeEnum          $mode     Determines blocking/non-blocking mode.
+     * @param int                   $ttl      Time-to-live in seconds.
+     * @param AdapterInterface|null $adapter  Optional Redis adapter (dependency-injected).
+     * @param LoggerInterface|null  $logger   Optional custom logger.
      */
     public function __construct(
         string $key,
         LockModeEnum $mode = LockModeEnum::EXECUTION,
         int $ttl = 300,
-        ?LoggerInterface $logger = null,
-        string $redisHost = '127.0.0.1',
-        int $redisPort = 6379,
-        ?string $redisPassword = null,
-        int $redisDb = 0
+        ?AdapterInterface $adapter = null,
+        ?LoggerInterface $logger = null
     ) {
         $this->mode = $mode;
         $this->logger = $logger ?? LoggerFactory::create('lock/hybrid');
 
-        // Try Redis first
-        try {
-            if ($this->canUseRedis($redisHost, $redisPort, $redisPassword, $redisDb)) {
-                $this->driver = new RedisLockManager(
-                    key: $key,
-                    ttl: $ttl,
-                    logger: $this->logger,
-                    redisHost: $redisHost,
-                    redisPort: $redisPort,
-                    redisPassword: $redisPassword,
-                    redisDb: $redisDb
-                );
-                $this->logger->info("HybridLock using Redis driver for {$key}");
-                return;
-            }
-        } catch (Throwable $e) {
-            $this->logger->warning('Redis unavailable, fallback to FileLockManager', [
-                'error' => $e->getMessage(),
-            ]);
+        // 🧠 Prefer Redis if adapter is valid and responsive
+        if ($adapter !== null && $this->canUseAdapter($adapter)) {
+            $this->driver = new RedisLockManager($key, $adapter, $ttl, $this->logger);
+            $this->logger->info("HybridLockManager initialized using Redis adapter for '{$key}'");
+        } else {
+            // 🧱 Fallback: use file-based lock when Redis unavailable
+            $lockFile = sys_get_temp_dir() . "/maatify/locks/{$key}.lock";
+            $this->driver = new FileLockManager($lockFile, $ttl, $this->logger);
+            $this->logger->info("HybridLockManager fallback to FileLockManager for '{$key}'");
         }
-
-        // Fallback to file-based locking
-        $lockFile = sys_get_temp_dir() . "/maatify/locks/{$key}.lock";
-        $this->driver = new FileLockManager($lockFile, $ttl, $this->logger);
-        $this->logger->info("HybridLock using File driver for {$key}");
     }
 
     // -----------------------------------------------------------
-    // 🔹 Public Lock Interface
+    // 🔹 Public Lock Interface Implementation
     // -----------------------------------------------------------
 
     /**
-     * Attempt to acquire the lock immediately.
+     * 🔏 Acquire the underlying lock (Redis or File).
      *
-     * @return bool True if the lock was acquired successfully, false otherwise.
+     * @return bool True if lock acquired successfully, false otherwise.
      */
     public function acquire(): bool
     {
@@ -113,7 +110,7 @@ final class HybridLockManager implements LockInterface
     }
 
     /**
-     * Check if the lock is currently active.
+     * 🔍 Check if the current lock is active.
      *
      * @return bool True if locked, false otherwise.
      */
@@ -123,7 +120,9 @@ final class HybridLockManager implements LockInterface
     }
 
     /**
-     * Release the lock manually.
+     * 🔓 Release the active lock (regardless of driver type).
+     *
+     * @return void
      */
     public function release(): void
     {
@@ -131,13 +130,18 @@ final class HybridLockManager implements LockInterface
     }
 
     // -----------------------------------------------------------
-    // 🔹 Helper Methods for Queue Mode
+    // 🔹 Queue Mode Helpers
     // -----------------------------------------------------------
 
     /**
-     * Wait until the lock becomes available, then acquire it.
+     * 🕓 **Wait until the lock is available, then acquire it.**
      *
-     * @param int $retryDelay Microseconds between retries (default: 500,000 = 0.5s)
+     * Used for blocking (QUEUE) mode, continuously retrying until
+     * the lock can be obtained.
+     *
+     * @param int $retryDelay Delay between retries in microseconds (default: 500,000 µs = 0.5s).
+     *
+     * @return void
      */
     public function waitAndAcquire(int $retryDelay = 500_000): void
     {
@@ -147,17 +151,22 @@ final class HybridLockManager implements LockInterface
     }
 
     /**
-     * Execute a callback under the protection of the lock.
+     * 🚀 **Execute a callback under lock protection.**
      *
-     * @param callable $callback     The code to run exclusively.
-     * @param int      $retryDelay   Delay between retries in QUEUE mode (microseconds).
+     * Automatically acquires, executes, and releases the lock.
+     * Supports both blocking (QUEUE) and non-blocking (EXECUTION) modes.
+     *
+     * @param callable $callback    Code block to execute while holding the lock.
+     * @param int      $retryDelay  Retry delay (microseconds) for QUEUE mode.
+     *
+     * @return void
      */
     public function run(callable $callback, int $retryDelay = 500_000): void
     {
         if ($this->mode === LockModeEnum::QUEUE) {
             $this->waitAndAcquire($retryDelay);
         } elseif (! $this->acquire()) {
-            return; // Skip silently if already locked
+            return; // Skip silently in non-blocking mode
         }
 
         try {
@@ -168,58 +177,32 @@ final class HybridLockManager implements LockInterface
     }
 
     // -----------------------------------------------------------
-    // 🔹 Internal: Redis availability check
+    // 🔹 Adapter Validation Logic
     // -----------------------------------------------------------
 
     /**
-     * Checks whether Redis (phpredis or predis) is available and responsive.
+     * 🧠 **Check if a Redis adapter is healthy and ready to use.**
      *
-     * @param string      $host
-     * @param int         $port
-     * @param string|null $password
-     * @param int         $db
+     * Ensures connection and verifies health status before switching
+     * to Redis-based locking.
      *
-     * @return bool True if Redis connection and ping succeed.
+     * @param AdapterInterface $adapter The Redis-compatible adapter.
+     *
+     * @return bool True if adapter connection is stable and usable.
      */
-    private function canUseRedis(
-        string $host,
-        int $port,
-        ?string $password,
-        int $db
-    ): bool {
-        if (! class_exists(\Redis::class) && ! class_exists(\Predis\Client::class)) {
-            return false;
-        }
-
+    private function canUseAdapter(AdapterInterface $adapter): bool
+    {
         try {
-            if (class_exists(\Redis::class)) {
-                $redis = new \Redis();
-                if (! @$redis->connect($host, $port, 1.0)) {
-                    return false;
-                }
-                if (!empty($password)) {
-                    $redis->auth($password);
-                }
-                $redis->select($db);
-                $redis->ping();
-                return true;
+            if (! $adapter->isConnected()) {
+                $adapter->connect();
             }
 
-            if (class_exists(\Predis\Client::class)) {
-                $client = new \Predis\Client([
-                    'scheme' => 'tcp',
-                    'host' => $host,
-                    'port' => $port,
-                    'password' => $password,
-                    'database' => $db,
-                ]);
-                $client->ping();
-                return true;
-            }
-        } catch (Throwable) {
+            return $adapter->healthCheck();
+        } catch (Throwable $e) {
+            $this->logger->warning('Adapter health check failed — falling back to FileLockManager.', [
+                'error' => $e->getMessage(),
+            ]);
             return false;
         }
-
-        return false;
     }
 }

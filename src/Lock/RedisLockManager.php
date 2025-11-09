@@ -1,132 +1,110 @@
 <?php
 /**
- * Created by Maatify.dev
- * User: Maatify.dev
- * Date: 2025-11-05
- * Time: 22:29
- * Project: maatify:common
- * IDE: PhpStorm
- * https://www.Maatify.dev
+ * @copyright   ©2025 Maatify.dev
+ * @Library     maatify/common
+ * @Project     maatify:common
+ * @author      Mohamed Abdulalim
+ * @since       2025-11-09
+ * @link        https://github.com/Maatify/common
  */
 
 declare(strict_types=1);
 
 namespace Maatify\Common\Lock;
 
+use Maatify\Common\Contracts\Adapter\AdapterInterface;
 use Psr\Log\LoggerInterface;
 use Maatify\PsrLogger\LoggerFactory;
 
 /**
- * Class RedisLockManager
+ * 🔐 **Class RedisLockManager**
  *
- * A distributed lock manager that uses Redis to control concurrent access to resources.
- * Suitable for Cron jobs, background workers, or any process that must not run in parallel.
+ * 🎯 **Purpose:**
+ * Implements a distributed lock manager using a pluggable {@see AdapterInterface}
+ * (e.g., RedisAdapter, PredisAdapter) to ensure mutual exclusion across distributed systems.
  *
- * 🧩 Features:
- * - Atomic locking via Redis `SET key value NX EX ttl`
- * - TTL auto-expiration (prevents stale locks)
- * - Works with both `phpredis` and `predis`
- * - Configurable Redis connection (host, port, password, DB)
- * - Fully PSR-3 compatible logging
+ * 🧩 **Core Features:**
+ * - **Adapter-driven architecture:** No direct Redis dependency — works with any Redis-compatible adapter.
+ * - **Atomic operations:** Uses `SET NX EX` for safe lock acquisition.
+ * - **Automatic expiration (TTL):** Prevents deadlocks if the process dies before releasing the lock.
+ * - **PSR-3 logging:** Provides traceability for lock lifecycle events.
  *
- * Example:
+ * ⚙️ **Example Usage:**
  * ```php
- * $lock = new RedisLockManager('cleanup', ttl: 600);
- * if (! $lock->acquire()) {
- *     echo "Another process is running.";
- *     exit;
+ * use Maatify\Common\Lock\RedisLockManager;
+ * use Maatify\Common\Adapters\RedisAdapter;
+ *
+ * $adapter = new RedisAdapter($config);
+ * $adapter->connect();
+ *
+ * $lock = new RedisLockManager('cleanup', $adapter, ttl: 600);
+ * if ($lock->acquire()) {
+ *     echo "Lock acquired — safe to proceed.";
+ *     $lock->release();
  * }
- *
- * // Your process here...
- *
- * $lock->release();
  * ```
  */
 final class RedisLockManager implements LockInterface
 {
-    private ?object $redis = null;
+    /** @var string Lock key used for Redis operations. */
     private string $key;
+
+    /** @var int Lock TTL in seconds (auto-expiration). */
     private int $ttl;
+
+    /** @var AdapterInterface Adapter providing Redis-like commands. */
+    private AdapterInterface $adapter;
+
+    /** @var LoggerInterface Logger instance for error and debug reporting. */
     private LoggerInterface $logger;
 
     /**
-     * @param string                $key             The unique lock key (without prefix).
-     * @param int                   $ttl             Time-to-live in seconds (default: 300).
-     * @param LoggerInterface|null  $logger          Optional PSR-3 logger for debugging.
-     * @param string                $redisHost       Redis hostname (default: 127.0.0.1).
-     * @param int                   $redisPort       Redis port (default: 6379).
-     * @param string|null           $redisPassword   Optional Redis password.
-     * @param int                   $redisDb         Redis database index (default: 0).
+     * 🧩 **Constructor**
+     *
+     * Initializes the distributed lock manager with an adapter and optional logger.
+     * Automatically ensures a connected state before any operation.
+     *
+     * @param string               $key     Unique lock identifier (e.g., job or process name).
+     * @param AdapterInterface     $adapter Adapter implementing Redis-like behavior.
+     * @param int                  $ttl     Time-to-live for the lock (default: 300 seconds).
+     * @param LoggerInterface|null $logger  Optional PSR-3 logger for observability.
      */
     public function __construct(
         string $key,
+        AdapterInterface $adapter,
         int $ttl = 300,
-        ?LoggerInterface $logger = null,
-        string $redisHost = '127.0.0.1',
-        int $redisPort = 6379,
-        ?string $redisPassword = null,
-        int $redisDb = 0
+        ?LoggerInterface $logger = null
     ) {
-        $this->key = "cron:lock:$key";
+        $this->key = "lock:{$key}";
         $this->ttl = $ttl;
-        $this->logger = $logger ?? LoggerFactory::create('cron/lock/redis');
+        $this->adapter = $adapter;
+        $this->logger = $logger ?? LoggerFactory::create('locks/redis');
 
-        try {
-            // Prefer phpredis extension
-            if (class_exists(\Redis::class)) {
-                $this->redis = new \Redis();
-                $this->redis->connect($redisHost, $redisPort, 2.0);
-
-                if (!empty($redisPassword)) {
-                    $this->redis->auth($redisPassword);
-                }
-
-                $this->redis->select($redisDb);
-            }
-            // Fallback to predis client
-            elseif (class_exists(\Predis\Client::class)) {
-                $params = [
-                    'scheme'   => 'tcp',
-                    'host'     => $redisHost,
-                    'port'     => $redisPort,
-                    'database' => $redisDb,
-                ];
-                if (!empty($redisPassword)) {
-                    $params['password'] = $redisPassword;
-                }
-                $this->redis = new \Predis\Client($params);
-            } else {
-                $this->logger->warning('No Redis client available (phpredis or predis)');
-            }
-        } catch (\Throwable $e) {
-            $this->logger->error('Redis connection failed', [
-                'error' => $e->getMessage(),
-                'host'  => $redisHost,
-                'port'  => $redisPort,
-            ]);
-            $this->redis = null;
+        // 🔌 Ensure adapter is connected before operations
+        if (! $this->adapter->isConnected()) {
+            $this->adapter->connect();
         }
     }
 
     /**
-     * Attempt to acquire the Redis lock.
+     * 🔏 **Acquire the distributed lock atomically.**
      *
-     * Uses an atomic `SET NX EX` command to ensure only one holder.
-     * Returns false if a lock already exists.
+     * Attempts to set a key using Redis’s atomic `SET NX EX` semantics.
+     * Returns `true` if the lock was successfully acquired, or `false`
+     * if another process already holds it.
      *
-     * @return bool True if the lock was acquired successfully, false otherwise.
+     * @return bool True on successful lock acquisition, false otherwise.
      */
     public function acquire(): bool
     {
-        if ($this->redis === null) {
-            return false;
-        }
-
         try {
-            return $this->redis->set($this->key, (string) time(), ['nx', 'ex' => $this->ttl]) !== false;
+            $redis = $this->adapter->getConnection();
+
+            // 🧠 Use `NX` to ensure it only sets if not already existing, `EX` to auto-expire.
+            return $redis->set($this->key, (string) time(), ['nx', 'ex' => $this->ttl]) !== false;
         } catch (\Throwable $e) {
-            $this->logger->error('RedisLockManager acquire error', [
-                'key' => $this->key,
+            $this->logger->error('RedisLockManager::acquire failed', [
+                'key'   => $this->key,
                 'error' => $e->getMessage(),
             ]);
             return false;
@@ -134,21 +112,20 @@ final class RedisLockManager implements LockInterface
     }
 
     /**
-     * Check whether the lock currently exists.
+     * 🔍 **Check if the lock currently exists.**
      *
-     * @return bool True if the Redis key exists and has not expired.
+     * Queries the underlying Redis store to determine whether the lock key is active.
+     *
+     * @return bool True if lock is currently held; false otherwise.
      */
     public function isLocked(): bool
     {
-        if ($this->redis === null) {
-            return false;
-        }
-
         try {
-            return $this->redis->exists($this->key) === 1;
+            $redis = $this->adapter->getConnection();
+            return $redis->exists($this->key) === 1;
         } catch (\Throwable $e) {
-            $this->logger->error('RedisLockManager isLocked error', [
-                'key' => $this->key,
+            $this->logger->error('RedisLockManager::isLocked failed', [
+                'key'   => $this->key,
                 'error' => $e->getMessage(),
             ]);
             return false;
@@ -156,21 +133,21 @@ final class RedisLockManager implements LockInterface
     }
 
     /**
-     * Release the lock manually by deleting the Redis key.
+     * 🔓 **Release the distributed lock.**
      *
-     * Logs any errors but does not throw exceptions.
+     * Deletes the associated lock key from the Redis store, freeing
+     * the resource for other processes.
+     *
+     * @return void
      */
     public function release(): void
     {
-        if ($this->redis === null) {
-            return;
-        }
-
         try {
-            $this->redis->del($this->key);
+            $redis = $this->adapter->getConnection();
+            $redis->del($this->key);
         } catch (\Throwable $e) {
-            $this->logger->error('RedisLockManager release error', [
-                'key' => $this->key,
+            $this->logger->error('RedisLockManager::release failed', [
+                'key'   => $this->key,
                 'error' => $e->getMessage(),
             ]);
         }

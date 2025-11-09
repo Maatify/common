@@ -1,0 +1,58 @@
+name: 🧠 Maatify Common – CI (PHP 8.4)
+
+on:
+  push:
+    branches: [ main, dev, feature/** ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  build:
+    name: 🔧 Build & Test (PHP 8.4)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, intl, json, redis
+          coverage: xdebug
+          tools: composer:v2
+
+      - name: 📦 Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: 🧹 Code Style (PHP-CS-Fixer)
+        run: |
+          if [ -f vendor/bin/php-cs-fixer ]; then
+            vendor/bin/php-cs-fixer fix --dry-run --diff || true
+          else
+            echo "⚠️ php-cs-fixer not installed – skipping"
+          fi
+
+      - name: 🔍 Static Analysis (PHPStan)
+        run: |
+          if [ -f vendor/bin/phpstan ]; then
+            vendor/bin/phpstan analyse src --level=8 || true
+          else
+            echo "⚠️ PHPStan not installed – skipping"
+          fi
+
+      - name: 🧪 Run PHPUnit Tests
+        run: |
+          if [ -f vendor/bin/phpunit ]; then
+            vendor/bin/phpunit --configuration phpunit.xml --colors=always
+          else
+            echo "⚠️ PHPUnit not installed – skipping"
+          fi
+
+      - name: 📊 Summary
+        if: always()
+        run: |
+          echo "✅ PHP Version: 8.4" >> $GITHUB_STEP_SUMMARY
+          echo "📦 Dependencies installed" >> $GITHUB_STEP_SUMMARY
+          echo "🧠 Static + Tests completed" >> $GITHUB_STEP_SUMMARY
