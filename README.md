@@ -364,6 +364,54 @@ src/Text/
 > 🔧 **Tip:** These utilities are internally leveraged by `maatify/i18n`, `maatify/security`, and `maatify/queue-manager` for consistent text normalization, placeholder expansion, and token validation.
 
 ---
+#### 🕒 **Date & Time Utilities (v1.0)**
+
+Reusable date and time formatting utilities with localization and humanized difference support.
+
+```php
+use Maatify\Common\Date\DateFormatter;
+use Maatify\Common\Date\DateHelper;
+use DateTime;
+```
+
+##### 🔹 Humanize Difference
+
+Convert two timestamps into a natural, human-friendly expression:
+
+```php
+$a = new DateTime('2025-11-09 10:00:00');
+$b = new DateTime('2025-11-09 09:00:00');
+
+echo DateFormatter::humanizeDifference($a, $b, 'en'); // "1 hour(s) ago"
+echo DateFormatter::humanizeDifference($a, $b, 'ar'); // "منذ 1 ساعة"
+```
+
+##### 🔹 Localized Date String
+
+Format any DateTime into a locale-aware representation:
+
+```php
+$date = new DateTime('2025-11-09 12:00:00');
+echo DateHelper::toLocalizedString($date, 'ar', 'Africa/Cairo'); // ٩ نوفمبر ٢٠٢٥، ٢:٠٠ م
+echo DateHelper::toLocalizedString($date, 'en', 'America/New_York'); // November 9, 2025, 7:00 AM
+```
+
+✅ Supports **English (en)**, **Arabic (ar)**, and **French (fr)** locales
+✅ Handles **timezone conversion** and **localized month/day names** automatically
+✅ Backed by `IntlDateFormatter` for precise localization
+✅ Fully covered with unit tests (`tests/Date/*`)
+
+---
+
+### 🗂 Directory (Date Utilities)
+
+```
+src/Date/
+├── DateFormatter.php
+└── DateHelper.php
+```
+
+---
 
 
 ## 🗂 Directory Structure
@@ -388,11 +436,14 @@ src/
 ├── Traits/
 │   ├── SingletonTrait.php
 │   └── SanitizesInputTrait.php
-└── Text/
-    ├── PlaceholderRenderer.php
-    ├── TextFormatter.php
-    ├── RegexHelper.php
-    └── SecureCompare.php
+├── Text/
+│   ├── PlaceholderRenderer.php
+│   ├── TextFormatter.php
+│   ├── RegexHelper.php
+│   └── SecureCompare.php
+└──    src/Date/
+    ├── DateFormatter.php
+    └── DateHelper.php
 ```
 
 ---
@@ -406,7 +457,7 @@ src/
 | 3     | Security & Input Sanitization     | ✅ Completed | 3             | Input cleaning & HTMLPurifier                                  |
 | 3b    | Core Traits — Singleton System    | ✅ Completed | 1             | SingletonTrait implementation                                  |
 | 4     | Text & Placeholder Utilities      | ✅ Completed | 8             | PlaceholderRenderer, TextFormatter, RegexHelper, SecureCompare |
-| 5     | Date & Time Utilities             | ⏳ Pending   | —             | Scheduled next phase                                           |
+| 5     | Date & Time Utilities             | ✅ Completed | 4             | HumanizeDifference & Localized Date Formatting                 |
 | 6     | Validation & Filtering Tools      | ⏳ Pending   | —             | To be developed                                                |
 | 7     | Enums & Constants Standardization | ⏳ Pending   | —             | Planned for unification                                        |
 | 8     | Testing & Release                 | ⏳ Pending   | —             | Final coverage & tagging                                       |

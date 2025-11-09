@@ -1,12 +1,13 @@
 <?php
 /**
- * Created by Maatify.dev
- * User: Maatify.dev
- * Date: 2025-11-09
- * Time: 14:26
- * Project: maatify:common
- * IDE: PhpStorm
- * https://www.Maatify.dev
+ * @copyright   ©2025 Maatify.dev
+ * @Liberary    maatify/common
+ * @Project     maatify:common
+ * @author      Mohamed Abdulalim (megyptm) <mohamed@maatify.dev>
+ * @since       2025-11-09
+ * @see         https://www.maatify.dev Maatify.com
+ * @link        https://github.com/Maatify/common  view project on GitHub
+ * @note        Distributed in the hope that it will be useful - WITHOUT WARRANTY.
  */
 
 declare(strict_types=1);
@@ -14,56 +15,63 @@ declare(strict_types=1);
 namespace Maatify\Common\Traits;
 
 /**
- * 🧠 Trait: SingletonTrait
+ * 🧠 **Trait SingletonTrait**
  *
- * 🧩 Purpose:
- * Implements the Singleton design pattern in a simple and reusable way.
- * Any class that uses this trait gains controlled instance management,
- * ensuring that only one instance exists throughout the application lifecycle.
+ * 🎯 **Purpose:**
+ * Implements a robust, reusable Singleton pattern to ensure a single shared instance
+ * of a class throughout the application’s lifecycle.
  *
- * ✅ Features:
- * - Prevents direct instantiation, cloning, or unserialization.
- * - Provides static `obj()` method to retrieve or initialize the instance.
- * - Includes `reset()` for testing or reinitialization scenarios.
+ * 🧩 **Key Features:**
+ * - Prevents direct construction, cloning, or unserialization.
+ * - Provides global static access through `obj()` or `getInstance()`.
+ * - Allows instance reset for testing or reinitialization scenarios.
  *
- * ⚙️ Example Usage:
+ * 🧱 **Best Practices:**
+ * - ✅ Ideal for stateless global managers or immutable configurations.
+ * - ⚠️ Avoid using in request-scoped or mutable services.
+ *
+ * ⚙️ **Example:**
  * ```php
  * final class ConfigManager
  * {
  *     use SingletonTrait;
  * }
  *
- * $config = ConfigManager::obj(); // Returns the same instance on every call
- * ConfigManager::reset();         // Creates a new instance
+ * $config = ConfigManager::obj();  // Returns same instance
+ * ConfigManager::reset();          // Resets to a new instance
  * ```
- *
- * 🧱 Best Practice:
- * - Use SingletonTrait only for global managers or immutable service classes.
- * - Avoid using it for stateful or request-scoped classes.
  *
  * @package Maatify\Common\Traits
  */
 trait SingletonTrait
 {
     /**
-     * 🧩 Holds the single instance of the class using this trait.
+     * 🧩 **Singleton instance holder**
+     *
+     * Stores the unique instance for the class using this trait.
      *
      * @var self|null
      */
     private static ?self $instance = null;
 
     /**
-     * 🚫 Prevent direct instantiation to enforce Singleton behavior.
+     * 🚫 **Prevent direct instantiation**
+     *
+     * Ensures controlled instance creation via `obj()`.
      */
     private function __construct() {}
 
     /**
-     * 🚫 Prevent object cloning to maintain Singleton integrity.
+     * 🚫 **Prevent object cloning**
+     *
+     * Blocks duplication of the Singleton instance.
      */
     private function __clone() {}
 
     /**
-     * 🚫 Prevent unserialization of Singleton instance.
+     * 🚫 **Prevent unserialization**
+     *
+     * Protects Singleton integrity by disallowing deserialization.
      *
      * @throws \RuntimeException Always thrown to prevent unserialization.
      */
@@ -73,13 +81,13 @@ trait SingletonTrait
     }
 
     /**
-     * 🔁 Retrieve the singleton instance.
+     * 🔁 **Retrieve or create the Singleton instance**
      *
-     * Automatically initializes the instance if it does not exist.
+     * Lazily initializes the instance if not already created.
      *
-     * @return self Singleton instance of the calling class.
+     * @return self Singleton instance.
      *
-     * ✅ Example:
+     * ✅ **Example:**
      * ```php
      * $logger = Logger::obj();
      * ```
@@ -90,15 +98,15 @@ trait SingletonTrait
     }
 
     /**
-     * ♻️ Reset the singleton instance.
+     * ♻️ **Reset the Singleton instance**
      *
-     * Useful for testing, reconfiguration, or refreshing the instance.
+     * Recreates a new instance, useful for testing or reinitialization.
      *
      * @return void
      *
-     * ✅ Example:
+     * ✅ **Example:**
      * ```php
-     * ConfigManager::reset(); // Recreates instance
+     * ConfigManager::reset();
      * ```
      */
     final public static function reset(): void
@@ -106,6 +114,13 @@ trait SingletonTrait
         self::$instance = new self();
     }
 
+    /**
+     * 🧱 **Alias of `obj()`**
+     *
+     * Provides semantic clarity for frameworks or legacy codebases.
+     *
+     * @return self Singleton instance.
+     */
     final public static function getInstance(): self
     {
         return self::obj();
