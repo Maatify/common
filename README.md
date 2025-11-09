@@ -16,17 +16,31 @@ Common Data Transfer Objects (DTOs) and helper utilities shared across all maati
 ---
 ## 🧩 Overview
 
-This library provides reusable building blocks (DTOs, helpers, traits) used across all maatify packages
-like `maatify/mongo-activity`, `maatify/psr-logger`, and other maatify ecosystem modules.
+This library provides reusable, framework-agnostic building blocks (DTOs, helpers, traits, enums, and validators)
+shared across all **Maatify** ecosystem packages such as `maatify/mongo-activity`, `maatify/psr-logger`, and others.
 
 **Core Modules:**
 
-* 🧮 Pagination Helpers (`PaginationHelper`, `PaginationDTO`)
-* 🔐 Lock System (File, Redis, Hybrid)
-* 🧼 Security Sanitization (`InputSanitizer`)
-* ✨ Text & Placeholder Utilities (`TextFormatter`, `PlaceholderRenderer`, `RegexHelper`, `SecureCompare`)
-* 🧠 Traits (`SingletonTrait`, `SanitizesInputTrait`)
+* 🧮 **Pagination Helpers** — `PaginationHelper`, `PaginationDTO`, `PaginationResultDTO`
+  Unified pagination structures for API responses and MySQL queries.
 
+* 🔐 **Lock System** — `FileLockManager`, `RedisLockManager`, `HybridLockManager`
+  Safe execution control for cron jobs, distributed tasks, and queue workers.
+
+* 🧼 **Security Sanitization** — `InputSanitizer`, `SanitizesInputTrait`
+  Clean and escape user input safely with internal `HTMLPurifier` integration.
+
+* 🧠 **Core Traits** — `SingletonTrait`, `SanitizesInputTrait`
+  Reusable traits for singleton pattern, safe input handling, and shared helpers.
+
+* ✨ **Text & Placeholder Utilities** — `TextFormatter`, `PlaceholderRenderer`, `RegexHelper`, `SecureCompare`
+  Powerful text formatting, placeholder rendering, and secure string comparison tools.
+
+* 🕒 **Date & Time Utilities** — `DateFormatter`, `DateHelper`
+  Humanized difference, timezone conversion, and localized date rendering (EN/AR/FR).
+
+* 🧩 **Validation & Filtering Tools** — `Validator`, `Filter`, `ArrayHelper`
+  Email/URL/UUID/Slug validation, input detection, and advanced array cleanup utilities.
 
 ---
 
