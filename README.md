@@ -660,8 +660,11 @@ You’re free to use, modify, and distribute this library with attribution.
 
 ---
 
-## 👤 Author
+## 🧱 Authors & Credits
 
-**Maatify.dev**
-[https://www.Maatify.dev](https://www.Maatify.dev)
+**Developed by:** [**Maatify.dev**](https://www.maatify.dev)  
+**Maintainer:** Mohamed Abdulalim  
+**Project:** `maatify:common`
+
+---
 
