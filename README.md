@@ -11,7 +11,7 @@
 
 # 📦 maatify/common
 
-Common Data Transfer Objects (DTOs) and helper utilities shared across all maatify libraries.
+A core foundational library within the Maatify ecosystem — providing standardized DTOs, validation, sanitization, date/time, locking, and text utilities for all backend modules
 
 ---
 ## 🧩 Overview
