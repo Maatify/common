@@ -84,9 +84,6 @@ This library directly relies on:
 
 ---
 
-
----
-
 ## 🧠 SingletonTrait
 
 A clean, PSR-friendly Singleton implementation to manage single-instance service classes safely.
@@ -623,6 +620,22 @@ src/
 
 ---
 
+## 📚 Built Upon
+
+`maatify/common` proudly builds upon several mature and battle-tested open-source foundations:
+
+| Library                                                           | Description                                | Usage in Project                                                                                          |
+|-------------------------------------------------------------------|--------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| **[ezyang/htmlpurifier](https://github.com/ezyang/htmlpurifier)** | Standards-compliant HTML filtering library | Powers `InputSanitizer` to ensure XSS-safe and standards-compliant HTML output with full Unicode support. |
+| **[psr/log](https://www.php-fig.org/psr/psr-3/)**                 | PSR-3 logging interface                    | Enables standardized logging across sanitization, lock, and validation components.                        |
+| **[phpunit/phpunit](https://phpunit.de)**                         | PHP unit testing framework                 | Provides automated testing with CI/CD GitHub workflow integration.                                        |
+
+> Huge thanks to the open-source community for their contributions,
+> making the Maatify ecosystem secure, reliable, and extensible. ❤️
+
+---
+
+
 ## 📊 Phase Summary Table
 
 | Phase | Title                             | Status      | Files Created | Notes                                                          |
@@ -637,22 +650,6 @@ src/
 | 7     | Enums & Constants Standardization | ⏳ Pending   | —             | Planned for unification of regex and enum constants            |
 | 8     | Testing & Release                 | ⏳ Pending   | —             | Final coverage, CI, tagging, and documentation polish          |
 
-
----
-
-
-## 📚 Built Upon
-
-`maatify/common` proudly builds upon several mature and battle-tested open-source foundations:
-
-| Library                                                           | Description                                | Usage in Project                                                                                          |
-|-------------------------------------------------------------------|--------------------------------------------|-----------------------------------------------------------------------------------------------------------|
-| **[ezyang/htmlpurifier](https://github.com/ezyang/htmlpurifier)** | Standards-compliant HTML filtering library | Powers `InputSanitizer` to ensure XSS-safe and standards-compliant HTML output with full Unicode support. |
-| **[psr/log](https://www.php-fig.org/psr/psr-3/)**                 | PSR-3 logging interface                    | Enables standardized logging across sanitization, lock, and validation components.                        |
-| **[phpunit/phpunit](https://phpunit.de)**                         | PHP unit testing framework                 | Provides automated testing with CI/CD GitHub workflow integration.                                        |
-
-> Huge thanks to the open-source community for their contributions,
-> making the Maatify ecosystem secure, reliable, and extensible. ❤️
 
 ---
 
