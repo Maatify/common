@@ -1,11 +1,13 @@
 ![**Maatify.dev**](https://www.maatify.dev/assets/img/img/maatify_logo_white.svg)
 ---
-[![Current version](https://img.shields.io/packagist/v/maatify/common)](https://packagist.org/packages/maatify/common)
-[![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/maatify/common)](https://packagist.org/packages/maatify/common)
-[![Monthly Downloads](https://img.shields.io/packagist/dm/maatify/common)](https://packagist.org/packages/maatify/common/stats)
-[![Total Downloads](https://img.shields.io/packagist/dt/maatify/common)](https://packagist.org/packages/maatify/common/stats)
-[![License](https://img.shields.io/github/license/maatify/common)](https://github.com/maatify/common/blob/main/LICENSE)
-
+[![Version](https://img.shields.io/packagist/v/maatify/common?label=Version&color=4C1)](https://packagist.org/packages/maatify/common)
+[![PHP](https://img.shields.io/packagist/php-v/maatify/common?label=PHP&color=777BB3)](https://packagist.org/packages/maatify/common)
+[![Build](https://github.com/Maatify/common/actions/workflows/tests.yml/badge.svg?label=Build&color=brightgreen)](https://github.com/Maatify/common/actions/workflows/tests.yml)
+[![Monthly Downloads](https://img.shields.io/packagist/dm/maatify/common?label=Monthly%20Downloads&color=00A8E8)](https://packagist.org/packages/maatify/common)
+[![Total Downloads](https://img.shields.io/packagist/dt/maatify/common?label=Total%20Downloads&color=2AA)](https://packagist.org/packages/maatify/common)
+[![Stars](https://img.shields.io/github/stars/Maatify/common?label=Stars&color=FFD43B)](https://github.com/Maatify/common/stargazers)
+[![License](https://img.shields.io/github/license/Maatify/common?label=License&color=blueviolet)](LICENSE)
+---
 
 # 📦 maatify/common
 
@@ -22,7 +24,9 @@ like `maatify/mongo-activity`, `maatify/psr-logger`, and other maatify ecosystem
 * 🧮 Pagination Helpers (`PaginationHelper`, `PaginationDTO`)
 * 🔐 Lock System (File, Redis, Hybrid)
 * 🧼 Security Sanitization (`InputSanitizer`)
+* ✨ Text & Placeholder Utilities (`TextFormatter`, `PlaceholderRenderer`, `RegexHelper`, `SecureCompare`)
 * 🧠 Traits (`SingletonTrait`, `SanitizesInputTrait`)
+
 
 ---
 
@@ -33,7 +37,7 @@ composer require maatify/common
 ````
 
 ---
-## 🧠 New in v1.3 — SingletonTrait
+## 🧠 SingletonTrait
 
 A clean, PSR-friendly Singleton implementation to manage single-instance service classes safely.
 
@@ -287,6 +291,80 @@ echo InputSanitizer::sanitize('<script>alert(1)</script>', 'output');
 
 ---
 
+### ✨ Text & Placeholder Utilities (v1.1)
+
+Reusable text manipulation and safe string utilities shared across all Maatify libraries.
+
+#### 🔹 PlaceholderRenderer
+
+Safely render nested placeholders within templates.
+
+```php
+use Maatify\Common\Text\PlaceholderRenderer;
+
+$template = 'Hello, {{user.name}} ({{user.email}})';
+$data = ['user' => ['name' => 'Mohamed', 'email' => 'm@maatify.dev']];
+
+echo PlaceholderRenderer::render($template, $data);
+// Output: Hello, Mohamed (m@maatify.dev)
+```
+
+#### 🔹 TextFormatter
+
+Normalize, slugify, or title-case strings consistently across platforms.
+
+```php
+use Maatify\Common\Text\TextFormatter;
+
+TextFormatter::slugify('Hello World!');      // hello-world
+TextFormatter::normalize('ÄÖÜß Test');       // aeoeuess-test
+TextFormatter::titleCase('maatify common');  // Maatify Common
+```
+
+#### 🔹 RegexHelper
+
+Convenient wrapper for regex operations.
+
+```php
+use Maatify\Common\Text\RegexHelper;
+
+RegexHelper::replace('/\d+/', '#', 'Item123'); // Item#
+```
+
+#### 🔹 SecureCompare
+
+Timing-safe string comparison for token or signature checks.
+
+```php
+use Maatify\Common\Text\SecureCompare;
+
+if (SecureCompare::equals($provided, $stored)) {
+    echo 'Tokens match safely.';
+}
+```
+
+✅ Includes full unit test coverage (`tests/Text/*`)
+✅ Cross-platform transliteration with fallback normalization
+✅ Used by other Maatify libraries for formatting, matching, and signature checks
+
+---
+
+### 🗂 Directory (Text Utilities)
+
+```
+src/Text/
+├── PlaceholderRenderer.php
+├── TextFormatter.php
+├── RegexHelper.php
+└── SecureCompare.php
+```
+
+---
+
+> 🔧 **Tip:** These utilities are internally leveraged by `maatify/i18n`, `maatify/security`, and `maatify/queue-manager` for consistent text normalization, placeholder expansion, and token validation.
+
+---
+
 
 ## 🗂 Directory Structure
 
@@ -307,20 +385,37 @@ src/
 │   └── LockCleaner.php
 ├── Security/
 │   └── InputSanitizer.php
-└── Traits/
-    ├── SingletonTrait.php
-    └── SanitizesInputTrait.php
-
-
-
+├── Traits/
+│   ├── SingletonTrait.php
+│   └── SanitizesInputTrait.php
+└── Text/
+    ├── PlaceholderRenderer.php
+    ├── TextFormatter.php
+    ├── RegexHelper.php
+    └── SecureCompare.php
 ```
+
+---
+
+## 📊 Phase Summary Table
+
+| Phase | Title                             | Status      | Files Created | Notes                                                          |
+|-------|-----------------------------------|-------------|---------------|----------------------------------------------------------------|
+| 1     | Pagination Module                 | ✅ Completed | 3             | Pagination DTOs & helpers                                      |
+| 2     | Locking System                    | ✅ Completed | 6             | File / Redis / Hybrid managers                                 |
+| 3     | Security & Input Sanitization     | ✅ Completed | 3             | Input cleaning & HTMLPurifier                                  |
+| 3b    | Core Traits — Singleton System    | ✅ Completed | 1             | SingletonTrait implementation                                  |
+| 4     | Text & Placeholder Utilities      | ✅ Completed | 8             | PlaceholderRenderer, TextFormatter, RegexHelper, SecureCompare |
+| 5     | Date & Time Utilities             | ⏳ Pending   | —             | Scheduled next phase                                           |
+| 6     | Validation & Filtering Tools      | ⏳ Pending   | —             | To be developed                                                |
+| 7     | Enums & Constants Standardization | ⏳ Pending   | —             | Planned for unification                                        |
+| 8     | Testing & Release                 | ⏳ Pending   | —             | Final coverage & tagging                                       |
 
 ---
 
 ## 🪪 License
 
-**[MIT license](LICENSE)** © [Maatify.dev](https://www.maatify.dev)
-
+**[MIT license](LICENSE)** © [Maatify.dev](https://www.maatify.dev)  
 You’re free to use, modify, and distribute this library with attribution.
 
 ---
