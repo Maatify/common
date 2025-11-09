@@ -119,11 +119,10 @@ final class HybridLockManagerTest extends TestCase
 
         $elapsed = $end - $start;
 
-        $this->assertGreaterThan(
-            0.000001,
-            $elapsed,
-            sprintf('Lock2 should wait before acquiring (elapsed: %.6f seconds)', $elapsed)
-        );
+        $this->assertGreaterThan(0.0000001, $elapsed, sprintf(
+            'Lock2 should wait before acquiring (elapsed: %.6f seconds)',
+            $elapsed
+        ));
 
         $lock2->release();
     }

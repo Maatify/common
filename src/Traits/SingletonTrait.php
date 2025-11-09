@@ -105,4 +105,9 @@ trait SingletonTrait
     {
         self::$instance = new self();
     }
+
+    final public static function getInstance(): self
+    {
+        return self::obj();
+    }
 }
