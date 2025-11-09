@@ -410,6 +410,127 @@ src/Date/
 ├── DateFormatter.php
 └── DateHelper.php
 ```
+---
+
+#### 🧩 **Validation & Filtering Utilities (v1.0)**
+
+Reusable validation, filtering, and array manipulation tools for ensuring clean and consistent input data across maatify projects.
+
+```php
+use Maatify\Common\Validation\Validator;
+use Maatify\Common\Validation\Filter;
+use Maatify\Common\Validation\ArrayHelper;
+```
+
+---
+
+##### 🔹 Validation
+
+Perform quick and reliable validation for various input types:
+
+```php
+Validator::email('user@maatify.dev');              // ✅ true
+Validator::url('https://maatify.dev');             // ✅ true
+Validator::ip('192.168.1.1');                      // ✅ true
+Validator::uuid('123e4567-e89b-12d3-a456-426614174000'); // ✅ true
+Validator::slug('maatify-core');                   // ✅ true
+Validator::slugPath('en/gift-card/itunes-10-usd'); // ✅ true
+```
+
+---
+
+##### 🔹 Numeric & Range Validation
+
+```php
+Validator::integer('42');           // ✅ true
+Validator::float('3.14');           // ✅ true
+Validator::between(5, 1, 10);       // ✅ true
+Validator::phone('+201234567890');  // ✅ true
+```
+
+---
+
+##### 🔹 Auto Type Detection
+
+Smart helper that detects the type of input automatically:
+
+```php
+Validator::detectType('test@maatify.dev');     // 'email'
+Validator::detectType('maatify-core');         // 'slug'
+Validator::detectType('en/gift-card/item');    // 'slug_path'
+Validator::detectType('42');                   // 'integer'
+Validator::detectType('3.14');                 // 'float'
+Validator::detectType('unknown-data');         // null
+```
+
+✅ Detects and differentiates between `slug` and `slug_path`
+✅ Useful for dynamic API validation or auto-form field type detection
+
+---
+
+##### 🔹 Filtering
+
+Simplify array cleaning before validation or persistence:
+
+```php
+$data = [
+    'name' => '  Mohamed  ',
+    'email' => ' ',
+    'bio' => '<b>Hello</b>',
+    'age' => null
+];
+
+$clean = Filter::sanitizeArray($data);
+
+// Output:
+[
+    'name' => 'Mohamed',
+    'bio'  => '<b>Hello</b>'
+]
+```
+
+Available methods:
+
+* `Filter::trimArray(array $data)`
+* `Filter::removeEmptyValues(array $data)`
+* `Filter::sanitizeArray(array $data)`
+
+---
+
+##### 🔹 Array Helper
+
+Manipulate associative arrays in a functional and elegant way:
+
+```php
+$data = [
+    'user' => ['id' => 1, 'name' => 'Mohamed'],
+    'meta' => ['role' => 'admin', 'active' => true]
+];
+
+ArrayHelper::flatten($data);
+// ['user.id' => 1, 'user.name' => 'Mohamed', 'meta.role' => 'admin', 'meta.active' => true]
+
+ArrayHelper::only($data, ['user.name']);
+// ['user' => ['name' => 'Mohamed']]
+
+ArrayHelper::except($data, ['meta']);
+// ['user' => ['id' => 1, 'name' => 'Mohamed']]
+```
+
+✅ Fully covered by unit tests (`tests/Validation/*`)
+✅ Integrated slugPath detection for multilingual slugs
+✅ Ideal for preparing request payloads or DTO normalization
+
+---
+
+### 🗂 Directory (Validation Utilities)
+
+```
+src/Validation/
+├── Validator.php
+├── Filter.php
+└── ArrayHelper.php
+```
 
 ---
 
@@ -441,9 +562,13 @@ src/
 │   ├── TextFormatter.php
 │   ├── RegexHelper.php
 │   └── SecureCompare.php
-└──    src/Date/
-    ├── DateFormatter.php
-    └── DateHelper.php
+├── Date/
+│   ├── DateFormatter.php
+│   └── DateHelper.php
+└── Validation/
+    ├── Validator.php
+    ├── Filter.php
+    └── ArrayHelper.php
 ```
 
 ---
@@ -458,9 +583,10 @@ src/
 | 3b    | Core Traits — Singleton System    | ✅ Completed | 1             | SingletonTrait implementation                                  |
 | 4     | Text & Placeholder Utilities      | ✅ Completed | 8             | PlaceholderRenderer, TextFormatter, RegexHelper, SecureCompare |
 | 5     | Date & Time Utilities             | ✅ Completed | 4             | HumanizeDifference & Localized Date Formatting                 |
-| 6     | Validation & Filtering Tools      | ⏳ Pending   | —             | To be developed                                                |
-| 7     | Enums & Constants Standardization | ⏳ Pending   | —             | Planned for unification                                        |
-| 8     | Testing & Release                 | ⏳ Pending   | —             | Final coverage & tagging                                       |
+| 6     | Validation & Filtering Tools      | ✅ Completed | 3             | Validator, Filter, and ArrayHelper with full unit tests        |
+| 7     | Enums & Constants Standardization | ⏳ Pending   | —             | Planned for unification of regex and enum constants            |
+| 8     | Testing & Release                 | ⏳ Pending   | —             | Final coverage, CI, tagging, and documentation polish          |
+
 
 ---
 
