@@ -8,6 +8,8 @@
 [![Stars](https://img.shields.io/github/stars/Maatify/common?label=Stars&color=FFD43B)](https://github.com/Maatify/common/stargazers)
 [![License](https://img.shields.io/github/license/Maatify/common?label=License&color=blueviolet)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Stable-success?style=flat-square)]()
+[![Code Quality](https://img.shields.io/codefactor/grade/github/Maatify/common/main)](https://www.codefactor.io/repository/github/Maatify/common)
+
 ---
 
 # 📦 maatify/common
