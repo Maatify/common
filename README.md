@@ -19,7 +19,9 @@ A core foundational library within the Maatify ecosystem — providing standardi
 This library provides reusable, framework-agnostic building blocks (DTOs, helpers, traits, enums, and validators)
 shared across all **Maatify** ecosystem packages such as `maatify/mongo-activity`, `maatify/psr-logger`, and others.
 
-**Core Modules:**
+---
+
+## **Core Modules:**
 
 * 🧮 **Pagination Helpers** — `PaginationHelper`, `PaginationDTO`, `PaginationResultDTO`
   Unified pagination structures for API responses and MySQL queries.
@@ -41,6 +43,9 @@ shared across all **Maatify** ecosystem packages such as `maatify/mongo-activity
 
 * 🧩 **Validation & Filtering Tools** — `Validator`, `Filter`, `ArrayHelper`
   Email/URL/UUID/Slug validation, input detection, and advanced array cleanup utilities.
+
+* ⚙️ **Enums & Constants Standardization** — `TextDirectionEnum`, `MessageTypeEnum`, `ErrorCodeEnum`, `PlatformEnum`, `AppEnvironmentEnum`, `CommonPaths`, `CommonLimits`, `CommonHeaders`, `Defaults`, `EnumHelper`
+  Centralized enum and constant definitions ensuring consistent standards, reusable helpers, and unified configuration across all Maatify libraries.
 
 ---
 
@@ -581,6 +586,121 @@ src/Validation/
 
 ---
 
+### ⚙️ Enums & Constants Standardization (v1.2)
+
+Centralized, reusable enumerations and constants shared across all Maatify libraries — ensuring unified configuration, predictable behavior, and simplified maintenance.
+
+#### 🔹 TextDirectionEnum
+
+Defines text layout direction for UI and localization logic.
+
+```php
+use Maatify\Common\Enums\TextDirectionEnum;
+
+echo TextDirectionEnum::LTR->value; // 'ltr'
+```
+
+#### 🔹 MessageTypeEnum
+
+Standard system message types used in API responses, logs, and alerts.
+
+```php
+use Maatify\Common\Enums\MessageTypeEnum;
+
+echo MessageTypeEnum::ERROR->value; // 'error'
+```
+
+#### 🔹 ErrorCodeEnum
+
+Provides globally standardized error identifiers across all Maatify modules.
+
+```php
+use Maatify\Common\Enums\ErrorCodeEnum;
+
+throw new Exception('Invalid input', ErrorCodeEnum::INVALID_INPUT->value);
+```
+
+#### 🔹 PlatformEnum & AppEnvironmentEnum
+
+Enumerations for defining runtime context and environment configuration.
+
+```php
+use Maatify\Common\Enums\PlatformEnum;
+use Maatify\Common\Enums\AppEnvironmentEnum;
+
+echo PlatformEnum::WEB->value;          // 'web'
+echo AppEnvironmentEnum::PRODUCTION->value; // 'production'
+```
+
+#### 🔹 EnumHelper
+
+Smart utility class that unifies enum operations like retrieving names, values, and validating entries.
+
+```php
+use Maatify\Common\Enums\EnumHelper;
+use Maatify\Common\Enums\MessageTypeEnum;
+
+$names  = EnumHelper::names(MessageTypeEnum::class);
+$values = EnumHelper::values(MessageTypeEnum::class);
+$isValid = EnumHelper::isValidValue(MessageTypeEnum::class, 'success'); // true
+```
+
+#### 🔹 EnumJsonSerializableTrait
+
+Provides automatic JSON serialization for any Enum.
+
+```php
+use Maatify\Common\Enums\Traits\EnumJsonSerializableTrait;
+use Maatify\Common\Enums\MessageTypeEnum;
+
+echo json_encode(MessageTypeEnum::SUCCESS); // 'success'
+```
+
+#### 🔹 Constants Classes
+
+Organized constants for system-wide settings.
+
+```php
+use Maatify\Common\Constants\CommonPaths;
+use Maatify\Common\Constants\Defaults;
+
+echo CommonPaths::LOG_PATH;          // '/storage/logs'
+echo Defaults::DEFAULT_TIMEZONE;     // 'Africa/Cairo'
+```
+
+✅ Full PHPUnit coverage (`tests/Enums/*`)
+✅ EnumHelper & Trait verified for stability
+✅ Consistent naming and values across all modules
+
+---
+
+### 🗂 Directory (Enums & Constants)
+
+```
+src/Enums/
+├── TextDirectionEnum.php
+├── MessageTypeEnum.php
+├── ErrorCodeEnum.php
+├── PlatformEnum.php
+├── AppEnvironmentEnum.php
+├── EnumHelper.php
+└── Traits/
+    └── EnumJsonSerializableTrait.php
+
+src/Constants/
+├── CommonPaths.php
+├── CommonLimits.php
+├── CommonHeaders.php
+└── Defaults.php
+```
+
+---
+
+📘 **Full Documentation:** [docs/enums.md](docs/enums.md)
+
+---
+
+
 
 ## 🗂 Directory Structure
 
@@ -589,9 +709,9 @@ src/
 ├── Pagination/
 │   ├── DTO/
 │   │   └── PaginationDTO.php
-│   ├── Helpers/
-│   │   ├── PaginationHelper.php
-│   │   └── PaginationResultDTO.php
+│   └── Helpers/
+│       ├── PaginationHelper.php
+│       └── PaginationResultDTO.php
 ├── Lock/
 │   ├── LockInterface.php
 │   ├── LockModeEnum.php
@@ -616,6 +736,15 @@ src/
     ├── Validator.php
     ├── Filter.php
     └── ArrayHelper.php
+        Enums/
+        ├── TextDirectionEnum.php
+        ├── MessageTypeEnum.php
+        ├── ErrorCodeEnum.php
+        ├── PlatformEnum.php
+        ├── AppEnvironmentEnum.php
+        ├── EnumHelper.php
+        └── Traits/
+            └── EnumJsonSerializableTrait.php
 ```
 
 ---
@@ -638,17 +767,17 @@ src/
 
 ## 📊 Phase Summary Table
 
-| Phase | Title                             | Status      | Files Created | Notes                                                          |
-|-------|-----------------------------------|-------------|---------------|----------------------------------------------------------------|
-| 1     | Pagination Module                 | ✅ Completed | 3             | Pagination DTOs & helpers                                      |
-| 2     | Locking System                    | ✅ Completed | 6             | File / Redis / Hybrid managers                                 |
-| 3     | Security & Input Sanitization     | ✅ Completed | 3             | Input cleaning & HTMLPurifier                                  |
-| 3b    | Core Traits — Singleton System    | ✅ Completed | 1             | SingletonTrait implementation                                  |
-| 4     | Text & Placeholder Utilities      | ✅ Completed | 8             | PlaceholderRenderer, TextFormatter, RegexHelper, SecureCompare |
-| 5     | Date & Time Utilities             | ✅ Completed | 4             | HumanizeDifference & Localized Date Formatting                 |
-| 6     | Validation & Filtering Tools      | ✅ Completed | 3             | Validator, Filter, and ArrayHelper with full unit tests        |
-| 7     | Enums & Constants Standardization | ⏳ Pending   | —             | Planned for unification of regex and enum constants            |
-| 8     | Testing & Release                 | ⏳ Pending   | —             | Final coverage, CI, tagging, and documentation polish          |
+| Phase | Title                             | Status      | Files Created | Notes                                                           |
+|-------|-----------------------------------|-------------|---------------|-----------------------------------------------------------------|
+| 1     | Pagination Module                 | ✅ Completed | 3             | Pagination DTOs & helpers                                       |
+| 2     | Locking System                    | ✅ Completed | 6             | File / Redis / Hybrid managers                                  |
+| 3     | Security & Input Sanitization     | ✅ Completed | 3             | Input cleaning & HTMLPurifier                                   |
+| 3b    | Core Traits — Singleton System    | ✅ Completed | 1             | SingletonTrait implementation                                   |
+| 4     | Text & Placeholder Utilities      | ✅ Completed | 8             | PlaceholderRenderer, TextFormatter, RegexHelper, SecureCompare  |
+| 5     | Date & Time Utilities             | ✅ Completed | 4             | HumanizeDifference & Localized Date Formatting                  |
+| 6     | Validation & Filtering Tools      | ✅ Completed | 3             | Validator, Filter, and ArrayHelper with full unit tests         |
+| 7     | Enums & Constants Standardization | ✅ Completed | 10 + 5 tests  | Unified Enums, Constants, EnumHelper & JSON Trait with docs     |
+| 8     | Testing & Release                 | ⏳ Pending   | —             | Final coverage, CI, tagging, and documentation polish           |
 
 
 ---
