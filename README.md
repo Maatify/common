@@ -668,8 +668,8 @@ echo CommonPaths::LOG_PATH;          // '/storage/logs'
 echo Defaults::DEFAULT_TIMEZONE;     // 'Africa/Cairo'
 ```
 
-✅ Full PHPUnit coverage (`tests/Enums/*`)
-✅ EnumHelper & Trait verified for stability
+✅ Full PHPUnit coverage (`tests/Enums/*`)  
+✅ EnumHelper & Trait verified for stability  
 ✅ Consistent naming and values across all modules
 
 ---
