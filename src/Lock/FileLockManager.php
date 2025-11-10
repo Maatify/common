@@ -58,6 +58,7 @@ final class FileLockManager implements LockInterface
         $this->lockFile = $lockFile;
         $this->ttl = $ttl;
 
+        // 🧠 Initialize logger (custom or default context)
         if ($logger !== null) {
             $this->logger = $logger;
         } else {

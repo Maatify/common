@@ -80,6 +80,7 @@ final class RedisLockManager implements LockInterface
         $this->ttl = $ttl;
         $this->adapter = $adapter;
 
+        // 🧠 Initialize logger (custom or default context)
         if ($logger !== null) {
             $this->logger = $logger;
         } else {

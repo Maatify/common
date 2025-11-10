@@ -88,6 +88,7 @@ final class HybridLockManager implements LockInterface
     ) {
         $this->mode = $mode;
 
+        // 🧠 Initialize logger (custom or default context)
         if ($logger !== null) {
             $this->logger = $logger;
         } else {
