@@ -2,15 +2,14 @@
 
 ![**Maatify.dev**](https://www.maatify.dev/assets/img/img/maatify_logo_white.svg)
 ---
-[![Version](https://img.shields.io/packagist/v/maatify/common?label=الإصدار&color=4C1)](https://packagist.org/packages/maatify/common)
-[![PHP](https://img.shields.io/packagist/php-v/maatify/common?label=إصدار%20PHP&color=777BB3)](https://packagist.org/packages/maatify/common)
-[![Build](https://github.com/Maatify/common/actions/workflows/tests.yml/badge.svg?label=حالة%20البناء&color=brightgreen)](https://github.com/Maatify/common/actions/workflows/tests.yml)
-[![Monthly Downloads](https://img.shields.io/packagist/dm/maatify/common?label=التحميلات%20الشهرية&color=00A8E8)](https://packagist.org/packages/maatify/common)
-[![Total Downloads](https://img.shields.io/packagist/dt/maatify/common?label=إجمالي%20التحميلات&color=2AA)](https://packagist.org/packages/maatify/common)
-[![Stars](https://img.shields.io/github/stars/Maatify/common?label=النجوم&color=FFD43B)](https://github.com/Maatify/common/stargazers)
-[![License](https://img.shields.io/github/license/Maatify/common?label=الترخيص&color=blueviolet)](LICENSE)
-[![Status](https://img.shields.io/badge/الحالة-مستقرة-success?style=flat-square)]()
-
+[![Version](https://img.shields.io/packagist/v/maatify/common?label=Version&color=4C1)](https://packagist.org/packages/maatify/common)
+[![PHP](https://img.shields.io/packagist/php-v/maatify/common?label=PHP&color=777BB3)](https://packagist.org/packages/maatify/common)
+[![Build](https://github.com/Maatify/common/actions/workflows/ci.yml/badge.svg?label=Build&color=brightgreen)](https://github.com/Maatify/common/actions/workflows/ci.yml)
+[![Monthly Downloads](https://img.shields.io/packagist/dm/maatify/common?label=Monthly%20Downloads&color=00A8E8)](https://packagist.org/packages/maatify/common)
+[![Total Downloads](https://img.shields.io/packagist/dt/maatify/common?label=Total%20Downloads&color=2AA)](https://packagist.org/packages/maatify/common)
+[![Stars](https://img.shields.io/github/stars/Maatify/common?label=Stars&color=FFD43B)](https://github.com/Maatify/common/stargazers)
+[![License](https://img.shields.io/github/license/Maatify/common?label=License&color=blueviolet)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Stable-success?style=flat-square)]()
 ---
 
 # 📦 maatify/common
@@ -22,63 +21,76 @@
 ---
 
 
-## 🧭 Version Information
-| Key             | Value               |
-|-----------------|---------------------|
-| Version         | **1.0.0 Stable**    |
-| Release Date    | 2025-11-10          |
-| PHP Requirement | ≥ 8.1               |
-| License         | MIT                 |
-| Coverage        | 98 %                |
-| Tests Passed    | 66 (150 Assertions) |
+## 🧭 معلومات الإصدار
 
-
-## 🧩 Overview
-
-This library provides reusable, framework-agnostic building blocks (DTOs, helpers, traits, enums, and validators)
-shared across all **Maatify** ecosystem packages such as `maatify/mongo-activity`, `maatify/psr-logger`, and others.
-
----
-## 📘 Documentation & Release Files
-| File                                                            | Description                              |
-|-----------------------------------------------------------------|------------------------------------------|
-| [`/docs/README.full.md`](docs/README.full.md)                   | Full combined documentation (Phases 1–8) |
-| [`/docs/enums.md`](docs/enums.md)                               | Detailed reference for Enums & Constants |
-| [`/docs/phases/README.phase7.md`](docs/phases/README.phase7.md) | Phase 7 breakdown and EnumHelper notes   |
-| [`CHANGELOG.md`](CHANGELOG.md)                                  | Complete version history                 |
-| [`CONTRIBUTING.md`](CONTRIBUTING.md)                            | Contribution guidelines                  |
-| [`VERSION`](VERSION)                                            | Current release version                  |
----
-
-## **Core Modules:**
-
-* 🧮 **Pagination Helpers** — `PaginationHelper`, `PaginationDTO`, `PaginationResultDTO`
-  Unified pagination structures for API responses and MySQL queries.
-
-* 🔐 **Lock System** — `FileLockManager`, `RedisLockManager`, `HybridLockManager`
-  Safe execution control for cron jobs, distributed tasks, and queue workers.
-
-* 🧼 **Security Sanitization** — `InputSanitizer`, `SanitizesInputTrait`
-  Clean and escape user input safely with internal `HTMLPurifier` integration.
-
-* 🧠 **Core Traits** — `SingletonTrait`, `SanitizesInputTrait`
-  Reusable traits for singleton pattern, safe input handling, and shared helpers.
-
-* ✨ **Text & Placeholder Utilities** — `TextFormatter`, `PlaceholderRenderer`, `RegexHelper`, `SecureCompare`
-  Powerful text formatting, placeholder rendering, and secure string comparison tools.
-
-* 🕒 **Date & Time Utilities** — `DateFormatter`, `DateHelper`
-  Humanized difference, timezone conversion, and localized date rendering (EN/AR/FR).
-
-* 🧩 **Validation & Filtering Tools** — `Validator`, `Filter`, `ArrayHelper`
-  Email/URL/UUID/Slug validation, input detection, and advanced array cleanup utilities.
-
-* ⚙️ **Enums & Constants Standardization** — `TextDirectionEnum`, `MessageTypeEnum`, `ErrorCodeEnum`, `PlatformEnum`, `AppEnvironmentEnum`, `CommonPaths`, `CommonLimits`, `CommonHeaders`, `Defaults`, `EnumHelper`
-  Centralized enum and constant definitions ensuring consistent standards, reusable helpers, and unified configuration across all Maatify libraries.
+| المفتاح                | القيمة                      |
+|------------------------|-----------------------------|
+| الإصدار                | **1.0.0 مستقر (Stable)**    |
+| تاريخ الإصدار          | 2025-11-10                  |
+| متطلبات PHP            | ≥ 8.1                       |
+| الترخيص                | MIT                         |
+| نسبة التغطية           | 98٪                         |
+| عدد الاختبارات الناجحة | 66 اختبار (150 Assertion)   |
 
 ---
 
-## ⚙️ Installation
+## 🧩 نظرة عامة
+
+توفّر هذه المكتبة مكوّنات أساسية قابلة لإعادة الاستخدام **(Reusable Building Blocks)**  
+ومستقلة عن أي إطار عمل **(Framework-Agnostic)**،  
+تشمل: **DTOs، Helpers، Traits، Enums، وValidators**،  
+وتُستخدم عبر جميع مكتبات منظومة **Maatify** مثل:
+
+`maatify/mongo-activity`,  
+`maatify/psr-logger`,  
+وغيرها من المكتبات التابعة لنظام **Maatify.dev**.
+
+---
+## 📘 التوثيق وملفات الإصدار
+
+| الملف | الوصف |
+|-------|--------|
+| [`/docs/README.full.md`](docs/README.full.md) | التوثيق الكامل الموحّد لجميع المراحل (1–8) |
+| [`/docs/enums.md`](docs/enums.md) | مرجع تفصيلي لـ Enums و Constants |
+| [`/docs/phases/README.phase7.md`](docs/phases/README.phase7.md) | تفصيل المرحلة السابعة وملاحظات EnumHelper |
+| [`CHANGELOG.md`](CHANGELOG.md) | السجل الكامل لتاريخ الإصدارات |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | إرشادات المساهمة في المشروع |
+| [`VERSION`](VERSION) | رقم الإصدار الحالي |
+
+---
+
+## 🧱 **الوحدات الأساسية (Core Modules):**
+
+* 🧮 **مساعدو التصفح (Pagination Helpers)** — `PaginationHelper`, `PaginationDTO`, `PaginationResultDTO`  
+  هيكل موحّد للتقسيم (Pagination) في استجابات الـ API واستعلامات MySQL.
+
+* 🔐 **نظام القفل (Lock System)** — `FileLockManager`, `RedisLockManager`, `HybridLockManager`  
+  إدارة آمنة لتنفيذ المهام المجدولة (Cron Jobs) والمهام الموزعة (Distributed Tasks) وعمال الطوابير (Queue Workers).
+
+* 🧼 **تنظيف البيانات (Security Sanitization)** — `InputSanitizer`, `SanitizesInputTrait`  
+  تنظيف آمن لمدخلات المستخدم ومنع الثغرات باستخدام تكامل داخلي مع مكتبة `HTMLPurifier`.
+
+* 🧠 **الخصائص الأساسية (Core Traits)** — `SingletonTrait`, `SanitizesInputTrait`  
+  خصائص قابلة لإعادة الاستخدام لأنماط التصميم الأساسية مثل Singleton ومعالجة المدخلات الآمنة.
+
+* ✨ **أدوات النصوص والقوالب (Text & Placeholder Utilities)** — `TextFormatter`, `PlaceholderRenderer`, `RegexHelper`, `SecureCompare`  
+  أدوات قوية لتنسيق النصوص، واستبدال القوالب النصية (Placeholders)، والمقارنة الآمنة بين السلاسل النصية.
+
+* 🕒 **أدوات التاريخ والوقت (Date & Time Utilities)** — `DateFormatter`, `DateHelper`  
+  حساب الفروقات الزمنية بطريقة بشرية (Humanized) وتحويل المناطق الزمنية وعرض التاريخ بصيغة محلية (EN/AR/FR).
+
+* 🧩 **أدوات التحقق والتنقية (Validation & Filtering Tools)** — `Validator`, `Filter`, `ArrayHelper`  
+  التحقق من صحة البريد الإلكتروني / الروابط / UUID / Slug، واكتشاف نوع المدخلات، وتنظيف المصفوفات المتقدمة.
+
+* ⚙️ **توحيد التعدادات والثوابت (Enums & Constants Standardization)** —  
+  `TextDirectionEnum`, `MessageTypeEnum`, `ErrorCodeEnum`, `PlatformEnum`, `AppEnvironmentEnum`,  
+  `CommonPaths`, `CommonLimits`, `CommonHeaders`, `Defaults`, `EnumHelper`  
+  تعريفات مركزية للتعدادات والثوابت تضمن التوحيد القياسي، وإعادة الاستخدام، واتساق الإعدادات بين جميع مكتبات Maatify.
+
+---
+## ⚙️ التثبيت (Installation)
+
+لتثبيت المكتبة عبر Composer:
 
 ```bash
 composer require maatify/common
@@ -86,31 +98,40 @@ composer require maatify/common
 
 ---
 
-## 📦 Dependencies
+## 📦 التبعيات (Dependencies)
 
-This library directly relies on:
+تعتمد هذه المكتبة بشكل مباشر على المكتبات التالية:
 
-| Dependency              | Purpose                                   | Link                                                                     |
-|-------------------------|-------------------------------------------|--------------------------------------------------------------------------|
-| **ezyang/htmlpurifier** | Secure HTML/XSS sanitization engine       | [github.com/ezyang/htmlpurifier](https://github.com/ezyang/htmlpurifier) |
-| **psr/log**             | Standardized PSR-3 logging interface      | [www.php-fig.org/psr/psr-3](https://www.php-fig.org/psr/psr-3/)          |
-| **phpunit/phpunit**     | Unit testing framework (development only) | [phpunit.de](https://phpunit.de)                                         |
+| المكتبة (Dependency)    | الغرض (Purpose)                                          | الرابط (Link)                                                            |
+|-------------------------|----------------------------------------------------------|--------------------------------------------------------------------------|
+| **ezyang/htmlpurifier** | محرّك آمن لتنقية HTML ومنع ثغرات XSS                     | [github.com/ezyang/htmlpurifier](https://github.com/ezyang/htmlpurifier) |
+| **psr/log**             | واجهة تسجيل قياسية (PSR-3)                               | [php-fig.org/psr/psr-3](https://www.php-fig.org/psr/psr-3/)              |
+| **phpunit/phpunit**     | إطار عمل لاختبارات الوحدات (للاستخدام أثناء التطوير فقط) | [phpunit.de](https://phpunit.de)                                         |
 
-> `maatify/common` integrates these open-source libraries to deliver
-> a consistent and secure foundation for all other Maatify components.
+> تقوم مكتبة `maatify/common` بدمج هذه المكتبات مفتوحة المصدر لتوفير أساس موحّد وآمن
+> يُستخدم في جميع مكوّنات منظومة **Maatify** الأخرى.
 
-> 🧠 **Note:**
-> `maatify/common` automatically configures **HTMLPurifier** to use an internal cache directory at
-> `storage/purifier_cache` for optimized performance.
-> This ensures faster sanitization on subsequent calls without requiring manual setup.
+---
+
+> 🧠 **ملاحظة:**
+> تقوم `maatify/common` تلقائيًا بتهيئة مكتبة **HTMLPurifier**
+> لاستخدام مجلد تخزين داخلي في المسار التالي:
 >
-> If you wish to override the cache path, set the environment variable:
+> ```
+> storage/purifier_cache
+> ```
+>
+> وذلك لتحسين الأداء وتسريع عملية التنقية في الاستدعاءات اللاحقة
+> دون الحاجة إلى أي إعداد يدوي.
+>
+> إذا كنت ترغب في تغيير مسار ذاكرة التخزين المؤقت (Cache Path)،
+> يمكنك ضبط متغير البيئة التالي:
 >
 > ```bash
 > HTMLPURIFIER_CACHE_PATH=/path/to/custom/cache
 > ```
 >
-> or modify it programmatically via:
+> أو تعديله برمجيًا عبر الشيفرة:
 >
 > ```php
 > $config->set('Cache.SerializerPath', '/custom/cache/path');
@@ -120,9 +141,12 @@ This library directly relies on:
 
 ## 🧠 SingletonTrait
 
-A clean, PSR-friendly Singleton implementation to manage single-instance service classes safely.
+تنفيذ نظيف ومتوافق مع معايير **PSR** لنمط التصميم **Singleton**،  
+يُستخدم لإدارة الأصناف (Classes) التي يجب أن تمتلك نسخة واحدة فقط (Single Instance) بطريقة آمنة ومنظمة.
 
-### 🔹 Example Usage
+---
+
+### 🔹 مثال على الاستخدام (Example Usage)
 
 ```php
 use Maatify\Common\Traits\SingletonTrait;
@@ -137,24 +161,28 @@ final class ConfigManager
     }
 }
 
-// ✅ Always returns the same instance
+// ✅ دائمًا تُعيد نفس النسخة من الكائن
 $config = ConfigManager::obj();
 
-// ♻️ Reset (for testing)
+// ♻️ إعادة التهيئة (للاختبارات)
 ConfigManager::reset();
-```
-
-### ✅ Features
-
-* Prevents direct construction, cloning, and unserialization.
-* Provides static `obj()` to access the global instance.
-* Includes `reset()` for testing or reinitialization.
+````
 
 ---
 
-## 📚 Example Usage
+### ✅ المميزات (Features)
 
-### 🔹 Paginate Array Data
+* يمنع الإنشاء المباشر للكائنات (Direct Construction)، وكذلك النسخ (Cloning) أو إلغاء التسلسل (Unserialization).
+* يوفّر الدالة الثابتة `obj()` للوصول إلى النسخة العامة (Global Instance).
+* يتضمّن الدالة `reset()` لإعادة التهيئة أثناء الاختبارات أو إعادة التشغيل.
+
+---
+
+## 📚 مثال على استخدام التصفح (Pagination Example Usage)
+
+---
+
+### 🔹 تقسيم البيانات داخل مصفوفة (Paginate Array Data)
 
 ```php
 use Maatify\Common\Pagination\Helpers\PaginationHelper;
@@ -164,9 +192,9 @@ $items = range(1, 100);
 $result = PaginationHelper::paginate($items, page: 2, perPage: 10);
 
 print_r($result);
-```
+````
 
-Output:
+**الناتج:**
 
 ```php
 [
@@ -184,7 +212,7 @@ Output:
 
 ---
 
-### 🔹 Working with `PaginationDTO`
+### 🔹 التعامل مع الكائن `PaginationDTO`
 
 ```php
 use Maatify\Common\Pagination\DTO\PaginationDTO;
@@ -201,27 +229,32 @@ $pagination = new PaginationDTO(
 print_r($pagination->toArray());
 ```
 
----
-
-## 🔐 Lock System
-
-Advanced locking utilities to prevent concurrent executions in Cron jobs, queue workers, or API-critical flows.
+🧩 هذا المثال يوضّح كيفية استخدام الكائن `PaginationDTO`
+لتمثيل معلومات التصفح (Pagination Metadata) بشكل منسّق ومنفصل عن البيانات الأساسية،
+بما في ذلك رقم الصفحة، عدد العناصر في الصفحة، العدد الإجمالي، وعدد الصفحات الكلي.
 
 ---
 
-### 🔹 Available Managers
+## 🔐 نظام القفل (Lock System)
 
-| Class               | Type        | Description                                                                          |
-|---------------------|-------------|--------------------------------------------------------------------------------------|
-| `FileLockManager`   | Local       | File-based lock stored in `/tmp` or any directory                                    |
-| `RedisLockManager`  | Distributed | Uses Redis or Predis client for network-safe locking                                 |
-| `HybridLockManager` | Smart       | Automatically chooses Redis if available, otherwise falls back to file lock          |
-| `LockCleaner`       | Utility     | Cleans up stale `.lock` files after timeouts                                         |
-| `LockModeEnum`      | Enum        | Defines whether lock should `EXECUTION` (non-blocking) or `QUEUE` (waits until free) |
+أدوات قفل متقدّمة تهدف إلى منع تنفيذ العمليات المتزامنة في **مهام الـ Cron** أو **عمّال الطوابير (Queue Workers)**  
+أو أي عمليات حساسة داخل الـ API.
 
 ---
 
-### 🧠 Example 1 — File Lock
+### 🔹 أنواع مديري القفل المتاحة (Available Managers)
+
+| الفئة (Class)       | النوع (Type) | الوصف (Description)                                                                  |
+|---------------------|--------------|--------------------------------------------------------------------------------------|
+| `FileLockManager`   | Local        | قفل يعتمد على الملفات ويُخزَّن في مجلد `/tmp` أو أي مسار آخر.                        |
+| `RedisLockManager`  | Distributed  | يستخدم Redis أو Predis لإنشاء أقفال موزّعة وآمنة عبر الشبكة.                         |
+| `HybridLockManager` | Smart        | يختار Redis تلقائيًا إن وُجد، وإلا يعود لاستخدام القفل القائم على الملفات.           |
+| `LockCleaner`       | Utility      | يقوم بحذف ملفات الأقفال القديمة (`.lock`) بعد انتهاء صلاحيتها.                       |
+| `LockModeEnum`      | Enum         | يحدّد ما إذا كان القفل من نوع `EXECUTION` (غير مانع) أو `QUEUE` (ينتظر حتى التحرير). |
+
+---
+
+### 🧠 المثال 1 — قفل الملفات (File Lock)
 
 ```php
 use Maatify\Common\Lock\FileLockManager;
@@ -235,11 +268,14 @@ if (! $lock->acquire()) {
 echo "Running safely...\n";
 
 $lock->release();
-```
+````
+
+🔸 في هذا المثال، يتم إنشاء قفل محلي لحماية تنفيذ مهمة مجدولة (Cron Job)
+من التشغيل المتكرر في نفس الوقت.
 
 ---
 
-### ⚙️ Example 2 — Redis Lock
+### ⚙️ المثال 2 — قفل Redis (Redis Lock)
 
 ```php
 use Maatify\Common\Lock\RedisLockManager;
@@ -252,12 +288,12 @@ if ($lock->acquire()) {
 }
 ```
 
-✅ Works automatically with both `phpredis` and `predis`.
-If Redis is down, it logs an error via `maatify/psr-logger`.
+✅ يعمل هذا القفل تلقائيًا مع كل من `phpredis` و `predis`.
+وإذا تعطل خادم Redis، يتم تسجيل الخطأ تلقائيًا عبر مكتبة `maatify/psr-logger`.
 
 ---
 
-### 🚀 Example 3 — Hybrid Lock (Recommended)
+### 🚀 المثال 3 — القفل الهجين (Hybrid Lock) — **الموصى به**
 
 ```php
 use Maatify\Common\Lock\HybridLockManager;
@@ -274,11 +310,12 @@ $lock->run(function () {
 });
 ```
 
-Automatically uses Redis if available, otherwise falls back to file lock.
+🔹 يستخدم هذا الوضع Redis تلقائيًا إذا كان متاحًا،
+وإلا ينتقل إلى القفل القائم على الملفات لضمان استمرارية التنفيذ دون فشل.
 
 ---
 
-### 🧹 Example 4 — Clean Old Locks
+### 🧹 المثال 4 — تنظيف الأقفال القديمة (Clean Old Locks)
 
 ```php
 use Maatify\Common\Lock\LockCleaner;
@@ -286,17 +323,19 @@ use Maatify\Common\Lock\LockCleaner;
 LockCleaner::cleanOldLocks(sys_get_temp_dir() . '/maatify/locks', 900);
 ```
 
----
-
-### 🧾 Notes
-
-* All lock operations are fully logged (via `maatify/psr-logger`).
-* Default lock expiration (TTL) is **300 seconds (5 minutes)**.
-* Hybrid mode retries every **0.5 seconds** when using queue mode.
+يقوم هذا الأمر بحذف جميع ملفات القفل القديمة التي تجاوزت فترة صلاحيتها المحدّدة (900 ثانية هنا).
 
 ---
 
-### 🗂 Directory (Lock Module)
+### 🧾 ملاحظات (Notes)
+
+* جميع عمليات القفل تُسجّل بالكامل عبر مكتبة `maatify/psr-logger`.
+* مدة انتهاء القفل الافتراضية **(TTL)** هي **300 ثانية (5 دقائق)**.
+* في وضع **Hybrid Queue**، يحاول القفل إعادة المحاولة كل **0.5 ثانية** حتى يصبح القفل متاحًا.
+
+---
+
+### 🗂 هيكل المجلد (Lock Module Directory)
 
 ```
 src/Lock/
@@ -310,22 +349,28 @@ src/Lock/
 
 ---
 
-## 🕒 Cron Lock System (Legacy Section)
+## 🕒 نظام قفل المهام المجدولة (Cron Lock System – Legacy Section)
 
-This module provides simple yet powerful locking mechanisms to prevent concurrent cron executions.
+يوفّر هذا القسم آلية قفل بسيطة لكنها قوية لمنع تنفيذ المهام المجدولة (Cron Jobs) بشكل متزامن في الوقت نفسه.
 
-**Available implementations :**
+---
 
-* `FileCronLock` — lightweight local lock for single-host environments.
-* `RedisCronLock` — distributed lock using Redis or Predis, automatically disabled if Redis is unavailable.
+### **التطبيقات المتاحة (Available Implementations):**
 
-**Interface:**
+* `FileCronLock` — قفل محلي خفيف الوزن مخصص للأنظمة ذات الخادم الواحد (Single-Host Environments).  
+* `RedisCronLock` — قفل موزّع يستخدم Redis أو Predis، ويُعطّل نفسه تلقائيًا إذا لم يكن Redis متاحًا.
+
+---
+
+### **الواجهة (Interface):**
 
 ```php
 use Maatify\Common\Lock\LockInterface;
-```
+````
 
-**Example:**
+---
+
+### **مثال على الاستخدام (Example):**
 
 ```php
 use Maatify\Common\Lock\FileLockManager;
@@ -338,45 +383,56 @@ if (! $lock->acquire()) {
 
 echo "Running job...\n";
 
-// ... job logic ...
+// ... منطق تنفيذ المهمة ...
 
 $lock->release();
 ```
 
-✅ If Redis or Predis is installed, you can use:
+✅ إذا كان Redis أو Predis مثبتًا في النظام، يمكنك استخدام:
 
 ```php
 use Maatify\Common\Lock\RedisLockManager;
 
 $lock = new RedisLockManager('daily_job');
 if ($lock->acquire()) {
-    // do work
+    // تنفيذ المهمة
     $lock->release();
 }
 ```
 
-Redis version automatically logs a warning (and safely disables itself) if Redis isn’t available.
+🔸 يقوم إصدار Redis بتسجيل تحذير تلقائيًا (ويُعطّل نفسه بأمان) إذا لم يكن خادم Redis متاحًا.
 
 ---
 
-### 🧼 Input Sanitization
+## 🧼 تنظيف المدخلات (Input Sanitization)
 
-Use `Maatify\Common\Security\InputSanitizer` to clean any user or system input safely.
+استخدم الفئة `Maatify\Common\Security\InputSanitizer` لتنظيف أي مدخلات من المستخدم أو النظام بطريقة آمنة.
+
+<div dir="rtl">
 
 ```php
 use Maatify\Common\Security\InputSanitizer;
 
 echo InputSanitizer::sanitize('<script>alert(1)</script>', 'output');
-// Output: &lt;script&gt;alert(1)&lt;/script&gt;
-```
+// الناتج: &lt;script&gt;alert(1)&lt;/script&gt;
+````
+</div>
+
+🧩 تُعد هذه الأداة جزءًا من منظومة الأمن في مكتبة **maatify/common**
+حيث تعمل على إزالة أو ترميز المحتوى الخطر (مثل وسوم JavaScript أو HTML الضارة)
+مع الحفاظ على النصوص السليمة دون تغيير بنيتها.
 
 ---
 
-### ✨ Text & Placeholder Utilities 
+
+
+---
+
+## ✨ Text & Placeholder Utilities 
 
 Reusable text manipulation and safe string utilities shared across all Maatify libraries.
 
-#### 🔹 PlaceholderRenderer
+### 🔹 PlaceholderRenderer
 
 Safely render nested placeholders within templates.
 
@@ -390,7 +446,7 @@ echo PlaceholderRenderer::render($template, $data);
 // Output: Hello, Mohamed (m@maatify.dev)
 ```
 
-#### 🔹 TextFormatter
+### 🔹 TextFormatter
 
 Normalize, slugify, or title-case strings consistently across platforms.
 
@@ -402,7 +458,7 @@ TextFormatter::normalize('ÄÖÜß Test');       // aeoeuess-test
 TextFormatter::titleCase('maatify common');  // Maatify Common
 ```
 
-#### 🔹 RegexHelper
+### 🔹 RegexHelper
 
 Convenient wrapper for regex operations.
 
@@ -412,7 +468,7 @@ use Maatify\Common\Text\RegexHelper;
 RegexHelper::replace('/\d+/', '#', 'Item123'); // Item#
 ```
 
-#### 🔹 SecureCompare
+### 🔹 SecureCompare
 
 Timing-safe string comparison for token or signature checks.
 
@@ -445,7 +501,7 @@ src/Text/
 > 🔧 **Tip:** These utilities are internally leveraged by `maatify/i18n`, `maatify/security`, and `maatify/queue-manager` for consistent text normalization, placeholder expansion, and token validation.
 
 ---
-#### 🕒 **Date & Time Utilities** 
+## 🕒 **Date & Time Utilities** 
 
 Reusable date and time formatting utilities with localization and humanized difference support.
 
@@ -455,7 +511,7 @@ use Maatify\Common\Date\DateHelper;
 use DateTime;
 ```
 
-##### 🔹 Humanize Difference
+### 🔹 Humanize Difference
 
 Convert two timestamps into a natural, human-friendly expression:
 
@@ -467,7 +523,7 @@ echo DateFormatter::humanizeDifference($a, $b, 'en'); // "1 hour(s) ago"
 echo DateFormatter::humanizeDifference($a, $b, 'ar'); // "منذ 1 ساعة"
 ```
 
-##### 🔹 Localized Date String
+### 🔹 Localized Date String
 
 Format any DateTime into a locale-aware representation:
 
@@ -493,7 +549,7 @@ src/Date/
 ```
 ---
 
-#### 🧩 **Validation & Filtering Utilities** 
+## 🧩 **Validation & Filtering Utilities** 
 
 Reusable validation, filtering, and array manipulation tools for ensuring clean and consistent input data across maatify projects.
 
@@ -505,7 +561,7 @@ use Maatify\Common\Validation\ArrayHelper;
 
 ---
 
-##### 🔹 Validation
+### 🔹 Validation
 
 Perform quick and reliable validation for various input types:
 
@@ -520,7 +576,7 @@ Validator::slugPath('en/gift-card/itunes-10-usd'); // ✅ true
 
 ---
 
-##### 🔹 Numeric & Range Validation
+### 🔹 Numeric & Range Validation
 
 ```php
 Validator::integer('42');           // ✅ true
@@ -531,7 +587,7 @@ Validator::phone('+201234567890');  // ✅ true
 
 ---
 
-##### 🔹 Auto Type Detection
+### 🔹 Auto Type Detection
 
 Smart helper that detects the type of input automatically:
 
@@ -549,7 +605,7 @@ Validator::detectType('unknown-data');         // null
 
 ---
 
-##### 🔹 Filtering
+### 🔹 Filtering
 
 Simplify array cleaning before validation or persistence:
 
@@ -578,7 +634,7 @@ Available methods:
 
 ---
 
-##### 🔹 Array Helper
+### 🔹 Array Helper
 
 Manipulate associative arrays in a functional and elegant way:
 
@@ -615,11 +671,11 @@ src/Validation/
 
 ---
 
-### ⚙️ Enums & Constants Standardization 
+## ⚙️ Enums & Constants Standardization 
 
 Centralized, reusable enumerations and constants shared across all Maatify libraries — ensuring unified configuration, predictable behavior, and simplified maintenance.
 
-#### 🔹 TextDirectionEnum
+### 🔹 TextDirectionEnum
 
 Defines text layout direction for UI and localization logic.
 
@@ -629,7 +685,7 @@ use Maatify\Common\Enums\TextDirectionEnum;
 echo TextDirectionEnum::LTR->value; // 'ltr'
 ```
 
-#### 🔹 MessageTypeEnum
+### 🔹 MessageTypeEnum
 
 Standard system message types used in API responses, logs, and alerts.
 
@@ -639,7 +695,7 @@ use Maatify\Common\Enums\MessageTypeEnum;
 echo MessageTypeEnum::ERROR->value; // 'error'
 ```
 
-#### 🔹 ErrorCodeEnum
+### 🔹 ErrorCodeEnum
 
 Provides globally standardized error identifiers across all Maatify modules.
 
@@ -649,7 +705,7 @@ use Maatify\Common\Enums\ErrorCodeEnum;
 throw new Exception('Invalid input', ErrorCodeEnum::INVALID_INPUT->value);
 ```
 
-#### 🔹 PlatformEnum & AppEnvironmentEnum
+### 🔹 PlatformEnum & AppEnvironmentEnum
 
 Enumerations for defining runtime context and environment configuration.
 
@@ -661,7 +717,7 @@ echo PlatformEnum::WEB->value;          // 'web'
 echo AppEnvironmentEnum::PRODUCTION->value; // 'production'
 ```
 
-#### 🔹 EnumHelper
+### 🔹 EnumHelper
 
 Smart utility class that unifies enum operations like retrieving names, values, and validating entries.
 
@@ -674,7 +730,7 @@ $values = EnumHelper::values(MessageTypeEnum::class);
 $isValid = EnumHelper::isValidValue(MessageTypeEnum::class, 'success'); // true
 ```
 
-#### 🔹 EnumJsonSerializableTrait
+### 🔹 EnumJsonSerializableTrait
 
 Provides automatic JSON serialization for any Enum.
 
@@ -685,7 +741,7 @@ use Maatify\Common\Enums\MessageTypeEnum;
 echo json_encode(MessageTypeEnum::SUCCESS); // 'success'
 ```
 
-#### 🔹 Constants Classes
+### 🔹 Constants Classes
 
 Organized constants for system-wide settings.
 
