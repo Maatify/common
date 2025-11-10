@@ -408,7 +408,7 @@ if ($lock->acquire()) {
 
 استخدم الفئة `Maatify\Common\Security\InputSanitizer` لتنظيف أي مدخلات من المستخدم أو النظام بطريقة آمنة.
 
-<div dir="rtl">
+<div dir="ltr">
 
 ```php
 use Maatify\Common\Security\InputSanitizer;
