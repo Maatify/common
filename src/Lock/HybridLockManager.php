@@ -13,29 +13,30 @@ declare(strict_types=1);
 namespace Maatify\Common\Lock;
 
 use Maatify\Common\Contracts\Adapter\AdapterInterface;
+use Maatify\PsrLogger\Traits\LoggerContextTrait;
 use Psr\Log\LoggerInterface;
-use Maatify\PsrLogger\LoggerFactory;
 use Throwable;
 
 /**
  * ⚙️ **Class HybridLockManager**
  *
  * 🎯 **Purpose:**
- * A smart unified lock manager that automatically chooses between:
- * - A distributed Redis-based lock (via {@see RedisLockManager}) if available and healthy.
- * - A file-based local lock (via {@see FileLockManager}) as a fallback.
+ * Provides a smart, unified, and fault-tolerant lock manager that automatically
+ * selects the best locking backend based on runtime availability.
  *
- * 🧠 **Key Features:**
- * - Automatically detects and uses a Redis adapter if available.
- * - Falls back seamlessly to file locks when Redis is unreachable.
- * - Supports both **EXECUTION** (non-blocking) and **QUEUE** (blocking) operation modes.
- * - Fully PSR-3 compliant for transparent observability.
+ * 🧠 **Core Concept:**
+ * - Prefer **Redis-based distributed locks** when a healthy adapter is detected.
+ * - Fall back to **file-based local locks** automatically when Redis is offline.
+ * - Behaves transparently for callers; no code change is required between modes.
  *
- * 🧩 **Typical Use Case:**
- * Used in systems that run on both single-server and distributed setups, providing
- * unified locking logic without requiring configuration changes.
+ * 🧩 **Key Features**
+ * - Hybrid auto-detection between Redis and File locks.
+ * - Full PSR-3 logging for observability and debugging.
+ * - Two operational modes:
+ *   - `LockModeEnum::EXECUTION` → Non-blocking (skip if locked).
+ *   - `LockModeEnum::QUEUE` → Blocking (wait until available).
  *
- * ✅ **Example:**
+ * ✅ **Example Usage**
  * ```php
  * use Maatify\Common\Lock\HybridLockManager;
  * use Maatify\Common\Lock\LockModeEnum;
@@ -49,29 +50,34 @@ use Throwable;
  *     echo "Executing safely under hybrid lock.";
  * });
  * ```
+ *
+ * @implements LockInterface
  */
 final class HybridLockManager implements LockInterface
 {
-    /** @var LockInterface Active lock driver (Redis or File). */
+    use LoggerContextTrait;
+
+    /**
+     * @var LockInterface Active lock driver instance (RedisLockManager or FileLockManager).
+     */
     private LockInterface $driver;
 
-    /** @var LoggerInterface PSR-3 logger instance. */
-    private LoggerInterface $logger;
-
-    /** @var LockModeEnum Execution mode (QUEUE or EXECUTION). */
+    /**
+     * @var LockModeEnum Execution mode — determines whether the lock waits or skips.
+     */
     private LockModeEnum $mode;
 
     /**
      * 🧩 **Constructor**
      *
-     * Initializes the hybrid lock manager and automatically selects
-     * the best available lock mechanism based on adapter health.
+     * Initializes the hybrid lock manager and selects the optimal locking mechanism.
+     * If a healthy Redis adapter is available, it is used; otherwise a file lock is created.
      *
-     * @param string                $key      Lock identifier.
-     * @param LockModeEnum          $mode     Determines blocking/non-blocking mode.
-     * @param int                   $ttl      Time-to-live in seconds.
+     * @param string                $key      Unique lock identifier.
+     * @param LockModeEnum          $mode     Determines blocking or non-blocking mode.
+     * @param int                   $ttl      Time-to-live (seconds) before lock auto-expires.
      * @param AdapterInterface|null $adapter  Optional Redis adapter (dependency-injected).
-     * @param LoggerInterface|null  $logger   Optional custom logger.
+     * @param LoggerInterface|null  $logger   Optional PSR-3 logger for diagnostics.
      */
     public function __construct(
         string $key,
@@ -81,17 +87,17 @@ final class HybridLockManager implements LockInterface
         ?LoggerInterface $logger = null
     ) {
         $this->mode = $mode;
-        $this->logger = $logger ?? LoggerFactory::create('lock/hybrid');
+        $this->logger = $logger ?? $this->initLogger('lock/hybrid');
 
         // 🧠 Prefer Redis if adapter is valid and responsive
         if ($adapter !== null && $this->canUseAdapter($adapter)) {
             $this->driver = new RedisLockManager($key, $adapter, $ttl, $this->logger);
-            $this->logger->info("HybridLockManager initialized using Redis adapter for '{$key}'");
+            $this->logger->info("HybridLockManager initialized using Redis adapter for '$key'");
         } else {
             // 🧱 Fallback: use file-based lock when Redis unavailable
-            $lockFile = sys_get_temp_dir() . "/maatify/locks/{$key}.lock";
+            $lockFile = sys_get_temp_dir() . "/maatify/locks/$key.lock";
             $this->driver = new FileLockManager($lockFile, $ttl, $this->logger);
-            $this->logger->info("HybridLockManager fallback to FileLockManager for '{$key}'");
+            $this->logger->info("HybridLockManager fallback to FileLockManager for '$key'");
         }
     }
 
@@ -100,9 +106,11 @@ final class HybridLockManager implements LockInterface
     // -----------------------------------------------------------
 
     /**
-     * 🔏 Acquire the underlying lock (Redis or File).
+     * 🔏 **Acquire the underlying lock (Redis or File).**
      *
-     * @return bool True if lock acquired successfully, false otherwise.
+     * Attempts to obtain an exclusive lock.
+     *
+     * @return bool Returns `true` if the lock was successfully acquired, otherwise `false`.
      */
     public function acquire(): bool
     {
@@ -110,9 +118,11 @@ final class HybridLockManager implements LockInterface
     }
 
     /**
-     * 🔍 Check if the current lock is active.
+     * 🔍 **Check whether the current lock is active.**
      *
-     * @return bool True if locked, false otherwise.
+     * Useful for verifying lock state before performing guarded operations.
+     *
+     * @return bool Returns `true` if the lock is currently held, otherwise `false`.
      */
     public function isLocked(): bool
     {
@@ -120,7 +130,10 @@ final class HybridLockManager implements LockInterface
     }
 
     /**
-     * 🔓 Release the active lock (regardless of driver type).
+     * 🔓 **Release the active lock (any driver).**
+     *
+     * Ensures that the lock resource is freed.
+     * Safe to call even if the lock has already expired.
      *
      * @return void
      */
@@ -134,30 +147,32 @@ final class HybridLockManager implements LockInterface
     // -----------------------------------------------------------
 
     /**
-     * 🕓 **Wait until the lock is available, then acquire it.**
+     * 🕓 **Wait until the lock becomes available and acquire it.**
      *
-     * Used for blocking (QUEUE) mode, continuously retrying until
-     * the lock can be obtained.
+     * Used in blocking (QUEUE) mode. Repeatedly attempts to acquire the lock until success.
      *
-     * @param int $retryDelay Delay between retries in microseconds (default: 500,000 µs = 0.5s).
+     * @param int $retryDelay Delay between retries in microseconds.
+     *                        Default: `500_000` (0.5 s).
      *
      * @return void
      */
     public function waitAndAcquire(int $retryDelay = 500_000): void
     {
         while (! $this->acquire()) {
+            // ⏳ Sleep briefly before retrying to reduce contention
             usleep($retryDelay);
         }
     }
 
     /**
-     * 🚀 **Execute a callback under lock protection.**
+     * 🚀 **Execute a callback under exclusive lock protection.**
      *
-     * Automatically acquires, executes, and releases the lock.
-     * Supports both blocking (QUEUE) and non-blocking (EXECUTION) modes.
+     * Handles acquiring, executing, and releasing automatically.
+     * - In `QUEUE` mode → waits until lock is free.
+     * - In `EXECUTION` mode → skips silently if lock is already held.
      *
-     * @param callable $callback    Code block to execute while holding the lock.
-     * @param int      $retryDelay  Retry delay (microseconds) for QUEUE mode.
+     * @param callable $callback   Function or closure to execute under lock.
+     * @param int      $retryDelay Retry delay in microseconds for QUEUE mode.
      *
      * @return void
      */
@@ -166,7 +181,8 @@ final class HybridLockManager implements LockInterface
         if ($this->mode === LockModeEnum::QUEUE) {
             $this->waitAndAcquire($retryDelay);
         } elseif (! $this->acquire()) {
-            return; // Skip silently in non-blocking mode
+            // 🚫 Skip silently in non-blocking mode (EXECUTION)
+            return;
         }
 
         try {
@@ -181,14 +197,14 @@ final class HybridLockManager implements LockInterface
     // -----------------------------------------------------------
 
     /**
-     * 🧠 **Check if a Redis adapter is healthy and ready to use.**
+     * 🧠 **Determine if the given Redis adapter is healthy and usable.**
      *
-     * Ensures connection and verifies health status before switching
-     * to Redis-based locking.
+     * Checks connectivity and performs a lightweight health check before using Redis.
+     * Logs a warning and returns `false` if any error occurs.
      *
      * @param AdapterInterface $adapter The Redis-compatible adapter.
      *
-     * @return bool True if adapter connection is stable and usable.
+     * @return bool `true` if the adapter connection is healthy and operational; otherwise `false`.
      */
     private function canUseAdapter(AdapterInterface $adapter): bool
     {

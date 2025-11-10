@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Maatify\Common\Lock;
 
+use Maatify\PsrLogger\Traits\LoggerContextTrait;
 use Psr\Log\LoggerInterface;
-use Maatify\PsrLogger\LoggerFactory;
 use ErrorException;
 use Throwable;
 
@@ -44,9 +44,9 @@ use Throwable;
  */
 final class FileLockManager implements LockInterface
 {
+    use LoggerContextTrait;
     private string $lockFile;
     private int $ttl;
-    private LoggerInterface $logger;
 
     /**
      * @param string                $lockFile  Absolute path to the lock file.
@@ -57,7 +57,7 @@ final class FileLockManager implements LockInterface
     {
         $this->lockFile = $lockFile;
         $this->ttl = $ttl;
-        $this->logger = $logger ?? LoggerFactory::create('cron/lock');
+        $this->logger = $logger ?? $this->initLogger('lock/lock');
 
         $dir = dirname($this->lockFile);
         if (!is_dir($dir)) {

@@ -13,8 +13,9 @@ declare(strict_types=1);
 namespace Maatify\Common\Lock;
 
 use Maatify\Common\Contracts\Adapter\AdapterInterface;
+use Maatify\PsrLogger\Traits\LoggerContextTrait;
 use Psr\Log\LoggerInterface;
-use Maatify\PsrLogger\LoggerFactory;
+use Throwable;
 
 /**
  * 🔐 **Class RedisLockManager**
@@ -46,6 +47,8 @@ use Maatify\PsrLogger\LoggerFactory;
  */
 final class RedisLockManager implements LockInterface
 {
+    use LoggerContextTrait;
+
     /** @var string Lock key used for Redis operations. */
     private string $key;
 
@@ -55,8 +58,6 @@ final class RedisLockManager implements LockInterface
     /** @var AdapterInterface Adapter providing Redis-like commands. */
     private AdapterInterface $adapter;
 
-    /** @var LoggerInterface Logger instance for error and debug reporting. */
-    private LoggerInterface $logger;
 
     /**
      * 🧩 **Constructor**
@@ -75,10 +76,11 @@ final class RedisLockManager implements LockInterface
         int $ttl = 300,
         ?LoggerInterface $logger = null
     ) {
-        $this->key = "lock:{$key}";
+        $this->key = "lock:$key";
         $this->ttl = $ttl;
         $this->adapter = $adapter;
-        $this->logger = $logger ?? LoggerFactory::create('locks/redis');
+        $this->logger = $logger ?? $this->initLogger('lock/redis');
+
 
         // 🔌 Ensure adapter is connected before operations
         if (! $this->adapter->isConnected()) {
@@ -102,7 +104,7 @@ final class RedisLockManager implements LockInterface
 
             // 🧠 Use `NX` to ensure it only sets if not already existing, `EX` to auto-expire.
             return $redis->set($this->key, (string) time(), ['nx', 'ex' => $this->ttl]) !== false;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error('RedisLockManager::acquire failed', [
                 'key'   => $this->key,
                 'error' => $e->getMessage(),
@@ -123,7 +125,7 @@ final class RedisLockManager implements LockInterface
         try {
             $redis = $this->adapter->getConnection();
             return $redis->exists($this->key) === 1;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error('RedisLockManager::isLocked failed', [
                 'key'   => $this->key,
                 'error' => $e->getMessage(),
@@ -145,7 +147,7 @@ final class RedisLockManager implements LockInterface
         try {
             $redis = $this->adapter->getConnection();
             $redis->del($this->key);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error('RedisLockManager::release failed', [
                 'key'   => $this->key,
                 'error' => $e->getMessage(),
