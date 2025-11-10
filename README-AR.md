@@ -1,5 +1,9 @@
 ![**Maatify.dev**](https://www.maatify.dev/assets/img/img/maatify_logo_white.svg)
+
 ---
+
+# 📦 maatify/common
+
 [![Version](https://img.shields.io/packagist/v/maatify/common?label=Version&color=4C1)](https://packagist.org/packages/maatify/common)
 [![PHP](https://img.shields.io/packagist/php-v/maatify/common?label=PHP&color=777BB3)](https://packagist.org/packages/maatify/common)
 [![Build](https://github.com/Maatify/common/actions/workflows/ci.yml/badge.svg?label=Build&color=brightgreen)](https://github.com/Maatify/common/actions/workflows/ci.yml)
@@ -11,8 +15,6 @@
 [![Code Quality](https://img.shields.io/codefactor/grade/github/Maatify/common/main)](https://www.codefactor.io/repository/github/Maatify/common)
 
 ---
-
-# 📦 maatify/common
 
 🏁 **الإصدار المستقر v1.0.0** — المكتبة الأساسية الجوهرية لمنظومة **Maatify.dev**، والتي توفر أدوات قياسية مثل DTOs، التحقق (Validation)، التعقيم (Sanitization)، التاريخ والوقت (Date/Time)، أنظمة القفل (Locking)، وأدوات النصوص (Text Utilities) لجميع الوحدات الخلفية (Backend Modules).
 
@@ -819,6 +821,90 @@ src/Constants/
 ├── CommonHeaders.php
 └── Defaults.php
 ```
+---
+
+## 🧩 المساعدات (Helpers)
+
+### 🧱 TapHelper
+
+أداة خفيفة وسلسة تُستخدم لتنفيذ دالة (callback) على قيمة أو كائن ثم إرجاع نفس القيمة بدون تغيير —  
+مفيدة جدًا لجعل عملية تهيئة الكائنات أكثر أناقة وتنظيمًا.
+
+---
+
+#### ⚙️ الكلاس
+`Maatify\Common\Helpers\TapHelper`
+
+#### ✅ المميزات
+- تنفّذ دالة على كائن أو قيمة يتم تمريرها.
+- تُرجع نفس القيمة (سواء كانت كائن، رقم، مصفوفة، إلخ...).
+- مثالية لأسلوب البرمجة السلس (Fluent API).
+- لا تغيّر القيمة الأصلية إلا إذا غيّرتها الدالة نفسها.
+
+---
+
+#### 🧠 مثال للاستخدام
+```php
+use Maatify\Common\Helpers\TapHelper;
+use Maatify\DataAdapters\Adapters\MongoAdapter;
+
+$config = new EnvironmentConfig(__DIR__ . '/../');
+
+$mongo = TapHelper::tap(new MongoAdapter($config), fn($a) => $a->connect());
+
+// $mongo الآن عبارة عن Adapter متصل فعليًا
+$client = $mongo->getConnection();
+````
+
+---
+
+#### 🧾 الفلسفة الوظيفية
+
+`TapHelper` يتّبع أسلوبًا بسيطًا وواضحًا مستوحى من البرمجة الوظيفية (Functional Programming):
+
+| المبدأ                               | الوصف                                                    |
+|--------------------------------------|----------------------------------------------------------|
+| 🧩 **العزل (Isolation)**             | يتم تنفيذ الدالة بمعزل عن السياق الخارجي ولا تُرجع قيمة. |
+| 🔁 **الثبات (Immutability)**         | تُعاد القيمة الأصلية بدون تغيير.                         |
+| 🧼 **الوضوح (Clarity)**              | يقلل من الأكواد المتكررة أثناء تهيئة الكائنات.           |
+| 🧠 **قابلية الاختبار (Testability)** | سهل الفهم والاختبار (راجع `TapHelperTest`).              |
+
+---
+
+#### 🧪 اختبار الوحدة
+
+`tests/Helpers/TapHelperTest.php`
+
+يغطي:
+
+* التحقق من إرجاع نفس الكائن.
+* التأكد من تنفيذ الدالة بشكل صحيح.
+* دعم القيم المختلفة (كائنات – Scalars – مصفوفات).
+
+```bash
+vendor/bin/phpunit --filter TapHelperTest
+```
+
+---
+
+#### 🧱 المرجع البرمجي
+
+```php
+TapHelper::tap(mixed $value, callable $callback): mixed
+```
+
+> ينفّذ `$callback($value)` ثم يُرجع `$value`.
+
+---
+
+#### 🧩 الفوائد المعمارية داخل منظومة Maatify
+
+| الجانب                                                | الفائدة                                                                                                |
+|-------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
+| ♻️ **تهيئة سلسة (Fluent Initialization)**             | يتيح إنشاء adapters أو الخدمات بسطر واحد أنيق.                                                         |
+| 🧠 **اتساق ضمن النظام (Ecosystem Consistency)**       | متوافق في الفلسفة مع أدوات مثل `PathHelper` و `EnumHelper` و `TimeHelper`.                             |
+| 🧼 **تقليل التكرار (Reduced Boilerplate)**            | يستبدل عدة أسطر إعداد بسطر واحد واضح وسهل القراءة.                                                     |
+| 🧩 **قابلية إعادة الاستخدام (Universal Reusability)** | يعمل بسلاسة مع جميع مكتبات Maatify (`bootstrap`, `data-adapters`, `rate-limiter`, `redis-cache`, ...). |
 
 ---
 

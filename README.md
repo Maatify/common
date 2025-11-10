@@ -1,5 +1,9 @@
 ![**Maatify.dev**](https://www.maatify.dev/assets/img/img/maatify_logo_white.svg)
+
 ---
+
+# 📦 maatify/common
+
 [![Version](https://img.shields.io/packagist/v/maatify/common?label=Version&color=4C1)](https://packagist.org/packages/maatify/common)
 [![PHP](https://img.shields.io/packagist/php-v/maatify/common?label=PHP&color=777BB3)](https://packagist.org/packages/maatify/common)
 [![Build](https://github.com/Maatify/common/actions/workflows/ci.yml/badge.svg?label=Build&color=brightgreen)](https://github.com/Maatify/common/actions/workflows/ci.yml)
@@ -11,8 +15,6 @@
 [![Code Quality](https://img.shields.io/codefactor/grade/github/Maatify/common/main)](https://www.codefactor.io/repository/github/Maatify/common)
 
 ---
-
-# 📦 maatify/common
 
 🏁 Stable Release v1.0.0 — The core foundational library of the Maatify.dev ecosystem providing standardized DTOs, validation, sanitization, date/time, locking, and text utilities for all backend modules.
 > 📦 This is the first official stable version (v1.0.0) of maatify/common, released on **2025-11-10**.
@@ -721,6 +723,90 @@ src/Constants/
 ├── CommonHeaders.php
 └── Defaults.php
 ```
+---
+## 🧩 Helpers
+
+### 🧱 TapHelper
+
+A lightweight, fluent utility for executing a callback on a given value (usually an object) and returning that same value unchanged —  
+perfect for cleaner object initialization and inline setup.
+
+---
+
+#### ⚙️ Class
+`Maatify\Common\Helpers\TapHelper`
+
+#### ✅ Features
+- Executes a callback on a passed object or value.
+- Returns the same value (object, scalar, array, etc.).
+- Useful for chaining and fluent API style.
+- 100% pure function — no side effects unless your callback modifies the object.
+
+---
+
+#### 🧠 Example Usage
+```php
+use Maatify\Common\Helpers\TapHelper;
+use Maatify\DataAdapters\Adapters\MongoAdapter;
+
+$config = new EnvironmentConfig(__DIR__ . '/../');
+
+$mongo = TapHelper::tap(new MongoAdapter($config), fn($a) => $a->connect());
+
+// $mongo is now a connected adapter
+$client = $mongo->getConnection();
+````
+
+---
+
+#### 🧾 Functional Philosophy
+
+`TapHelper` follows a simple, expressive pattern inspired by functional programming:
+
+| Principle           | Description                                                 |
+|---------------------|-------------------------------------------------------------|
+| 🧩 **Isolation**    | The callback runs in isolation, returning no value.         |
+| 🔁 **Immutability** | The original object/value is returned unchanged.            |
+| 🧼 **Clarity**      | Reduces boilerplate for setup code.                         |
+| 🧠 **Testability**  | Simple to reason about and unit-test (see `TapHelperTest`). |
+
+---
+
+#### 🧪 Unit Test Reference
+
+`tests/Helpers/TapHelperTest.php`
+
+Covers:
+
+* Returning the same object instance.
+* Callback execution correctness.
+* Compatibility with scalars and arrays.
+
+```bash
+vendor/bin/phpunit --filter TapHelperTest
+```
+
+---
+
+#### 🧱 Code Reference
+
+```php
+TapHelper::tap(mixed $value, callable $callback): mixed
+```
+
+> Executes `$callback($value)` then returns `$value`.
+
+---
+
+#### 🧩 Architectural Benefits within the Maatify Ecosystem
+
+| Aspect                       | Benefit                                                                                                            |
+|------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| ♻️ **Fluent Initialization** | Enables building adapters and services in one clean line.                                                          |
+| 🧠 **Ecosystem Consistency** | Aligns with other helpers like `PathHelper`, `EnumHelper`, and `TimeHelper`.                                       |
+| 🧼 **Reduced Boilerplate**   | Replaces multiple setup lines with a single expressive call.                                                       |
+| 🧩 **Universal Reusability** | Works seamlessly across all Maatify libraries (`bootstrap`, `data-adapters`, `rate-limiter`, `redis-cache`, etc.). |
+
 
 ---
 
@@ -738,6 +824,8 @@ src/
 │   └── Helpers/
 │       ├── PaginationHelper.php
 │       └── PaginationResultDTO.php
+├── Helpers/
+│   └── TapHelper.php
 ├── Lock/
 │   ├── LockInterface.php
 │   ├── LockModeEnum.php
