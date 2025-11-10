@@ -14,7 +14,9 @@
 
 🏁 **الإصدار المستقر v1.0.0** — المكتبة الأساسية الجوهرية لمنظومة **Maatify.dev**، والتي توفر أدوات قياسية مثل DTOs، التحقق (Validation)، التعقيم (Sanitization)، التاريخ والوقت (Date/Time)، أنظمة القفل (Locking)، وأدوات النصوص (Text Utilities) لجميع الوحدات الخلفية (Backend Modules).
 
-> 📦 هذا هو أول إصدار رسمي مستقر **(v1.0.0)** من مكتبة `maatify/common`، الصادر بتاريخ **10 نوفمبر 2025**.
+> 📦 هذا هو أول إصدار رسمي مستقر **(v1.0.0)** من مكتبة `maatify/common`، الصادر بتاريخ **10 نوفمبر 2025**. 
+
+> 🔗 [English Version 🇬🇧](./README.md)
 
 ---
 
@@ -419,17 +421,16 @@ echo InputSanitizer::sanitize('<script>alert(1)</script>', 'output');
 
 ---
 
+## ✨ أدوات النصوص والقوالب (Text & Placeholder Utilities)
 
+أدوات قوية لإدارة النصوص والتعامل مع السلاسل النصية بطريقة آمنة وقابلة لإعادة الاستخدام،  
+تُستخدم عبر جميع مكتبات **Maatify**.
 
 ---
 
-## ✨ Text & Placeholder Utilities 
-
-Reusable text manipulation and safe string utilities shared across all Maatify libraries.
-
 ### 🔹 PlaceholderRenderer
 
-Safely render nested placeholders within templates.
+أداة آمنة لمعالجة واستبدال القوالب النصية المتداخلة داخل النصوص أو الرسائل (Templates).
 
 ```php
 use Maatify\Common\Text\PlaceholderRenderer;
@@ -438,12 +439,15 @@ $template = 'Hello, {{user.name}} ({{user.email}})';
 $data = ['user' => ['name' => 'Mohamed', 'email' => 'm@maatify.dev']];
 
 echo PlaceholderRenderer::render($template, $data);
-// Output: Hello, Mohamed (m@maatify.dev)
-```
+// الناتج: Hello, Mohamed (m@maatify.dev)
+````
+
+---
 
 ### 🔹 TextFormatter
 
-Normalize, slugify, or title-case strings consistently across platforms.
+تُستخدم لتنسيق النصوص وتوحيدها عبر المنصات المختلفة،
+مثل إنشاء **Slug**، أو تحويل النص إلى **Title Case**، أو التطبيع **(Normalization)**.
 
 ```php
 use Maatify\Common\Text\TextFormatter;
@@ -453,19 +457,24 @@ TextFormatter::normalize('ÄÖÜß Test');       // aeoeuess-test
 TextFormatter::titleCase('maatify common');  // Maatify Common
 ```
 
+---
+
 ### 🔹 RegexHelper
 
-Convenient wrapper for regex operations.
+غلاف بسيط وفعّال لتسهيل التعامل مع التعابير النمطية (Regular Expressions).
 
 ```php
 use Maatify\Common\Text\RegexHelper;
 
-RegexHelper::replace('/\d+/', '#', 'Item123'); // Item#
+RegexHelper::replace('/\d+/', '#', 'Item123'); // الناتج: Item#
 ```
+
+---
 
 ### 🔹 SecureCompare
 
-Timing-safe string comparison for token or signature checks.
+مقارنة آمنة للسلاسل النصية لتجنّب هجمات التوقيت (Timing Attacks)،
+وتُستخدم عادة للتحقق من الرموز أو التواقيع.
 
 ```php
 use Maatify\Common\Text\SecureCompare;
@@ -475,13 +484,15 @@ if (SecureCompare::equals($provided, $stored)) {
 }
 ```
 
-✅ Includes full unit test coverage (`tests/Text/*`)  
-✅ Cross-platform transliteration with fallback normalization  
-✅ Used by other Maatify libraries for formatting, matching, and signature checks  
+---
+
+✅ مغطاة بالكامل باختبارات الوحدات (`tests/Text/*`)
+✅ تدعم التحويل النصي عبر المنصات المختلفة (Cross-Platform Transliteration)
+✅ تُستخدم داخليًا في مكتبات أخرى ضمن **Maatify** لتنسيق النصوص، واستبدال القوالب، والتحقق من التواقيع.
 
 ---
 
-### 🗂 Directory (Text Utilities)
+### 🗂 هيكل المجلد (Text Utilities Directory)
 
 ```
 src/Text/
@@ -493,22 +504,29 @@ src/Text/
 
 ---
 
-> 🔧 **Tip:** These utilities are internally leveraged by `maatify/i18n`, `maatify/security`, and `maatify/queue-manager` for consistent text normalization, placeholder expansion, and token validation.
+> 🔧 **معلومة مفيدة (Tip):**
+> تُستخدم هذه الأدوات داخليًا في مكتبات
+> `maatify/i18n`, `maatify/security`, و`maatify/queue-manager`
+> لضمان توحيد تنسيق النصوص واستبدال القوالب والتحقق من الرموز (Token Validation).
 
 ---
-## 🕒 **Date & Time Utilities** 
 
-Reusable date and time formatting utilities with localization and humanized difference support.
+## 🕒 **أدوات التاريخ والوقت (Date & Time Utilities)**
+
+أدوات قابلة لإعادة الاستخدام لتنسيق التاريخ والوقت،  
+مع دعم التوطين (Localization) وحساب الفروقات البشرية (Humanized Difference).
 
 ```php
 use Maatify\Common\Date\DateFormatter;
 use Maatify\Common\Date\DateHelper;
 use DateTime;
-```
+````
 
-### 🔹 Humanize Difference
+---
 
-Convert two timestamps into a natural, human-friendly expression:
+### 🔹 الفرق الزمني بطريقة بشرية (Humanize Difference)
+
+تحويل الفرق بين توقيتين إلى صيغة طبيعية مفهومة للبشر:
 
 ```php
 $a = new DateTime('2025-11-09 10:00:00');
@@ -518,9 +536,14 @@ echo DateFormatter::humanizeDifference($a, $b, 'en'); // "1 hour(s) ago"
 echo DateFormatter::humanizeDifference($a, $b, 'ar'); // "منذ 1 ساعة"
 ```
 
-### 🔹 Localized Date String
+🧩 هذه الطريقة مفيدة لعرض الفروقات الزمنية بشكل مفهوم للمستخدم
+(مثل: "منذ 3 دقائق"، "قبل ساعة"، "قبل يومين"، إلخ).
 
-Format any DateTime into a locale-aware representation:
+---
+
+### 🔹 صيغة التاريخ المترجمة (Localized Date String)
+
+تحويل كائن DateTime إلى تمثيل نصي مترجم وفقًا للغة والمنطقة الزمنية المحددة:
 
 ```php
 $date = new DateTime('2025-11-09 12:00:00');
@@ -528,37 +551,40 @@ echo DateHelper::toLocalizedString($date, 'ar', 'Africa/Cairo'); // ٩ نوفم�
 echo DateHelper::toLocalizedString($date, 'en', 'America/New_York'); // November 9, 2025, 7:00 AM
 ```
 
-✅ Supports **English (en)**, **Arabic (ar)**, and **French (fr)** locales  
-✅ Handles **timezone conversion** and **localized month/day names** automatically  
-✅ Backed by `IntlDateFormatter` for precise localization  
-✅ Fully covered with unit tests (`tests/Date/*`)  
+✅ تدعم اللغات: **الإنجليزية (en)**، **العربية (ar)**، **الفرنسية (fr)**
+✅ تتعامل تلقائيًا مع **تحويل المناطق الزمنية** وأسماء الأشهر والأيام حسب اللغة
+✅ تعتمد على `IntlDateFormatter` لضمان دقة التوطين
+✅ مغطاة بالكامل باختبارات الوحدة (`tests/Date/*`)
 
 ---
 
-### 🗂 Directory (Date Utilities)
+### 🗂 هيكل المجلد (Date Utilities Directory)
 
 ```
 src/Date/
 ├── DateFormatter.php
 └── DateHelper.php
 ```
+
 ---
 
-## 🧩 **Validation & Filtering Utilities** 
 
-Reusable validation, filtering, and array manipulation tools for ensuring clean and consistent input data across maatify projects.
+## 🧩 **أدوات التحقق والتنقية (Validation & Filtering Utilities)**
+
+أدوات قابلة لإعادة الاستخدام للتحقق من صحة البيانات وتنقيتها والتعامل مع المصفوفات،  
+لضمان مدخلات نظيفة ومتناسقة عبر جميع مشاريع **Maatify**.
 
 ```php
 use Maatify\Common\Validation\Validator;
 use Maatify\Common\Validation\Filter;
 use Maatify\Common\Validation\ArrayHelper;
-```
+````
 
 ---
 
-### 🔹 Validation
+### 🔹 التحقق من القيم (Validation)
 
-Perform quick and reliable validation for various input types:
+إجراء عمليات تحقق سريعة وموثوقة لأنواع مختلفة من المدخلات:
 
 ```php
 Validator::email('user@maatify.dev');              // ✅ true
@@ -571,7 +597,7 @@ Validator::slugPath('en/gift-card/itunes-10-usd'); // ✅ true
 
 ---
 
-### 🔹 Numeric & Range Validation
+### 🔹 التحقق العددي والمدى (Numeric & Range Validation)
 
 ```php
 Validator::integer('42');           // ✅ true
@@ -582,9 +608,9 @@ Validator::phone('+201234567890');  // ✅ true
 
 ---
 
-### 🔹 Auto Type Detection
+### 🔹 الكشف التلقائي عن نوع البيانات (Auto Type Detection)
 
-Smart helper that detects the type of input automatically:
+مساعد ذكي لاكتشاف نوع المدخل تلقائيًا:
 
 ```php
 Validator::detectType('test@maatify.dev');     // 'email'
@@ -595,14 +621,14 @@ Validator::detectType('3.14');                 // 'float'
 Validator::detectType('unknown-data');         // null
 ```
 
-✅ Detects and differentiates between `slug` and `slug_path`  
-✅ Useful for dynamic API validation or auto-form field type detection
+✅ يميّز بين `slug` و `slug_path`
+✅ مفيد جدًا للتحقق الديناميكي في واجهات الـ API أو لاكتشاف نوع الحقول تلقائيًا في النماذج
 
 ---
 
-### 🔹 Filtering
+### 🔹 التنقية (Filtering)
 
-Simplify array cleaning before validation or persistence:
+تسهّل عملية تنظيف المصفوفات قبل التحقق أو الحفظ في قاعدة البيانات:
 
 ```php
 $data = [
@@ -614,14 +640,14 @@ $data = [
 
 $clean = Filter::sanitizeArray($data);
 
-// Output:
+// الناتج:
 [
     'name' => 'Mohamed',
     'bio'  => '<b>Hello</b>'
 ]
 ```
 
-Available methods:
+الأساليب المتاحة:
 
 * `Filter::trimArray(array $data)`
 * `Filter::removeEmptyValues(array $data)`
@@ -629,9 +655,9 @@ Available methods:
 
 ---
 
-### 🔹 Array Helper
+### 🔹 مساعد المصفوفات (Array Helper)
 
-Manipulate associative arrays in a functional and elegant way:
+يوفّر أدوات أنيقة للتعامل مع المصفوفات الترابطية (Associative Arrays) بطريقة وظيفية:
 
 ```php
 $data = [
@@ -649,13 +675,13 @@ ArrayHelper::except($data, ['meta']);
 // ['user' => ['id' => 1, 'name' => 'Mohamed']]
 ```
 
-✅ Fully covered by unit tests (`tests/Validation/*`)  
-✅ Integrated slugPath detection for multilingual slugs  
-✅ Ideal for preparing request payloads or DTO normalization
+✅ مغطاة بالكامل باختبارات الوحدة (`tests/Validation/*`)
+✅ تحتوي على دعم مدمج لاكتشاف `slugPath` متعددة اللغات
+✅ مثالية لتحضير بيانات الطلبات (Request Payloads) أو لتطبيع بيانات الـ DTOs
 
 ---
 
-### 🗂 Directory (Validation Utilities)
+### 🗂 هيكل المجلد (Validation Utilities Directory)
 
 ```
 src/Validation/
@@ -666,23 +692,28 @@ src/Validation/
 
 ---
 
-## ⚙️ Enums & Constants Standardization 
+## ⚙️ توحيد التعدادات والثوابت (Enums & Constants Standardization)
 
-Centralized, reusable enumerations and constants shared across all Maatify libraries — ensuring unified configuration, predictable behavior, and simplified maintenance.
+نظام مركزي لإدارة **التعدادات (Enums)** و**الثوابت (Constants)** المشتركة بين جميع مكتبات **Maatify**،  
+مما يضمن تكوينًا موحدًا وسلوكًا متوقعًا وسهولة في الصيانة عبر كامل النظام.
+
+---
 
 ### 🔹 TextDirectionEnum
 
-Defines text layout direction for UI and localization logic.
+يُعرّف اتجاه النص المستخدم في الواجهات (UI) والمنطق الخاص بالتوطين (Localization).
 
 ```php
 use Maatify\Common\Enums\TextDirectionEnum;
 
 echo TextDirectionEnum::LTR->value; // 'ltr'
-```
+````
+
+---
 
 ### 🔹 MessageTypeEnum
 
-Standard system message types used in API responses, logs, and alerts.
+أنواع الرسائل القياسية المستخدمة في استجابات الـ API والسجلات والتنبيهات.
 
 ```php
 use Maatify\Common\Enums\MessageTypeEnum;
@@ -690,9 +721,11 @@ use Maatify\Common\Enums\MessageTypeEnum;
 echo MessageTypeEnum::ERROR->value; // 'error'
 ```
 
+---
+
 ### 🔹 ErrorCodeEnum
 
-Provides globally standardized error identifiers across all Maatify modules.
+يوفر رموز أخطاء موحّدة ومعيارية تُستخدم عبر جميع وحدات **Maatify**.
 
 ```php
 use Maatify\Common\Enums\ErrorCodeEnum;
@@ -700,21 +733,26 @@ use Maatify\Common\Enums\ErrorCodeEnum;
 throw new Exception('Invalid input', ErrorCodeEnum::INVALID_INPUT->value);
 ```
 
+---
+
 ### 🔹 PlatformEnum & AppEnvironmentEnum
 
-Enumerations for defining runtime context and environment configuration.
+تعدادات مخصصة لتعريف بيئة التشغيل وسياق التنفيذ.
 
 ```php
 use Maatify\Common\Enums\PlatformEnum;
 use Maatify\Common\Enums\AppEnvironmentEnum;
 
-echo PlatformEnum::WEB->value;          // 'web'
+echo PlatformEnum::WEB->value;              // 'web'
 echo AppEnvironmentEnum::PRODUCTION->value; // 'production'
 ```
 
+---
+
 ### 🔹 EnumHelper
 
-Smart utility class that unifies enum operations like retrieving names, values, and validating entries.
+فئة ذكية موحّدة لإدارة العمليات العامة على التعدادات،
+مثل جلب الأسماء والقيم والتحقق من القيم الصالحة.
 
 ```php
 use Maatify\Common\Enums\EnumHelper;
@@ -725,9 +763,11 @@ $values = EnumHelper::values(MessageTypeEnum::class);
 $isValid = EnumHelper::isValidValue(MessageTypeEnum::class, 'success'); // true
 ```
 
+---
+
 ### 🔹 EnumJsonSerializableTrait
 
-Provides automatic JSON serialization for any Enum.
+توفر خاصية التسلسل التلقائي (Automatic JSON Serialization) لأي تعداد (Enum).
 
 ```php
 use Maatify\Common\Enums\Traits\EnumJsonSerializableTrait;
@@ -736,9 +776,11 @@ use Maatify\Common\Enums\MessageTypeEnum;
 echo json_encode(MessageTypeEnum::SUCCESS); // 'success'
 ```
 
-### 🔹 Constants Classes
+---
 
-Organized constants for system-wide settings.
+### 🔹 فئات الثوابت (Constants Classes)
+
+فئات منظَّمة تحتوي على ثوابت النظام العامة.
 
 ```php
 use Maatify\Common\Constants\CommonPaths;
@@ -748,13 +790,15 @@ echo CommonPaths::LOG_PATH;          // '/storage/logs'
 echo Defaults::DEFAULT_TIMEZONE;     // 'Africa/Cairo'
 ```
 
-✅ Full PHPUnit coverage (`tests/Enums/*`)  
-✅ EnumHelper & Trait verified for stability  
-✅ Consistent naming and values across all modules
+---
+
+✅ مغطاة بالكامل باختبارات الوحدة (`tests/Enums/*`)
+✅ تم التحقق من ثبات واستقرار EnumHelper وTrait
+✅ أسماء وقيم موحدة عبر جميع الوحدات في منظومة Maatify
 
 ---
 
-### 🗂 Directory (Enums & Constants)
+### 🗂 هيكل المجلد (Enums & Constants Directory)
 
 ```
 src/Enums/
@@ -776,11 +820,15 @@ src/Constants/
 
 ---
 
-📘 **Full Documentation:** [docs/enums.md](docs/enums.md)
+📘 **التوثيق الكامل:** [docs/enums.md](docs/enums.md)
 
 ---
 
-## 🗂 Directory Structure
+## 🗂 هيكل المجلد (Directory Structure)
+
+يمثّل هذا الهيكل التنظيم الكامل لمجلد `src/` داخل مكتبة **maatify/common**،  
+حيث تم تقسيم الوحدات (Modules) وفقًا لمجالات عملها لضمان الوضوح وسهولة الصيانة.
+
 
 ```
 src/
@@ -824,88 +872,155 @@ src/
         └── Traits/
             └── EnumJsonSerializableTrait.php
 ```
+---
+📁 **ملاحظات حول البنية:**
+- تم تقسيم كل وحدة (Module) في مجلد مستقل لسهولة التتبع والتطوير.
+- ملفات الـ `DTO` تُستخدم لنقل البيانات (Data Transfer Objects).
+- المجلد `Traits/` يحتوي على خصائص قابلة لإعادة الاستخدام.
+- مجلد `Enums/` يضم جميع التعدادات القياسية الخاصة بالمكتبة.
+- يعتمد هذا التنظيم على **PSR-4 Autoloading** المتوافق مع Composer.
 
 ---
 
-## 📚 Built Upon
+## 📚 المبني عليه (Built Upon)
 
-`maatify/common` proudly builds upon several mature and battle-tested open-source foundations:
+تقوم مكتبة `maatify/common` على مجموعة من الأسس مفتوحة المصدر الناضجة والمجرَّبة في بيئات الإنتاج،  
+التي تُعدّ حجر الأساس لعملها واستقرارها.
 
-| Library                                                           | Description                                | Usage in Project                                                                                          |
-|-------------------------------------------------------------------|--------------------------------------------|-----------------------------------------------------------------------------------------------------------|
-| **[ezyang/htmlpurifier](https://github.com/ezyang/htmlpurifier)** | Standards-compliant HTML filtering library | Powers `InputSanitizer` to ensure XSS-safe and standards-compliant HTML output with full Unicode support. |
-| **[psr/log](https://www.php-fig.org/psr/psr-3/)**                 | PSR-3 logging interface                    | Enables standardized logging across sanitization, lock, and validation components.                        |
-| **[phpunit/phpunit](https://phpunit.de)**                         | PHP unit testing framework                 | Provides automated testing with CI/CD GitHub workflow integration.                                        |
-
-> Huge thanks to the open-source community for their contributions,
-> making the Maatify ecosystem secure, reliable, and extensible. ❤️
+| المكتبة                                                           | الوصف                                         | الاستخدام داخل المشروع                                                                                      |
+|-------------------------------------------------------------------|-----------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| **[ezyang/htmlpurifier](https://github.com/ezyang/htmlpurifier)** | مكتبة فلترة HTML متوافقة مع المعايير القياسية | تُشغِّل فئة `InputSanitizer` لضمان إخراج HTML آمن ضد ثغرات XSS ويدعم الترميز الكامل لـ Unicode.             |
+| **[psr/log](https://www.php-fig.org/psr/psr-3/)**                 | واجهة تسجيل معيارية (PSR-3 Logging Interface) | تمكّن من تسجيل الأحداث بطريقة موحدة عبر مكونات التنقية (Sanitization)، والقفل (Lock)، والتحقق (Validation). |
+| **[phpunit/phpunit](https://phpunit.de)**                         | إطار عمل لاختبارات الوحدات في PHP             | يوفر نظام اختبار آلي متكامل مع سير عمل GitHub CI/CD لضمان جودة واستقرار المكتبة.                            |
 
 ---
 
-
-## 📊 Phase Summary Table
-
-| Phase | Title                             | Status      | Files Created | Notes                                                                     |
-|-------|-----------------------------------|-------------|---------------|---------------------------------------------------------------------------|
-| 1     | Pagination Module                 | ✅ Completed | 3             | Pagination DTOs & helpers                                                 |
-| 2     | Locking System                    | ✅ Completed | 6             | File / Redis / Hybrid managers                                            |
-| 3     | Security & Input Sanitization     | ✅ Completed | 3             | Input cleaning & HTMLPurifier                                             |
-| 3b    | Core Traits — Singleton System    | ✅ Completed | 1             | SingletonTrait implementation                                             |
-| 4     | Text & Placeholder Utilities      | ✅ Completed | 8             | PlaceholderRenderer, TextFormatter, RegexHelper, SecureCompare            |
-| 5     | Date & Time Utilities             | ✅ Completed | 4             | HumanizeDifference & Localized Date Formatting                            |
-| 6     | Validation & Filtering Tools      | ✅ Completed | 3             | Validator, Filter, and ArrayHelper with full unit tests                   |
-| 7     | Enums & Constants Standardization | ✅ Completed | 10 + 5 tests  | Unified Enums, Constants, EnumHelper & JSON Trait with docs               |
-| 8     | Testing & Release                 | ✅ Completed | 6             | CHANGELOG.md, CONTRIBUTING.md, VERSION, README.full.md, coverage results  |
-
-
----
-## ✅ Verified Test Results
-> PHPUnit 10.5.58 — PHP 8.4.4  
-> • Tests: 66 • Assertions: 150 • Coverage: ~98 %  
-> • Runtime: 0.076 s • Memory: 12 MB  
-> • Warnings: 1 (No coverage driver available — safe to ignore)
+> 🙏 **شكر كبير لمجتمع البرمجيات مفتوحة المصدر**  
+> على مساهماتهم القيمة التي جعلت منظومة **Maatify** أكثر أمانًا، واستقرارًا، وقابليةً للتوسّع. ❤️
 
 ---
 
-
-## 🧾 Release Verification
-All files have been verified and finalized as part of **Phase 8 (v1.0.0 Stable)**.
-
-- ✅ `/docs/README.full.md` – full documentation merged
-- ✅ `/docs/enums.md` – enums and constants reference
-- ✅ `/docs/phases/README.phase7.md` – phase documentation
-- ✅ `CHANGELOG.md` – release history initialized
-- ✅ `CONTRIBUTING.md` – contributor guide added
-- ✅ `VERSION` – version `1.0.0` confirmed
+رائع جدًا 👌
+إليك ترجمة قسم **📊 جدول ملخص المراحل (Phase Summary Table)**
+بصيغة **Markdown** دقيقة تحافظ على الجدول والتفاصيل كما هي:
 
 ---
 
-## 🪪 License
+## 📊 جدول ملخص المراحل (Phase Summary Table)
 
-**[MIT license](LICENSE)** © [Maatify.dev](https://www.maatify.dev)  
-You’re free to use, modify, and distribute this library with attribution.
+| المرحلة | العنوان                           | الحالة   | عدد الملفات     | الملاحظات                                                             |
+|---------|-----------------------------------|----------|-----------------|-----------------------------------------------------------------------|
+| 1       | وحدة التقسيم Pagination Module    | ✅ مكتملة | 3               | كائنات ووسائل المساعدة الخاصة بالتقسيم (Pagination DTOs & Helpers)    |
+| 2       | نظام القفل Locking System         | ✅ مكتملة | 6               | مدراء القفل (File / Redis / Hybrid Managers)                          |
+| 3       | الأمان وتنظيف المدخلات            | ✅ مكتملة | 3               | تنظيف المدخلات وتكامل HTMLPurifier                                    |
+| 3b      | الخصائص الأساسية — نظام Singleton | ✅ مكتملة | 1               | تنفيذ نمط SingletonTrait                                              |
+| 4       | أدوات النصوص والعناصر النائبة     | ✅ مكتملة | 8               | PlaceholderRenderer، TextFormatter، RegexHelper، SecureCompare        |
+| 5       | أدوات التاريخ والوقت              | ✅ مكتملة | 4               | HumanizeDifference & Localized Date Formatting                        |
+| 6       | أدوات التحقق والترشيح             | ✅ مكتملة | 3               | Validator، Filter، وArrayHelper مع اختبارات وحدة كاملة                |
+| 7       | توحيد التعدادات والثوابت          | ✅ مكتملة | 10 + 5 اختبارات | Enums وConstants وEnumHelper وTrait مع التوثيق الكامل                 |
+| 8       | الاختبار والإصدار                 | ✅ مكتملة | 6               | CHANGELOG.md وCONTRIBUTING.md وVERSION وREADME.full.md ونتائج التغطية |
+
+
 ---
-## 🚀 Next Version Plan (v1.1.0)
-- Performance optimizations for string and array helpers
-- Extended Enum support with localization metadata
-- Introduce Common Cache Adapter and Metrics interfaces
+
+📘 **ملاحظة:**
+يُظهر هذا الجدول المراحل الزمنية لتطوير مكتبة **maatify/common**،
+حيث تم إنجاز جميع الوحدات بنجاح وصولًا إلى الإصدار المستقر **v1.0.0**.
 
 ---
-> 🔗 **Full documentation & release notes:** see [/docs/README.full.md](docs/README.full.md)
+## ✅ نتائج الاختبارات المُتحقَّق منها (Verified Test Results)
+
+> 🧪 **PHPUnit 10.5.58 — PHP 8.4.4**  
+> • عدد الاختبارات: **66**  
+> • عدد التأكيدات (Assertions): **150**  
+> • نسبة التغطية: **≈ 98%**  
+> • زمن التنفيذ: **0.076 ثانية**  
+> • استهلاك الذاكرة: **12 ميجابايت**  
+> • التحذيرات: **1** *(عدم توفر أداة قياس التغطية — يمكن تجاهله بأمان)*
+
 ---
 
-## 🧱 Authors & Credits
+📗 **تعليق:**  
+تم تنفيذ جميع اختبارات الوحدة بنجاح على بيئة **PHP 8.4.4** باستخدام **PHPUnit 10.5.58**،  
+مع تغطية شبه كاملة لكافة الوحدات، مما يؤكد استقرار المكتبة وجاهزيتها للإصدار الإنتاجي.
 
-This library is part of the **Maatify.dev Core Ecosystem**, designed and maintained under the technical supervision of:
+---
+
+## 🧾 التحقق من الإصدار (Release Verification)
+
+تم التحقق من جميع الملفات واعتمادها رسميًا ضمن **المرحلة الثامنة (Phase 8)** من الإصدار **v1.0.0 Stable**.
+
+- ✅ `/docs/README.full.md` – دمج التوثيق الكامل لجميع المراحل.
+- ✅ `/docs/enums.md` – مرجع التعدادات والثوابت (Enums & Constants Reference).
+- ✅ `/docs/phases/README.phase7.md` – توثيق المرحلة السابعة وملاحظات EnumHelper.
+- ✅ `CHANGELOG.md` – سجل التغييرات (تاريخ الإصدارات) تم تهيئته.
+- ✅ `CONTRIBUTING.md` – إضافة دليل المساهمة للمطورين.
+- ✅ `VERSION` – تأكيد الإصدار الحالي **1.0.0**.
+
+---
+
+📘 **ملاحظة:**  
+يمثل هذا القسم التحقق النهائي من اكتمال جميع الملفات،  
+وضمان توافقها مع المعايير الخاصة بمكتبة **maatify/common** قبل الإصدار المستقر.
+
+---
+
+## 🪪 الترخيص (License)
+
+**[رخصة MIT](LICENSE)** © [Maatify.dev](https://www.maatify.dev)
+
+يُسمح لك بحرية **استخدام** و**تعديل** و**توزيع** هذه المكتبة،  
+شريطة **الإشارة إلى المصدر** (Maatify.dev) في أي استخدام أو نشر مستقبلي.
+
+---
+
+📘 **معلومة:**  
+رخصة **MIT** تُعد من أكثر الرخص البرمجية مرونةً،  
+وتتيح استخدام الكود في المشاريع المفتوحة أو التجارية دون قيود مع الحفاظ على حقوق النشر الأصلية.
+
+
+---
+
+## 🚀 خطة الإصدار القادم (Next Version Plan — v1.1.0)
+
+### ✨ التحسينات المخططة للإصدار القادم:
+- ⚡ تحسين الأداء في أدوات النصوص والمصفوفات *(String & Array Helpers)*.
+- 🌐 توسيع دعم التعدادات *(Enums)* ليشمل بيانات التوطين *(Localization Metadata)*.
+- 🧩 تقديم واجهات **Common Cache Adapter** و **Metrics Interfaces**  
+  لتوحيد إدارة التخزين المؤقت وقياس الأداء في المكتبات المستقبلية.
+
+---
+
+📘 **ملاحظة:**  
+يهدف هذا الإصدار إلى تعزيز الكفاءة والأداء عبر المنظومة بالكامل،  
+مع تقديم طبقة قياسية موحدة لإدارة الكاش والمقاييس ضمن مشروع **Maatify Ecosystem**.
+
+
+---
+> 🔗 **التوثيق الكامل وملاحظات الإصدار:**  
+> راجع الملف [/docs/README.full.md](docs/README.full.md)
+---
+
+## 🧱 فريق التطوير والاعتماد (Authors & Credits)
+
+تنتمي هذه المكتبة إلى **المنظومة الأساسية لـ Maatify.dev (Maatify.dev Core Ecosystem)**  
+وقد تم تصميمها وتطويرها تحت الإشراف التقني لـ:
 
 **👤 Mohamed Abdulalim** — *Backend Lead & Technical Architect*  
-Lead architect of the **Maatify Backend Infrastructure**, responsible for the overall architecture, core library design,  
-and technical standardization across all backend modules within the Maatify ecosystem.  
+**المسؤول التقني للبنية التحتية الخلفية لمنظومة Maatify Backend Infrastructure**،  
+والمسؤول عن التصميم العام للمكتبات الأساسية وتوحيد المعايير التقنية  
+عبر جميع الوحدات الخلفية ضمن منظومة **Maatify**.  
 🔗 [www.Maatify.dev](https://www.maatify.dev) | ✉️ [mohamed@maatify.dev](mailto:mohamed@maatify.dev)
 
-**🤝 Contributors:**  
-The **Maatify.dev Engineering Team** and open-source collaborators who continuously help refine, test, and extend  
-the capabilities of this library across multiple Maatify projects.
+---
 
-> 🧩 This project represents a unified engineering effort led by Mohamed Abdulalim, ensuring every Maatify backend component  
-> shares a consistent, secure, and maintainable foundation.
+**🤝 المساهمون (Contributors):**  
+فريق **Maatify.dev Engineering Team** والمساهمون من مجتمع البرمجيات مفتوحة المصدر  
+الذين يساهمون باستمرار في تحسين واختبار وتوسيع قدرات هذه المكتبة  
+عبر العديد من مشاريع **Maatify**.
+
+---
+
+> 🧩 يمثل هذا المشروع جهداً هندسياً موحداً بقيادة **Mohamed Abdulalim**  
+> بهدف ضمان أن كل مكون من مكونات النظام الخلفي في Maatify  
+> يعتمد على أساسٍ موحّد، آمن، وسهل الصيانة.

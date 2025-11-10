@@ -14,6 +14,9 @@
 
 🏁 Stable Release v1.0.0 — The core foundational library of the Maatify.dev ecosystem providing standardized DTOs, validation, sanitization, date/time, locking, and text utilities for all backend modules.
 > 📦 This is the first official stable version (v1.0.0) of maatify/common, released on **2025-11-10**.
+
+> 🔗 [بالعربي 🇸🇦 ](./README-AR.md)
+
 ---
 
 ## 🧭 Version Information
