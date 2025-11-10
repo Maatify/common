@@ -57,7 +57,12 @@ final class FileLockManager implements LockInterface
     {
         $this->lockFile = $lockFile;
         $this->ttl = $ttl;
-        $this->logger = $logger ?? $this->initLogger('lock/lock');
+
+        if ($logger !== null) {
+            $this->logger = $logger;
+        } else {
+            $this->initLogger('lock/lock');
+        }
 
         $dir = dirname($this->lockFile);
         if (!is_dir($dir)) {

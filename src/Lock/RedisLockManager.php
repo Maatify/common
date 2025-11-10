@@ -79,7 +79,12 @@ final class RedisLockManager implements LockInterface
         $this->key = "lock:$key";
         $this->ttl = $ttl;
         $this->adapter = $adapter;
-        $this->logger = $logger ?? $this->initLogger('lock/redis');
+
+        if ($logger !== null) {
+            $this->logger = $logger;
+        } else {
+            $this->initLogger('lock/redis');
+        }
 
 
         // 🔌 Ensure adapter is connected before operations

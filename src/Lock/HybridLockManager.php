@@ -87,7 +87,13 @@ final class HybridLockManager implements LockInterface
         ?LoggerInterface $logger = null
     ) {
         $this->mode = $mode;
-        $this->logger = $logger ?? $this->initLogger('lock/hybrid');
+
+        if ($logger !== null) {
+            $this->logger = $logger;
+        } else {
+            $this->initLogger('lock/hybrid');
+        }
+
 
         // 🧠 Prefer Redis if adapter is valid and responsive
         if ($adapter !== null && $this->canUseAdapter($adapter)) {
