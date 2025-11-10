@@ -1,5 +1,3 @@
-<div dir="rtl" align="right">
-
 ![**Maatify.dev**](https://www.maatify.dev/assets/img/img/maatify_logo_white.svg)
 ---
 [![Version](https://img.shields.io/packagist/v/maatify/common?label=Version&color=4C1)](https://packagist.org/packages/maatify/common)
@@ -408,15 +406,12 @@ if ($lock->acquire()) {
 
 استخدم الفئة `Maatify\Common\Security\InputSanitizer` لتنظيف أي مدخلات من المستخدم أو النظام بطريقة آمنة.
 
-<div dir="ltr" align="left">
-
 ```php
 use Maatify\Common\Security\InputSanitizer;
 
 echo InputSanitizer::sanitize('<script>alert(1)</script>', 'output');
 // الناتج: &lt;script&gt;alert(1)&lt;/script&gt;
 ````
-</div>
 
 🧩 تُعد هذه الأداة جزءًا من منظومة الأمن في مكتبة **maatify/common**
 حيث تعمل على إزالة أو ترميز المحتوى الخطر (مثل وسوم JavaScript أو HTML الضارة)
@@ -914,5 +909,3 @@ the capabilities of this library across multiple Maatify projects.
 
 > 🧩 This project represents a unified engineering effort led by Mohamed Abdulalim, ensuring every Maatify backend component  
 > shares a consistent, secure, and maintainable foundation.
-
-</div>
