@@ -946,3 +946,10 @@ the capabilities of this library across multiple Maatify projects.
 > 🧩 This project represents a unified engineering effort led by Mohamed Abdulalim, ensuring every Maatify backend component  
 > shares a consistent, secure, and maintainable foundation.
 
+---
+
+<p align="center">
+  <sub><span style="color:#777">Built with ❤️ by <a href="https://www.maatify.dev">Maatify.dev</a> — Unified Ecosystem for Modern PHP Libraries</span></sub>
+</p>
+
+---
