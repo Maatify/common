@@ -3,6 +3,91 @@
 All notable changes to **maatify/common** will be documented in this file.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.0.3] – 2025-11-13
+
+### 🧩 Connectivity Foundation — Introducing `ConnectionConfigDTO` & `ConnectionTypeEnum`
+
+**Release Date:** 2025-11-13
+**Author:** [Mohamed Abdulalim (megyptm)](mailto:mohamed@maatify.dev)
+**License:** MIT
+**Organization:** [Maatify.dev](https://www.maatify.dev)
+
+---
+
+### ⚙️ Overview
+
+This update introduces two new standardized components that will be used across all Maatify backend libraries:
+
+* **`ConnectionConfigDTO`** — a readonly DTO that encapsulates driver-specific connection settings.
+* **`ConnectionTypeEnum`** — a unified enum for all supported connection types (`mysql`, `mongo`, `redis`).
+
+These additions support the new DSN-based workflow planned in `maatify/data-adapters` (Phase 10)
+and enforce consistency across the Maatify ecosystem.
+
+> “One connection model — shared across all libraries.”
+
+---
+
+### 🧩 Added
+
+#### ✔ `Maatify\Common\DTO\ConnectionConfigDTO`
+
+* Readonly object representing:
+
+    * `driver`
+    * `dsn`
+    * `user`
+    * `pass`
+    * `options`
+    * `profile` (supports multiple DSN profiles in future releases)
+* Basis for profile-based DSN resolution in data-adapters.
+
+#### ✔ `Maatify\Common\Enums\ConnectionTypeEnum`
+
+* Defines consistent adapter identifiers:
+
+    * `MYSQL`
+    * `MONGO`
+    * `REDIS`
+
+#### ✔ New Tests
+
+* Added test suite:
+
+    * `tests/DTO/ConnectionConfigDTOTest.php`
+    * `tests/Enums/ConnectionTypeEnumTest.php`
+* Verified:
+
+    * DTO immutability
+    * Enum integrity
+    * PSR-12 compliance
+
+#### ✔ Documentation Update
+
+* Updated `/docs/core/helpers.md`
+  → Added new section: **Connectivity Foundation**
+* Linked from main README under **Core Modules**
+
+---
+
+### 🧱 Architectural Impact
+
+* Establishes a **shared foundation** for database configurations.
+* Required for **Phase 10** in `maatify/data-adapters` (string-based driver selection + DSN builder).
+* Ensures **cross-library consistency** for all future adapters and DI containers.
+
+---
+
+### 🧾 Changelog Snapshot
+
+**v1.0.3 — 2025-11-13**
+
+* Added: `ConnectionConfigDTO`
+* Added: `ConnectionTypeEnum`
+* Added: Tests for DTO & Enum
+* Updated: Docs with new Connectivity Foundation section
+* No breaking changes — Fully backward compatible
+
 ---
 
 ## [1.0.2] – 2025-11-10
