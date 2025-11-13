@@ -18,13 +18,14 @@ namespace Maatify\Common\DTO;
  * 🧩 **Class ConnectionConfigDTO**
  *
  * 🎯 **Purpose:**
- * Represents a standardized, immutable configuration Data Transfer Object (DTO)
- * for defining connection settings across supported adapters (MySQL, MongoDB, Redis, etc.).
+ * Defines a unified, immutable Data Transfer Object (DTO) representing
+ * connection parameters across all supported data adapters (MySQL, MongoDB, Redis, etc.).
  *
  * 🧠 **Key Features:**
- * - Provides a unified structure for DSN-based connection setup.
- * - Used for dependency injection and adapter factory initialization.
- * - Immutable (`readonly`) to ensure safe configuration integrity at runtime.
+ * - Combines traditional DSN and discrete parameter forms (`host`, `port`, `database`, etc.).
+ * - Enables flexible connection initialization for adapters and factories.
+ * - Immutable (`readonly`) for configuration safety and predictability.
+ * - Supports additional options (e.g., PDO attributes, timeouts, SSL settings).
  *
  * ✅ **Example Usage:**
  * ```php
@@ -32,8 +33,11 @@ namespace Maatify\Common\DTO;
  *
  * $config = new ConnectionConfigDTO(
  *     dsn: 'mysql:host=127.0.0.1;dbname=maatify',
+ *     host: '127.0.0.1',
+ *     port: '3306',
  *     user: 'root',
  *     pass: 'secret',
+ *     database: 'maatify',
  *     options: [
  *         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
  *     ],
@@ -41,25 +45,37 @@ namespace Maatify\Common\DTO;
  *     profile: 'production'
  * );
  * ```
+ *
+ * 🧱 **Use Cases:**
+ * - Passed into adapter constructors for dynamic connection setup.
+ * - Used by `DatabaseResolver` or dependency injection containers to build adapter instances.
+ * - Supports multi-environment profiles (e.g., local, staging, production).
  */
 final readonly class ConnectionConfigDTO
 {
     /**
      * 🧠 **Constructor**
      *
-     * Defines the full connection configuration parameters.
+     * Defines complete connection configuration properties, supporting both
+     * DSN-based and parameter-based connection schemes.
      *
-     * @param string      $dsn      Data Source Name string (e.g., `"mysql:host=127.0.0.1;dbname=test"`).
-     * @param string|null $user     Optional database username (if applicable).
-     * @param string|null $pass     Optional database password (if applicable).
-     * @param array       $options  Optional adapter or driver-specific options.
-     * @param string|null $driver   Optional driver identifier (e.g., `"pdo"`, `"dbal"`, `"mysqli"`).
-     * @param string|null $profile  Optional connection profile name (useful for multi-env setups).
+     * @param string|null $dsn       Full connection string (e.g., `"mysql:host=127.0.0.1;dbname=maatify"`).
+     * @param string|null $host      Hostname or IP of the data source.
+     * @param string|null $port      Port number (string to maintain type consistency).
+     * @param string|null $user      Username credential for authentication.
+     * @param string|null $pass      Password credential for authentication.
+     * @param string|null $database  Target database name (if applicable).
+     * @param array        $options  Adapter-specific or driver options (e.g., PDO attributes).
+     * @param string|null $driver    Driver type (e.g., `"pdo"`, `"dbal"`, `"mysqli"`, `"mongo"`, `"redis"`).
+     * @param string|null $profile   Optional configuration profile (e.g., `"local"`, `"production"`).
      */
     public function __construct(
-        public string $dsn,
+        public ?string $dsn = null,
+        public ?string $host = null,
+        public ?string $port = null,
         public ?string $user = null,
         public ?string $pass = null,
+        public ?string $database = null,
         public array $options = [],
         public ?string $driver = null,
         public ?string $profile = null,
