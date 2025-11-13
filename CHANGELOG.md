@@ -3,6 +3,12 @@
 All notable changes to **maatify/common** will be documented in this file.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.0.4] – 2025-11-13
+
+Release 1.0.4 (fix missing VERSION update)
+
+---
+
 ## [1.0.3] – 2025-11-13
 
 ### 🧩 Connectivity Foundation — Introducing `ConnectionConfigDTO` & `ConnectionTypeEnum`
