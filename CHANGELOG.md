@@ -3,6 +3,18 @@
 All notable changes to **maatify/common** will be documented in this file.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.0.5] - 2025-11-13
+### 🛠 Changed
+- Removed the `readonly` modifier from `ConnectionConfigDTO` to allow flexible configuration mutation.
+- Enhanced compatibility with dynamic runtime configuration (e.g., DSN parsing, environment-driven overrides).
+- Improved internal behavior of adapters relying on mutable configuration during resolution.
+
+### ⚠️ Notes
+- No breaking changes introduced.
+- Existing constructor-based initialization remains fully compatible.
+
+---
+
 ## [1.0.4] – 2025-11-13
 
 Release 1.0.4 (fix missing VERSION update)

@@ -51,7 +51,7 @@ namespace Maatify\Common\DTO;
  * - Used by `DatabaseResolver` or dependency injection containers to build adapter instances.
  * - Supports multi-environment profiles (e.g., local, staging, production).
  */
-final readonly class ConnectionConfigDTO
+final class ConnectionConfigDTO
 {
     /**
      * 🧠 **Constructor**
