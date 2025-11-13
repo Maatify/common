@@ -47,4 +47,16 @@ enum ConnectionTypeEnum: string
 
     /** 🔹 Redis in-memory data store connection type. */
     case REDIS = 'redis';
+
+    /**
+     * 🧩 Returns the uppercase ENV prefix for this connection type.
+     *
+     * Example:
+     *   ConnectionTypeEnum::MYSQL->envPrefix() → "MYSQL"
+     *   ConnectionTypeEnum::MONGO->envPrefix() → "MONGO"
+     */
+    public function envPrefix(): string
+    {
+        return strtoupper($this->value);
+    }
 }
