@@ -150,7 +150,7 @@ making adapter or service setup more expressive, readable, and concise.
 
 ### 🧾 Changelog Snapshot
 
-**v1.0.3 — 2025-11-10**
+**v1.0.2 — 2025-11-10**
 
 * Added: `TapHelper` utility under `Maatify\Common\Helpers`.
 * Added: Full PHPUnit test coverage for `TapHelper`.
