@@ -3,6 +3,25 @@
 All notable changes to **maatify/common** will be documented in this file.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.0.6] – 2025-11-17
+### 🛠 Changed
+- Updated the raw-driver contract to allow flexible return types for
+  `getDriver()` across all implementing adapters.
+- Replaced strict return typing with an untyped signature to support
+  multiple native drivers (PDO, Doctrine DBAL, MongoDB Database,
+  Redis, Predis).
+- Added a unified DocBlock annotation documenting all expected driver
+  types for improved IDE support and static analysis passes.
+- Ensured full backward compatibility with all existing adapters and
+  repositories relying on the common interface.
+
+### ✔ Notes
+- No breaking changes introduced.
+- This update improves cross-library compatibility with maatify/data-adapters
+  and prepares the ecosystem for future multi-database integrations.
+
+---
+
 ## [1.0.5] - 2025-11-13
 ### 🛠 Changed
 - Removed the `readonly` modifier from `ConnectionConfigDTO` to allow flexible configuration mutation.
