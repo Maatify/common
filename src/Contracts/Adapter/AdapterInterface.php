@@ -122,4 +122,9 @@ interface AdapterInterface
      * ```
      */
     public function disconnect(): void;
+
+    /**
+     * @return \PDO|\Doctrine\DBAL\Connection|\MongoDB\Database|\Redis|\Predis\Client
+     */
+    public function getDriver();
 }
