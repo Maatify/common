@@ -19,37 +19,51 @@ use Maatify\Common\Contracts\Adapter\AdapterInterface;
 /**
  * 🧩 **Class FakeFailingAdapter**
  *
- * 🎯 **Purpose:**
- * Provides a stub (mock) implementation of {@see AdapterInterface} that always fails.
- * It simulates a disconnected or unhealthy Redis adapter for testing fallback mechanisms
- * in components such as {@see \Maatify\Common\Lock\HybridLockManager}.
+ * 🎯 **Purpose**
+ * This class provides a stub (mock) implementation of {@see AdapterInterface} that
+ * **always fails**, simulating an unhealthy or unreachable adapter (e.g., Redis).
+ * It is specifically designed for use in test suites that validate fallback mechanisms
+ * and failure handling.
  *
- * 🧠 **Usage Context:**
- * Used exclusively in test environments to verify:
- * - Fallback behavior when Redis connectivity fails.
- * - Handling of invalid or null adapter connections.
+ * 🧠 **Usage Context**
+ * - Testing failover systems.
+ * - Simulating adapters that cannot establish a connection.
+ * - Ensuring components such as {@see \Maatify\Common\Lock\HybridLockManager} handle
+ *   unhealthy adapters gracefully.
  *
- * ✅ **Expected Behavior:**
- * - `isConnected()` → returns `false`
- * - `getConnection()` → returns `null`
- * - `healthCheck()` → returns `false`
+ * 🔍 **Behavior Summary**
+ * - `connect()` → no-op
+ * - `isConnected()` → `false`
+ * - `getConnection()` → `null`
+ * - `healthCheck()` → `false`
+ * - `disconnect()` → no-op
+ * - `getDriver()` → `'fake'`
+ *
+ * ⚙️ **Example Usage**
+ * ```php
+ * $adapter = new FakeFailingAdapter();
+ * assert($adapter->isConnected() === false);
+ *
+ * $lock = new HybridLockManager($adapter, $fallbackAdapter);
+ * // Ensures fallback adapter will be used
+ * ```
  */
 final class FakeFailingAdapter implements AdapterInterface
 {
     /**
-     * 🚫 Simulate a no-op connection attempt (always fails silently).
+     * 🚫 Simulates an attempt to connect, but intentionally does nothing.
      *
      * @return void
      */
     public function connect(): void
     {
-        // No actual connection; intentionally does nothing
+        // No connection is performed in this fake adapter.
     }
 
     /**
-     * ❌ Always reports disconnected state.
+     * ❌ Always indicates that the adapter is not connected.
      *
-     * @return bool False indicating no connection.
+     * @return bool False, indicating a disconnected state.
      */
     public function isConnected(): bool
     {
@@ -57,7 +71,7 @@ final class FakeFailingAdapter implements AdapterInterface
     }
 
     /**
-     * 🚫 Returns null to indicate no underlying connection.
+     * 🚫 Returns `null` to represent the absence of an underlying driver/connection object.
      *
      * @return object|null Always null.
      */
@@ -69,7 +83,7 @@ final class FakeFailingAdapter implements AdapterInterface
     /**
      * ❌ Simulates a failed health check.
      *
-     * @return bool Always false to represent an unhealthy adapter.
+     * @return bool Always false to indicate the adapter is unhealthy.
      */
     public function healthCheck(): bool
     {
@@ -77,12 +91,22 @@ final class FakeFailingAdapter implements AdapterInterface
     }
 
     /**
-     * 🧹 Simulate disconnection cleanup (no-op).
+     * 🧹 Simulates disconnection; no real cleanup is required for this fake adapter.
      *
      * @return void
      */
     public function disconnect(): void
     {
-        // No operation needed for the fake adapter
+        // No disconnection logic is needed here.
+    }
+
+    /**
+     * 🏷️ Returns a fake driver name to satisfy the AdapterInterface contract.
+     *
+     * @return string The static driver identifier "fake".
+     */
+    public function getDriver(): string
+    {
+        return 'fake';
     }
 }

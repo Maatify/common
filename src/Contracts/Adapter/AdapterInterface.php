@@ -124,7 +124,21 @@ interface AdapterInterface
     public function disconnect(): void;
 
     /**
+     * 🏷️ **Retrieve the underlying driver instance** (native connector).
+     *
+     * This is often used for:
+     * - Low-level operations
+     * - Running raw queries
+     * - Debugging
+     * - Direct driver feature access
+     *
      * @return \PDO|\Doctrine\DBAL\Connection|\MongoDB\Database|\Redis|\Predis\Client
+     *
+     * 🧪 **Example**
+     * ```php
+     * $driver = $adapter->getDriver();
+     * var_dump(get_class($driver));  // e.g., Redis, PDO, MongoDB\Database
+     * ```
      */
     public function getDriver();
 }

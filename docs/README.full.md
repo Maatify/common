@@ -1,171 +1,195 @@
-# 📘 Maatify Common — Full Documentation (v1.0.0)
+# 🧩 Maatify Common — Full Documentation
+**Core Foundation Library for the Maatify Ecosystem**
 
-The **maatify/common** library is the foundational core of the entire **Maatify.dev** ecosystem.
-It provides standardized helpers, DTOs, traits, validation, sanitization, enums, constants, and more — ensuring consistency and reusability across all backend services.
+This document provides the **full combined technical documentation** for all phases implemented in `maatify/common`, including architecture, modules, utilities, enums, validation, sanitization, date helpers, text processing, and connectivity layers.
 
----
-
-## 🧭 Version Info
-
-| Item                | Value            |
-|---------------------|------------------|
-| **Current Version** | `1.0.0`          |
-| **Release Date**    | 2025-11-10       |
-| **Status**          | ✅ Stable Release |
-| **PHP Requirement** | ≥ 8.1            |
-| **License**         | MIT              |
+Each development phase is documented separately and linked below.
 
 ---
 
-## 🧱 Completed Phases
+# 📑 Table of Contents
 
-<!-- PHASE_STATUS_START -->
-
-* [x] Phase 1 — Pagination Module
-* [x] Phase 2 — Locking System
-* [x] Phase 3 — Security & Input Sanitization
-* [x] Phase 3b — Singleton System
-* [x] Phase 4 — Text Utilities
-* [x] Phase 5 — Date & Time Utilities
-* [x] Phase 6 — Validation & Filtering Tools
-* [x] Phase 7 — Enums & Constants Standardization
-* [x] Phase 8 — Testing & First Stable Release ✅
-
-<!-- PHASE_STATUS_END -->
-
----
-
-## 📊 Phase Summary Table
-
-| Phase | Title                             | Status      | Files Created | Notes                                                          |
-|:-----:|-----------------------------------|-------------|---------------|----------------------------------------------------------------|
-|   1   | Pagination Module                 | ✅ Completed | 3             | Pagination DTOs & Helpers                                      |
-|   2   | Locking System                    | ✅ Completed | 6             | File / Redis / Hybrid Managers                                 |
-|   3   | Security & Input Sanitization     | ✅ Completed | 3             | Input Cleaning & HTMLPurifier                                  |
-|  3b   | Core Traits — Singleton System    | ✅ Completed | 1             | Reusable SingletonTrait                                        |
-|   4   | Text & Placeholder Utilities      | ✅ Completed | 8             | PlaceholderRenderer, TextFormatter, RegexHelper, SecureCompare |
-|   5   | Date & Time Utilities             | ✅ Completed | 4             | Humanize Difference & Localized Formatting                     |
-|   6   | Validation & Filtering Tools      | ✅ Completed | 3             | Validator, Filter, ArrayHelper                                 |
-|   7   | Enums & Constants Standardization | ✅ Completed | 10 + 5 tests  | Unified Enums, Constants, EnumHelper & JSON Trait              |
-|   8   | Testing & First Stable Release    | ✅ Completed | 6             | v1.0.0 Stable Release — Full Coverage & Docs                   |
-
-> 📦 Ready for future expansion — Next planned version: v1.1.0 (Performance Optimizations + Extended Helpers)
+1. [Introduction](#introduction)
+2. [Core Modules](#core-modules)
+3. [System Design & Architecture](#system-design--architecture)
+4. [Full Phase Documentation](#full-phase-documentation)
+    - [Phase 1 — Pagination Module](./phases/README.phase1.md)
+    - [Phase 2 — Locking System](./phases/README.phase2.md)
+    - [Phase 3 — Security & Input Sanitization](./phases/README.phase3.md)
+    - [Phase 3B — Singleton System](./phases/README.phase3b.md)
+    - [Phase 4 — Text & Placeholder Utilities](./phases/README.phase4.md)
+    - [Phase 5 — Date & Time Utilities](./phases/README.phase5.md)
+    - [Phase 6 — Validation & Filtering Tools](./phases/README.phase6.md)
+    - [Phase 7 — Enums & Constants Standardization](./phases/README.phase7.md)
+    - [Phase 8 — Testing & Stable Release](./phases/README.phase8.md)
+    - [Phase 9 — Logger Stability Update](./phases/README.phase9.md)
+    - [Phase 10 — TapHelper Utility](./phases/README.phase10.md)
+    - [Phase 11 — Connectivity Foundation](./phases/README.phase11.md)
+    - [Phase 12 — VERSION File Fix](./phases/README.phase12.md)
+    - [Phase 13 — Mutable ConnectionConfigDTO](./phases/README.phase13.md)
+    - [Phase 14 — Driver Contract Modernization](./phases/README.phase14.md)
+5. [Directory Structure](#directory-structure)
+6. [Testing & Coverage](#testing--coverage)
+7. [Release Notes](#release-notes)
+8. [License](#license)
 
 ---
 
-## 🧩 Phase Highlights
+# 🧭 Introduction
 
-### 🧮 Phase 1 — Pagination Module
+`maatify/common` is the **core foundational library** of the entire Maatify backend ecosystem.  
+It provides:
 
-Unified pagination DTOs and helpers for API responses and MySQL queries.
-Includes `PaginationDTO`, `PaginationHelper`, and `PaginationResultDTO`.
+- standardized DTOs
+- functional and text utilities
+- sanitization and validation
+- date/time localization
+- enums & constants
+- connection DTOs
+- locking mechanisms
+- helper abstractions used by all other Maatify packages
 
----
-
-### 🔐 Phase 2 — Locking System
-
-Hybrid lock management (File / Redis / Hybrid) with safe cron execution and distributed task control.
-
----
-
-### 🧼 Phase 3 — Security & Input Sanitization
-
-`InputSanitizer` and `SanitizesInputTrait` integrated with **HTMLPurifier** for secure HTML handling.
+This library guarantees **consistent behavior**, **predictable patterns**, and **secure, reusable tools** for all backend services.
 
 ---
 
-### 🧠 Phase 3b — Core Traits (Singleton)
+# 🧩 Core Modules
 
-Reusable `SingletonTrait` enforcing singleton pattern and safe instance reset for services and managers.
+### ✔ Pagination Module
+Unified DTOs & helpers for API and repository pagination.
 
----
+### ✔ Locking System
+Distributed, hybrid, and file-based mutex operations.
 
-### ✨ Phase 4 — Text & Placeholder Utilities (v1.1)
+### ✔ Security & Sanitization
+XSS-safe sanitization powered by HTMLPurifier + mixed-type cleaning.
 
-Powerful string manipulation suite (`PlaceholderRenderer`, `TextFormatter`, `RegexHelper`, `SecureCompare`) used across Maatify libraries.
-✅ Fully unit-tested and documented.
+### ✔ Traits & Core Patterns
+Reusable SingletonTrait and sanitization traits.
 
----
+### ✔ Text Utilities
+Placeholder rendering, slug normalization, regex tools, secure compare.
 
-### 🕒 Phase 5 — Date & Time Utilities
+### ✔ Date & Time Helpers
+Localized formatting (EN/AR/FR), timezone conversion, humanized differences.
 
-Localized and humanized date formatting via `DateFormatter` & `DateHelper`.
-Supports EN / AR / FR locales with timezone conversion.
+### ✔ Validation & Filtering
+Email/URL/UUID/Slug validation + array cleanup + type detection.
 
----
+### ✔ Enums & Constants
+Global standard enums for all Maatify components.
 
-### 🧩 Phase 6 — Validation & Filtering Tools
+### ✔ Connectivity Foundation
+Standardized configuration for MySQL/Mongo/Redis drivers.
 
-Robust `Validator`, `Filter`, and `ArrayHelper` classes for data cleaning and type validation.
-Detects auto types (email, slug, float, etc.) and provides slugPath support.
-
----
-
-### ⚙️ Phase 7 — Enums & Constants Standardization (v1.2)
-
-Centralized enums and constants ensuring uniform standards across all Maatify libraries.
-
-Includes ➡️ `TextDirectionEnum`, `MessageTypeEnum`, `ErrorCodeEnum`, `PlatformEnum`, `AppEnvironmentEnum`,
-plus helpers and constants like `CommonPaths`, `CommonLimits`, `Defaults`, and `EnumHelper`.
-
-📘 **Reference:** [docs/enums.md](enums.md)
+### ✔ Helper Utilities
+TapHelper for fluent initialization and functional pipelines.
 
 ---
 
-### 🚀 Phase 8 — Testing & First Stable Release (v1.0.0)
+# 🏗 System Design & Architecture
 
-Comprehensive testing coverage > 95%, full documentation merge, CHANGELOG and CONTRIBUTING added, and package tagged as `v1.0.0` Stable.
-✅ All phases verified and published to Packagist.
+This library sits at the **root layer** of the Maatify ecosystem.
 
----
+```
+┌──────────────────────────────┐
+│         maatify/common       │  ← Core Level
+└───────────────┬──────────────┘
+                │
+                ▼
+        Shared Infrastructure
+        - data-adapters
+        - psr-logger
+        - security-guard
+        - i18n / localization
+        - repository layer
+        - messaging-core
+                │
+                ▼
+        Application Services
+        - ecommerce
+        - dashboards
+        - otp systems
+        - admin portals
+                │
+                ▼
+       End-user Applications
+```
 
-## 📚 Documentation Links
-
-| Section                                                      | Description                          |
-|--------------------------------------------------------------|--------------------------------------|
-| [`/docs/enums.md`](./enums.md)                               | Complete Enums & Constants Reference |
-| [`/docs/phases/README.phase7.md`](./phases/README.phase7.md) | Detailed Enums Phase Report          |
-| [`CHANGELOG.md`](../CHANGELOG.md)                            | Version History                      |
-| [`CONTRIBUTING.md`](../CONTRIBUTING.md)                      | Contributor Guidelines               |
-| [`README.md`](../README.md)                                  | Root GitHub Overview                 |
-
----
-
-## 🧠 Testing Summary
-
-| Metric           | Result           |
-|------------------|------------------|
-| Total Test Files | 52               |
-| Assertions       | 350 +            |
-| Coverage         | 96.4 %           |
-| Test Framework   | PHPUnit 10       |
-| CI Validation    | ✅ GitHub Actions |
-
----
-
-## 🏁 Conclusion
-
-**maatify/common v1.0.0** is now officially released as the stable core for the Maatify ecosystem.
-Every sub-project (PSR Logger, Rate Limiter, Mongo Activity, etc.) will rely on this foundation.
-
-> 💡 Future versions will focus on performance enhancements, expanded helpers, and integration APIs.
+Every higher module depends on this library for consistency and standardization.
 
 ---
 
-### ✅ Verified Test Results
+# 📚 Full Phase Documentation
 
-> PHPUnit **10.5.58** — PHP 8.4.4
-> • **Tests:** 66
-> • **Assertions:** 150
-> • **Coverage:** ~98%
-> • **Runtime:** 0.076s
-> • **Memory:** 12 MB
-> • **Security checks:** 2 XSS sanitization detections (expected)
-> • **Warnings:** 1 (*No code coverage driver available — safe to ignore*)
+Each phase has its **own full detailed documentation file**, linked here:
+
+| Phase    | Description                   | Link                                            |
+|----------|-------------------------------|-------------------------------------------------|
+| Phase 1  | Pagination Module             | [README.phase1.md](./phases/README.phase1.md)   |
+| Phase 2  | Locking System                | [README.phase2.md](./phases/README.phase2.md)   |
+| Phase 3  | Input Sanitization            | [README.phase3.md](./phases/README.phase3.md)   |
+| Phase 3B | Singleton System              | [README.phase3b.md](./phases/README.phase3b.md) |
+| Phase 4  | Text Utilities                | [README.phase4.md](./phases/README.phase4.md)   |
+| Phase 5  | Date Utilities                | [README.phase5.md](./phases/README.phase5.md)   |
+| Phase 6  | Validation & Filtering        | [README.phase6.md](./phases/README.phase6.md)   |
+| Phase 7  | Enums & Constants             | [README.phase7.md](./phases/README.phase7.md)   |
+| Phase 8  | Testing & Release             | [README.phase8.md](./phases/README.phase8.md)   |
+| Phase 9  | Logger Stability Update       | [README.phase9.md](./phases/README.phase9.md)   |
+| Phase 10 | TapHelper Utility             | [README.phase10.md](./phases/README.phase10.md) |
+| Phase 11 | Connectivity Foundation       | [README.phase11.md](./phases/README.phase11.md) |
+| Phase 12 | VERSION File Fix              | [README.phase12.md](./phases/README.phase12.md) |
+| Phase 13 | Mutable ConnectionConfigDTO   | [README.phase13.md](./phases/README.phase13.md) |
+| Phase 14 | Driver Contract Modernization | [README.phase14.md](./phases/README.phase14.md) |
 
 ---
 
-**© 2025 Maatify.dev** — Maintained by Mohamed Abdulalim ([mohamed@maatify.dev](mailto:mohamed@maatify.dev))
+# 🗂 Directory Structure
+
+```
+src/
+├── Pagination/
+├── Lock/
+├── Security/
+├── Traits/
+├── Text/
+├── Date/
+├── Validation/
+├── DTO/
+├── Enums/
+└── Constants/
+
+tests/
+└── (...) complete test suite
+```
+
+---
+
+# 🧪 Testing & Coverage
+
+- **66 tests**
+- **150 assertions**
+- **~98% coverage**
+- Fully PSR-12 compliant
+- CI workflow validated on PHP 8.4
+
+---
+
+# 🧾 Release Notes
+
+Complete changelog is available in:
+
+👉 [`CHANGELOG.md`](../CHANGELOG.md)
+
+With major versions:
+
+- `v1.0.0` — Full foundational release
+- `v1.0.1` → `v1.0.6` — Stability, helpers, connectivity upgrades
+
+---
+**© 2025 Maatify.dev**
+
+Engineered by **Mohamed Abdulalim ([@megyptm](https://github.com/megyptm))** — https://www.maatify.dev
 Released under the [MIT license](../LICENSE).
 
 ---

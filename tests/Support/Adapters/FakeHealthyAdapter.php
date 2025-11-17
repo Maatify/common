@@ -19,38 +19,53 @@ use Maatify\Common\Contracts\Adapter\AdapterInterface;
 /**
  * 🧩 **Class FakeHealthyAdapter**
  *
- * 🎯 **Purpose:**
- * Provides a mock {@see AdapterInterface} implementation that simulates
- * a healthy and responsive Redis-like adapter.
- * Used for testing lock managers and other adapter-based components
- * without connecting to a real Redis server.
+ * 🎯 **Purpose**
+ * A mock implementation of {@see AdapterInterface} that simulates a fully healthy,
+ * functioning Redis-like adapter entirely in memory.
+ * It is designed to support test suites that require predictable key-value operations
+ * without connecting to an external Redis instance.
  *
- * 🧠 **Behavior Simulation:**
- * - Mimics `connect()`, `set()`, `exists()`, and `del()` operations in memory.
- * - Always reports as connected and healthy.
- * - Supports `NX` flag logic for atomic key acquisition.
+ * 🧠 **Behavior Overview**
+ * - Maintains an internal in-memory store.
+ * - Simulates `SET`, `EXISTS`, and `DEL` operations.
+ * - Implements NX locking logic (`SET key value NX`).
+ * - Always reports healthy (`healthCheck()` → `true`).
+ * - Returns itself as connection handle (`getConnection()`).
  *
- * ✅ **Use Case:**
- * Commonly used in unit tests like {@see \Maatify\Common\Tests\Lock\HybridLockManagerTest}
- * to validate locking logic without requiring external dependencies.
+ * 🔧 **Typical Use Cases**
+ * - Unit tests for locking systems (e.g., HybridLockManager).
+ * - Testing atomic key acquisition logic.
+ * - Components that need a lightweight simulated adapter.
  *
- * ⚙️ **Example Usage:**
+ * ⚙️ **Example**
  * ```php
  * $adapter = new FakeHealthyAdapter();
  * $adapter->connect();
- * $adapter->set('lock:demo', '1', ['nx' => true]); // simulate Redis SET NX
+ *
+ * $adapter->set('lock:example', '1', ['nx' => true]); // Acquire lock
+ * $exists = $adapter->exists('lock:example');          // Returns 1
+ *
+ * $adapter->del('lock:example');                       // Remove lock
  * ```
  */
 final class FakeHealthyAdapter implements AdapterInterface
 {
-    /** @var bool Simulated connection state. */
+    /**
+     * 🔌 Simulated connection state.
+     *
+     * @var bool
+     */
     private bool $connected = false;
 
-    /** @var array<string, string> Internal in-memory key-value store. */
+    /**
+     * 🗄️ Internal in-memory store used to mimic Redis key-value behavior.
+     *
+     * @var array<string, string>
+     */
     private array $store = [];
 
     /**
-     * 🔌 Simulate establishing a connection.
+     * 🔌 Establish a simulated connection.
      *
      * @return void
      */
@@ -60,9 +75,9 @@ final class FakeHealthyAdapter implements AdapterInterface
     }
 
     /**
-     * 🔍 Check if the adapter is currently connected.
+     * 🔍 Check if the adapter is "connected".
      *
-     * @return bool True if connected, false otherwise.
+     * @return bool True when connected, false otherwise.
      */
     public function isConnected(): bool
     {
@@ -70,9 +85,9 @@ final class FakeHealthyAdapter implements AdapterInterface
     }
 
     /**
-     * ⚙️ Retrieve a pseudo-connection handle (returns self).
+     * ⚙️ Returns a pseudo-connection object.
      *
-     * @return object|null Returns `$this` as the connection object.
+     * @return object|null `$this` acting as the simulated connection handler.
      */
     public function getConnection(): ?object
     {
@@ -80,9 +95,9 @@ final class FakeHealthyAdapter implements AdapterInterface
     }
 
     /**
-     * 💚 Always report adapter health as OK.
+     * 💚 Always reports healthy status.
      *
-     * @return bool True indicating a healthy adapter.
+     * @return bool True indicating adapter health is OK.
      */
     public function healthCheck(): bool
     {
@@ -90,7 +105,7 @@ final class FakeHealthyAdapter implements AdapterInterface
     }
 
     /**
-     * 🔌 Simulate disconnection from the adapter.
+     * 🔌 Close simulated connection.
      *
      * @return void
      */
@@ -100,19 +115,20 @@ final class FakeHealthyAdapter implements AdapterInterface
     }
 
     /**
-     * 💾 Simulate Redis `SET` operation with optional NX logic.
+     * 💾 Simulates Redis `SET` with optional NX locking behavior.
      *
-     * If `'nx'` is set in options and key already exists, returns false.
-     * Otherwise, stores the key-value pair in memory.
+     * If `'nx' => true` is provided and the key already exists,
+     * the method returns `false` without modifying the store.
      *
-     * @param string $key      Lock key name.
-     * @param string $value    Stored value.
-     * @param array  $options  Optional Redis-style parameters (`nx`, `ex`, etc.).
+     * @param string $key     The key to assign.
+     * @param string $value   The associated value.
+     * @param array  $options Optional Redis-style flags (`nx`, `ex`, etc.).
      *
-     * @return bool True if successfully set; false if NX condition fails.
+     * @return bool True on success, false if NX rule blocks operation.
      */
     public function set(string $key, string $value, array $options = []): bool
     {
+        // Enforce NX rule: fail if key exists
         if (isset($options['nx']) && isset($this->store[$key])) {
             return false;
         }
@@ -122,11 +138,11 @@ final class FakeHealthyAdapter implements AdapterInterface
     }
 
     /**
-     * 🔍 Simulate Redis `EXISTS` operation.
+     * 🔍 Simulates Redis `EXISTS` command.
      *
      * @param string $key The key to check.
      *
-     * @return int Returns 1 if the key exists; otherwise 0.
+     * @return int 1 if key exists, otherwise 0.
      */
     public function exists(string $key): int
     {
@@ -134,9 +150,7 @@ final class FakeHealthyAdapter implements AdapterInterface
     }
 
     /**
-     * ❌ Simulate Redis `DEL` operation.
-     *
-     * Removes a key from the in-memory store.
+     * ❌ Simulates Redis `DEL` command.
      *
      * @param string $key The key to delete.
      *
@@ -145,5 +159,15 @@ final class FakeHealthyAdapter implements AdapterInterface
     public function del(string $key): void
     {
         unset($this->store[$key]);
+    }
+
+    /**
+     * 🏷️ Fake driver identifier.
+     *
+     * @return string Always returns "fake".
+     */
+    public function getDriver(): string
+    {
+        return 'fake';
     }
 }

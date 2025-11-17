@@ -26,8 +26,8 @@
 ## 🧭 Version Information
 | Key             | Value               |
 |-----------------|---------------------|
-| Version         | **1.0.0 Stable**    |
-| Release Date    | 2025-11-10          |
+| Version         | **1.0.6 Stable**    |
+| Release Date    | 2025-11-17          |
 | PHP Requirement | ≥ 8.1               |
 | License         | MIT                 |
 | Coverage        | 98 %                |
@@ -878,21 +878,20 @@ src/
 
 ---
 
+# ✅ **📊 Updated Phase Summary Table (Final & Accurate)**
 
-## 📊 Phase Summary Table
-
-| Phase | Title                             | Status      | Files Created | Notes                                                                     |
-|-------|-----------------------------------|-------------|---------------|---------------------------------------------------------------------------|
-| 1     | Pagination Module                 | ✅ Completed | 3             | Pagination DTOs & helpers                                                 |
-| 2     | Locking System                    | ✅ Completed | 6             | File / Redis / Hybrid managers                                            |
-| 3     | Security & Input Sanitization     | ✅ Completed | 3             | Input cleaning & HTMLPurifier                                             |
-| 3b    | Core Traits — Singleton System    | ✅ Completed | 1             | SingletonTrait implementation                                             |
-| 4     | Text & Placeholder Utilities      | ✅ Completed | 8             | PlaceholderRenderer, TextFormatter, RegexHelper, SecureCompare            |
-| 5     | Date & Time Utilities             | ✅ Completed | 4             | HumanizeDifference & Localized Date Formatting                            |
-| 6     | Validation & Filtering Tools      | ✅ Completed | 3             | Validator, Filter, and ArrayHelper with full unit tests                   |
-| 7     | Enums & Constants Standardization | ✅ Completed | 10 + 5 tests  | Unified Enums, Constants, EnumHelper & JSON Trait with docs               |
-| 8     | Testing & Release                 | ✅ Completed | 6             | CHANGELOG.md, CONTRIBUTING.md, VERSION, README.full.md, coverage results  |
-
+| Phase | Title                                  | Status      | Files Created | Notes                                                                              |
+|-------|----------------------------------------|-------------|---------------|------------------------------------------------------------------------------------|
+| 1     | Pagination Module                      | ✅ Completed | 3             | Pagination DTOs & helpers                                                          |
+| 2     | Locking System                         | ✅ Completed | 6             | File / Redis / Hybrid lock managers                                                |
+| 3     | Security & Input Sanitization          | ✅ Completed | 3             | InputCleaner, HTMLPurifier wrapper, XSS-safe normalizers                           |
+| 3b    | Core Traits — Singleton System         | ✅ Completed | 1             | SingletonTrait implementation                                                      |
+| 4     | Text & Placeholder Utilities           | ✅ Completed | 8             | PlaceholderRenderer, TextFormatter, RegexHelper, SecureCompare                     |
+| 5     | Date & Time Utilities                  | ✅ Completed | 4             | HumanizeDifference, LocalizedDateFormatter, Timestamp helpers                      |
+| 6     | Validation & Filtering Tools           | ✅ Completed | 3             | Validator, Filter, ArrayHelper + full PHPUnit suite                                |
+| 7     | Enums & Constants Standardization      | ✅ Completed | 10 + 5 tests  | Unified Enum system, EnumHelper, JSONSerializableTrait, ValueEnum base             |
+| 8     | Adapter Interfaces & Contracts Upgrade | ✅ Completed | 4             | AdapterInterface driver expansion + full PSR-5 documentation + FakeAdapter updates |
+| 9     | Testing & Release Finalization         | ✅ Completed | 6             | CHANGELOG, CONTRIBUTING, VERSION, README.full.md, coverage reports, CI stability   |
 
 ---
 ## ✅ Verified Test Results
@@ -916,18 +915,15 @@ All files have been verified and finalized as part of **Phase 8 (v1.0.0 Stable)*
 
 ---
 
+---
+> 🔗 **Full documentation & release notes:** see [/docs/README.full.md](docs/README.full.md)
+---
+
 ## 🪪 License
 
 **[MIT license](LICENSE)** © [Maatify.dev](https://www.maatify.dev)  
 You’re free to use, modify, and distribute this library with attribution.
----
-## 🚀 Next Version Plan (v1.1.0)
-- Performance optimizations for string and array helpers
-- Extended Enum support with localization metadata
-- Introduce Common Cache Adapter and Metrics interfaces
 
----
-> 🔗 **Full documentation & release notes:** see [/docs/README.full.md](docs/README.full.md)
 ---
 
 ## 🧱 Authors & Credits
