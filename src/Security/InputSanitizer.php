@@ -83,7 +83,11 @@ final class InputSanitizer
         // ⚙️ Configure HTMLPurifier for strict whitelist filtering
         $config = HTMLPurifier_Config::createDefault();
         $config->set('HTML.Allowed', implode(',', $allowedTags));
-        $config->set('Cache.SerializerPath', __DIR__ . '/../../../storage/purifier_cache');
+
+        // Use system temp directory instead of project path
+        $config->set('Cache.SerializerPath', sys_get_temp_dir() . '/htmlpurifier');
+//        $config->set('Cache.SerializerPath', __DIR__ . '/../../../storage/purifier_cache');
+        $config->set('Cache.DefinitionImpl', null);
 
         // 🚫 Control external/internal resource URIs
         $config->set('URI.DisableExternalResources', $disableExternalResources);

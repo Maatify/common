@@ -96,9 +96,15 @@ final class InputSanitizerTest extends TestCase
         $dirty = '<img src="http://evil.com/x.png"><b>safe</b>';
         $clean = InputSanitizer::sanitizeWithWhitelist($dirty, ['b', 'img[src]']);
 
-        // ✅ External resource should be stripped, safe content preserved
+        // Allowed safe content should remain
         $this->assertStringContainsString('<b>safe</b>', $clean);
+
+        // Malicious external resource should be completely removed
         $this->assertStringNotContainsString('evil.com', $clean);
+
+        // Ensure sanitizer produced valid output (not empty, not NULL)
+        $this->assertIsString($clean);
+        $this->assertGreaterThan(0, strlen($clean));
     }
 
     /**
