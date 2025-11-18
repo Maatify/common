@@ -84,6 +84,6 @@ final class DateHelper
         );
 
         // ✅ Return the localized formatted string
-        return $fmt->format($date);
+        return (string) $fmt->format($date);
     }
 }

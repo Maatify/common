@@ -38,7 +38,9 @@ final class LockCleaner
      */
     public static function cleanOldLocks(string $path, int $maxAge = 600): void
     {
-        foreach (glob($path . '/*.lock') as $file) {
+        $files = glob($path . '/*.lock') ?: [];
+
+        foreach ($files as $file) {
             if (time() - filemtime($file) > $maxAge) {
                 @unlink($file);
             }

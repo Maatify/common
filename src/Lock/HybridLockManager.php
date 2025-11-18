@@ -51,7 +51,6 @@ use Throwable;
  * });
  * ```
  *
- * @implements LockInterface
  */
 final class HybridLockManager implements LockInterface
 {
