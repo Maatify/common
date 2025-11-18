@@ -59,15 +59,15 @@ final class ConnectionConfigDTO
      * Defines complete connection configuration properties, supporting both
      * DSN-based and parameter-based connection schemes.
      *
-     * @param string|null $dsn       Full connection string (e.g., `"mysql:host=127.0.0.1;dbname=maatify"`).
-     * @param string|null $host      Hostname or IP of the data source.
-     * @param string|null $port      Port number (string to maintain type consistency).
-     * @param string|null $user      Username credential for authentication.
-     * @param string|null $pass      Password credential for authentication.
-     * @param string|null $database  Target database name (if applicable).
-     * @param array        $options  Adapter-specific or driver options (e.g., PDO attributes).
-     * @param string|null $driver    Driver type (e.g., `"pdo"`, `"dbal"`, `"mysqli"`, `"mongo"`, `"redis"`).
-     * @param string|null $profile   Optional configuration profile (e.g., `"local"`, `"production"`).
+     * @param   string|null               $dsn       Full connection string (e.g., `"mysql:host=127.0.0.1;dbname=maatify"`).
+     * @param   string|null               $host      Hostname or IP of the data source.
+     * @param   string|null               $port      Port number (string to maintain type consistency).
+     * @param   string|null               $user      Username credential for authentication.
+     * @param   string|null               $pass      Password credential for authentication.
+     * @param   string|null               $database  Target database name (if applicable).
+     * @param   array<int|string, mixed>  $options   Adapter-specific or driver options (e.g., PDO attributes).
+     * @param   string|null               $driver    Driver type (e.g., `"pdo"`, `"dbal"`, `"mysqli"`, `"mongo"`, `"redis"`).
+     * @param   string|null               $profile   Optional configuration profile (e.g., `"local"`, `"production"`).
      */
     public function __construct(
         public ?string $dsn = null,
