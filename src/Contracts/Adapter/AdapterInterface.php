@@ -132,13 +132,16 @@ interface AdapterInterface
      * - Debugging
      * - Direct driver feature access
      *
-     * @return \PDO|\Doctrine\DBAL\Connection|\MongoDB\Database|\Redis|\Predis\Client
-     *
      * 🧪 **Example**
      * ```php
      * $driver = $adapter->getDriver();
      * var_dump(get_class($driver));  // e.g., Redis, PDO, MongoDB\Database
      * ```
+     *
+     * @return \PDO|\Doctrine\DBAL\Connection|\MongoDB\Database|\Redis|\Predis\Client
+     *
+     * @phpstan-return \PDO|\Doctrine\DBAL\Connection|\MongoDB\Database|\Redis|\Predis\Client
+     * public function getDriver(): mixed;
      */
-    public function getDriver();
+    public function getDriver(): mixed;
 }
