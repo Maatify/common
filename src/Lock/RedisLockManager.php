@@ -108,8 +108,17 @@ final class RedisLockManager implements LockInterface
         try {
             $redis = $this->adapter->getConnection();
 
-            // 🧠 Use `NX` to ensure it only sets if not already existing, `EX` to auto-expire.
+            if (! $redis instanceof \Redis && ! $redis instanceof \Predis\Client) {
+                $this->logger->error('Invalid Redis connection instance in acquire()', [
+                    'type' => get_debug_type($redis),
+                    'key'  => $this->key,
+                ]);
+                return false;
+            }
+
             return $redis->set($this->key, (string) time(), ['nx', 'ex' => $this->ttl]) !== false;
+
+
         } catch (Throwable $e) {
             $this->logger->error('RedisLockManager::acquire failed', [
                 'key'   => $this->key,
@@ -130,6 +139,15 @@ final class RedisLockManager implements LockInterface
     {
         try {
             $redis = $this->adapter->getConnection();
+
+            if (! $redis instanceof \Redis && ! $redis instanceof \Predis\Client) {
+                $this->logger->error('Invalid Redis connection instance in isLocked()', [
+                    'type' => get_debug_type($redis),
+                    'key'  => $this->key,
+                ]);
+                return false;
+            }
+
             return $redis->exists($this->key) === 1;
         } catch (Throwable $e) {
             $this->logger->error('RedisLockManager::isLocked failed', [
@@ -152,7 +170,17 @@ final class RedisLockManager implements LockInterface
     {
         try {
             $redis = $this->adapter->getConnection();
+
+            if (! $redis instanceof \Redis && ! $redis instanceof \Predis\Client) {
+                $this->logger->error('Invalid Redis connection instance in release()', [
+                    'type' => get_debug_type($redis),
+                    'key'  => $this->key,
+                ]);
+                return;
+            }
+
             $redis->del($this->key);
+
         } catch (Throwable $e) {
             $this->logger->error('RedisLockManager::release failed', [
                 'key'   => $this->key,

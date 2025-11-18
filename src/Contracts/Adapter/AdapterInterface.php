@@ -88,8 +88,13 @@ interface AdapterInterface
      * $client = $adapter->getConnection();
      * $client->ping();
      * ```
+     *
+     * @return \PDO|\Doctrine\DBAL\Connection|\MongoDB\Client|\Redis|\Predis\Client
+     *
+     * @phpstan-return \PDO|\Doctrine\DBAL\Connection|\MongoDB\Client|\Redis|\Predis\Client
+     *  public function getConnection(): mixed;
      */
-    public function getConnection(): object|null;
+    public function getConnection(): mixed;
 
     /**
      * 🩺 Perform a health check on the current connection.
