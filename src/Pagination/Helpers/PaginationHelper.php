@@ -56,12 +56,12 @@ final class PaginationHelper
      * - Calculates total records, total pages, and navigation flags.
      * - Converts any iterable into a standard array before slicing.
      *
-     * @param iterable $items   Full dataset to paginate.
+     * @param iterable<int, mixed> $items   Full dataset to paginate.
      * @param int      $page    Current page number (1-based index).
      * @param int      $perPage Number of items per page.
      *
      * @return array{
-     *     data: array,
+     *     data: array<int, mixed>,
      *     pagination: PaginationDTO
      * }
      *
