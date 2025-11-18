@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
  * @Liberary    maatify/common
@@ -55,7 +56,7 @@ final class TapHelperTest extends TestCase
     public function testDoesNotAlterOriginalValueUnlessCallbackDoes(): void
     {
         $value = ['key' => 'old'];
-        $result = TapHelper::tap($value, fn(&$v) => $v['key'] = 'new');
+        $result = TapHelper::tap($value, fn (&$v) => $v['key'] = 'new');
 
         $this->assertSame($result['key'], 'new', 'Callback modifications should persist.');
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
  * @Liberary    maatify/common
@@ -14,9 +15,9 @@ declare(strict_types=1);
 
 namespace Maatify\Common\Tests\Enums;
 
-use Maatify\Common\Enums\TextDirectionEnum;
-use Maatify\Common\Enums\MessageTypeEnum;
 use Maatify\Common\Enums\ErrorCodeEnum;
+use Maatify\Common\Enums\MessageTypeEnum;
+use Maatify\Common\Enums\TextDirectionEnum;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -70,7 +71,7 @@ final class EnumConsistencyTest extends TestCase
         ];
 
         foreach ($enumClasses as $enum) {
-            $names = array_map(static fn($c) => $c->name, $enum::cases());
+            $names = array_map(static fn ($c) => $c->name, $enum::cases());
             $this->assertCount(
                 count(array_unique($names)),
                 $names,

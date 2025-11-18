@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by Maatify.dev
  * User: Mohamed Abdulalim (megyptm)
@@ -86,7 +87,7 @@ final class InputSanitizer
 
         // Use system temp directory instead of project path
         $config->set('Cache.SerializerPath', sys_get_temp_dir() . '/htmlpurifier');
-//        $config->set('Cache.SerializerPath', __DIR__ . '/../../../storage/purifier_cache');
+        //        $config->set('Cache.SerializerPath', __DIR__ . '/../../../storage/purifier_cache');
         $config->set('Cache.DefinitionImpl', null);
 
         // 🚫 Control external/internal resource URIs

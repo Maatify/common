@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
  * @Liberary    maatify/common
@@ -95,7 +96,7 @@ final class SanitizesInputTraitTest extends TestCase
      */
     public function testSanitizeCodeMode(): void
     {
-        $dirty = "<div>Hello</div>";
+        $dirty = '<div>Hello</div>';
         $clean = $this->tester->publicClean($dirty, 'code');
 
         // ✅ Output should be safely escaped and wrapped as code
@@ -111,7 +112,7 @@ final class SanitizesInputTraitTest extends TestCase
      */
     public function testSanitizeOutputMode(): void
     {
-        $dirty = "<p>Hello & Welcome</p>";
+        $dirty = '<p>Hello & Welcome</p>';
         $clean = $this->tester->publicClean($dirty, 'output');
 
         // ✅ HTML should be fully escaped and safe for plain output

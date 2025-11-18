@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
  * @Liberary    maatify/common
@@ -68,7 +69,8 @@ final class PaginationDTO
         public readonly int $totalPages,
         public readonly bool $hasNext,
         public readonly bool $hasPrev,
-    ) {}
+    ) {
+    }
 
     /**
      * 🔁 **Convert pagination metadata to an associative array.**

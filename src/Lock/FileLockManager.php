@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by Maatify.dev
  * User: Maatify.dev
@@ -13,9 +14,9 @@ declare(strict_types=1);
 
 namespace Maatify\Common\Lock;
 
+use ErrorException;
 use Maatify\PsrLogger\Traits\LoggerContextTrait;
 use Psr\Log\LoggerInterface;
-use ErrorException;
 use Throwable;
 
 /**

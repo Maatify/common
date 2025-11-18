@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
  * @Liberary    maatify/common
@@ -33,7 +34,7 @@ final class ErrorCodeEnumTest extends TestCase
      */
     public function testEnumValuesAreUnique(): void
     {
-        $values = array_map(static fn($case) => $case->value, ErrorCodeEnum::cases());
+        $values = array_map(static fn ($case) => $case->value, ErrorCodeEnum::cases());
         $this->assertCount(
             count(array_unique($values)),
             $values,

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
  * @Liberary    maatify/common
@@ -59,14 +60,18 @@ trait SingletonTrait
      *
      * Ensures controlled instance creation via `obj()`.
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * 🚫 **Prevent object cloning**
      *
      * Blocks duplication of the Singleton instance.
      */
-    private function __clone() {}
+    private function __clone()
+    {
+    }
 
     /**
      * 🚫 **Prevent unserialization**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
  * @Liberary    maatify/common
@@ -71,5 +72,3 @@ class FakeRedisConnection
         return isset($this->expiry[$key]) && time() >= $this->expiry[$key];
     }
 }
-
-

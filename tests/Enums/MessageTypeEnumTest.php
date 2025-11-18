@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
  * @Liberary    maatify/common
@@ -34,7 +35,7 @@ final class MessageTypeEnumTest extends TestCase
     public function testContainsExpectedCases(): void
     {
         $expected = ['info', 'success', 'warning', 'error'];
-        $values = array_map(static fn($case) => $case->value, MessageTypeEnum::cases());
+        $values = array_map(static fn ($case) => $case->value, MessageTypeEnum::cases());
 
         $this->assertEqualsCanonicalizing(
             $expected,

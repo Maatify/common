@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
  * @Liberary    maatify/common
@@ -14,7 +15,6 @@ declare(strict_types=1);
 
 namespace Maatify\Common\Date;
 
-use DateInterval;
 use DateTimeInterface;
 
 /**

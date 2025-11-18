@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
  * @Liberary    maatify/common
@@ -64,7 +65,7 @@ final class EnumHelper
      */
     public static function names(string $enumClass): array
     {
-        return array_map(static fn($case) => $case->name, $enumClass::cases());
+        return array_map(static fn ($case) => $case->name, $enumClass::cases());
     }
 
     /**
@@ -81,7 +82,7 @@ final class EnumHelper
      */
     public static function values(string $enumClass): array
     {
-        return array_map(static fn($case) => $case->value, $enumClass::cases());
+        return array_map(static fn ($case) => $case->value, $enumClass::cases());
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
  * @Liberary    maatify/common
@@ -14,10 +15,10 @@ declare(strict_types=1);
 
 namespace Maatify\Common\Tests\Lock;
 
-use Maatify\Common\Tests\Support\Adapters\FakeHealthyAdapter;
-use Maatify\Common\Tests\Support\Adapters\FakeFailingAdapter;
 use Maatify\Common\Lock\HybridLockManager;
 use Maatify\Common\Lock\LockModeEnum;
+use Maatify\Common\Tests\Support\Adapters\FakeFailingAdapter;
+use Maatify\Common\Tests\Support\Adapters\FakeHealthyAdapter;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -40,7 +41,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class HybridLockManagerTest extends TestCase
 {
-
     protected function setUp(): void
     {
         $dir = sys_get_temp_dir() . '/maatify/locks';

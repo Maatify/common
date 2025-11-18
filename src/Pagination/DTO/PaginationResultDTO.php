@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by Maatify.dev
  * User: Maatify.dev
@@ -46,8 +47,7 @@ final class PaginationResultDTO
         public readonly array $data,
         public readonly PaginationDTO $pagination,
         public readonly ?array $meta = null,
-    )
-    {
+    ) {
     }
 
     /**

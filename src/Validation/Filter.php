@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
  * @Liberary    maatify/common
@@ -64,7 +65,7 @@ final class Filter
      */
     public static function removeEmptyValues(array $data): array
     {
-        return array_filter($data, fn($v) => $v !== null && $v !== '' && $v !== []);
+        return array_filter($data, fn ($v) => $v !== null && $v !== '' && $v !== []);
     }
 
     /**
@@ -83,7 +84,7 @@ final class Filter
      */
     public static function trimArray(array $data): array
     {
-        return array_map(fn($v) => is_string($v) ? trim($v) : $v, $data);
+        return array_map(fn ($v) => is_string($v) ? trim($v) : $v, $data);
     }
 
     /**

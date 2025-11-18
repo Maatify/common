@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
  * @Liberary    maatify/common
@@ -14,8 +15,8 @@ declare(strict_types=1);
 
 namespace Maatify\Common\Tests\Text;
 
-use PHPUnit\Framework\TestCase;
 use Maatify\Common\Text\RegexHelper;
+use PHPUnit\Framework\TestCase;
 
 /**
  * 🧪 **Class RegexHelperTest**

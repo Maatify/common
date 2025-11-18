@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
  * @Liberary    maatify/common
@@ -14,9 +15,9 @@ declare(strict_types=1);
 
 namespace Maatify\Common\Tests\Date;
 
+use DateTime;
 use Maatify\Common\Date\DateFormatter;
 use PHPUnit\Framework\TestCase;
-use DateTime;
 
 /**
  * 🧪 **DateFormatterTest**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
  * @Library     maatify/common
@@ -79,5 +80,6 @@ final class ConnectionConfigDTO
         public array $options = [],
         public ?string $driver = null,
         public ?string $profile = null,
-    ) {}
+    ) {
+    }
 }

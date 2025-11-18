@@ -31,10 +31,13 @@
     "phpstan/phpstan": "^1.11",
     "mongodb/mongodb": "^2.0",
     "predis/predis": "^2.3",
-    "doctrine/dbal": "^4.3"
+    "doctrine/dbal": "^4.3",
+    "friendsofphp/php-cs-fixer": "^3.89"
   },
   "scripts": {
     "test": "vendor/bin/phpunit --testdox",
-    "analyse": "phpstan analyse src --level=max"
+    "analyse": "phpstan analyse src --level=max",
+    "format": "php-cs-fixer fix"
+
   }
 }
