@@ -94,9 +94,10 @@ final class TextFormatter
     {
         // 🧹 Normalize first to ensure ASCII-safe transformation
         $value = self::normalize($value);
-        $value = strtolower(preg_replace('/[^a-z0-9]+/i', '-', $value) ?? '');
+        // preg_replace always returns string|null → cast to string
+        $value = (string) preg_replace('/[^a-z0-9]+/i', '-', $value);
 
-        return trim($value, '-');
+        return trim(strtolower($value), '-');
     }
 
     public static function normalize(string $value): string
@@ -113,11 +114,13 @@ final class TextFormatter
         // Transliteration (Latin ASCII)
         if (class_exists(Transliterator::class)) {
             $t = Transliterator::create('Any-Latin; Latin-ASCII; Lower()');
-            $value = $t ? $t->transliterate($value) : $value;
+            if ($t !== null) {
+                $value = (string) $t->transliterate($value);
+            }
         }
 
         // Replace spaces and punctuation with hyphens for uniformity
-        $value = preg_replace('/[^a-z0-9]+/i', '-', $value) ?? $value;
+        $value = (string) preg_replace('/[^a-z0-9]+/i', '-', $value);
 
         // Normalize case and trim
         return trim(strtolower($value), '-');

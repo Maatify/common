@@ -53,8 +53,8 @@ final class Filter
      * - Empty strings (`''`)
      * - Empty arrays (`[]`)
      *
-     * @param array $data  Input array to filter.
-     * @return array       Filtered array without empty or null values.
+     * @param array<string,mixed> $data  Input array to filter.
+     * @return array<string,mixed>       Filtered array without empty or null values.
      *
      * @example
      * ```php
@@ -72,8 +72,8 @@ final class Filter
      *
      * Non-string values are left unchanged.
      *
-     * @param array $data  Input array to process.
-     * @return array       Array with all string elements trimmed.
+     * @param array<string,mixed> $data  Input array to process.
+     * @return array<string,mixed>       Array with all string elements trimmed.
      *
      * @example
      * ```php
@@ -93,8 +93,8 @@ final class Filter
      * - Encodes HTML entities to prevent XSS attacks.
      * - Leaves non-string values untouched.
      *
-     * @param array $data  Input array to sanitize.
-     * @return array       Sanitized array safe for output or database storage.
+     * @param array<string,mixed> $data  Input array to sanitize.
+     * @return array<string,mixed>       Sanitized array safe for output or database storage.
      *
      * @example
      * ```php

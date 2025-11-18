@@ -47,10 +47,10 @@ final class ArrayHelper
      * Converts nested arrays into a single-level array
      * where keys are represented in "dot.path" format.
      *
-     * @param array  $array   Input array to flatten.
+     * @param array<string, mixed>  $array   Input array to flatten.
      * @param string $prefix  Internal prefix for recursion (do not use manually).
      *
-     * @return array Flattened array with dot-notated keys.
+     * @return array<string, mixed> Flattened array with dot-notated keys.
      *
      * @example
      * ```php
@@ -67,7 +67,9 @@ final class ArrayHelper
 
             if (is_array($value)) {
                 // 🔁 Recursively flatten nested arrays
-                $result += self::flatten($value, $newKey);
+                /** @var array<string, mixed> $nested */
+                $nested = self::flatten($value, $newKey);
+                $result += $nested;
             } else {
                 // ✅ Store leaf value with its full path
                 $result[$newKey] = $value;
@@ -82,10 +84,10 @@ final class ArrayHelper
      *
      * Returns a new array containing all keys except those listed.
      *
-     * @param array $array  Input array.
-     * @param array $keys   Keys to exclude.
+     * @param array<string,mixed> $array  Input array.
+     * @param array<int,string> $keys   Keys to exclude.
      *
-     * @return array Array without the excluded keys.
+     * @return array<string,mixed> Array without the excluded keys.
      *
      * @example
      * ```php
@@ -103,10 +105,10 @@ final class ArrayHelper
      *
      * Returns a subset of the array containing only the specified keys.
      *
-     * @param array $array  Input array.
-     * @param array $keys   Keys to retain.
+     * @param array<string,mixed> $array  Input array.
+     * @param array<int,string> $keys   Keys to retain.
      *
-     * @return array Array containing only the selected keys.
+     * @return array<string,mixed> Array containing only the selected keys.
      *
      * @example
      * ```php
@@ -125,7 +127,7 @@ final class ArrayHelper
      * Returns a deeply nested value by specifying a "dot.path" string.
      * If any segment in the path is missing, returns the provided default.
      *
-     * @param array  $array     Source array.
+     * @param array<string,mixed>  $array     Source array.
      * @param string $path      Dot-notated path (e.g., "user.profile.name").
      * @param mixed  $default   Default value if path not found.
      *
