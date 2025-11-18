@@ -34,7 +34,7 @@ final class InputSanitizer
     public static function sanitizeForDB(string $input): string
     {
         // 🔹 Normalize input to a canonical Unicode form to avoid homoglyph attacks
-        $input = Normalizer::normalize($input, Normalizer::FORM_C);
+        $input = (string) Normalizer::normalize($input, Normalizer::FORM_C);
 
         // 🔹 Remove hidden Unicode and control characters
         $input = self::removeInvisibleChars($input);
@@ -55,7 +55,7 @@ final class InputSanitizer
     public static function sanitizeForOutput(string $input): string
     {
         // 🔹 Normalize input encoding for consistent sanitization
-        $input = Normalizer::normalize($input, Normalizer::FORM_C);
+        $input = (string) Normalizer::normalize($input, Normalizer::FORM_C);
 
         // 🔹 Escape special characters to prevent XSS in rendered output
         return htmlspecialchars($input, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -65,6 +65,8 @@ final class InputSanitizer
      * ⚙️ Sanitize with whitelist of HTML tags (e.g., <b>, <i>, <br>)
      *
      * Supports optional control over external and internal resource URIs.
+     *
+     * @param   array<int, string>  $allowedTags
      */
     public static function sanitizeWithWhitelist(
         string $input,
@@ -73,10 +75,10 @@ final class InputSanitizer
         bool $disableAllResources = false
     ): string {
         // 🔹 Normalize input before filtering
-        $input = Normalizer::normalize($input, Normalizer::FORM_C);
+        $input = (string) Normalizer::normalize($input, Normalizer::FORM_C);
 
         // 🔹 Remove invisible and zero-width characters
-        $input = self::removeInvisibleChars($input);
+        $input = (string) self::removeInvisibleChars($input);
 
         // ⚙️ Configure HTMLPurifier for strict whitelist filtering
         $config = HTMLPurifier_Config::createDefault();
@@ -151,7 +153,7 @@ final class InputSanitizer
      */
     private static function removeInvisibleChars(string $input): string
     {
-        return preg_replace(
+        return (string) preg_replace(
             '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F\xAD\x{200B}-\x{200F}\x{202A}-\x{202E}\x{2060}-\x{206F}\x{FEFF}]/u',
             '',
             $input
