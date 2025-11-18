@@ -66,27 +66,32 @@ final class PlaceholderRenderer
      */
     public static function render(string $template, array $data): string
     {
-        return preg_replace_callback(
-                   '/{{\s*([\w\.]+)\s*}}/',
-                   static function (array $m) use ($data): string {
-                       $path  = explode('.', $m[1]);
-                       $value = $data;
+        $result = preg_replace_callback(
+            '/{{\s*([\w\.]+)\s*}}/',
+            static function (array $m) use ($data): string {
+                $path  = explode('.', $m[1]);
+                $value = $data;
 
-                       // 🔍 Traverse nested array keys using dot-notation
-                       foreach ($path as $k) {
-                           if (!is_array($value) || !array_key_exists($k, $value)) {
-                               // 🚫 Missing key → replace with empty string
-                               return '';
-                           }
-                           $value = $value[$k];
-                       }
+                foreach ($path as $k) {
+                    if (!is_array($value) || !array_key_exists($k, $value)) {
+                        return '';
+                    }
+                    $value = $value[$k];
+                }
 
-                       // 🧾 Convert non-scalar values to readable JSON
-                       return is_scalar($value)
-                           ? (string) $value
-                           : json_encode($value, JSON_UNESCAPED_UNICODE);
-                   },
-                   $template
-               ) ?? $template;
+                if (is_scalar($value)) {
+                    return (string) $value;
+                }
+
+                $json = json_encode($value, JSON_UNESCAPED_UNICODE);
+
+                // json_encode can return false → ensure string every time
+                return $json !== false ? $json : '';
+            },
+            $template
+        );
+
+        // preg_replace_callback can return string|null
+        return $result ?? $template;
     }
 }
