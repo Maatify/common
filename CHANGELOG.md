@@ -3,6 +3,88 @@
 All notable changes to **maatify/common** will be documented in this file.
 This project follows [Semantic Versioning](https://semver.org/).
 
+---
+
+## **[1.0.7] – 2025-11-18**
+
+### 🧪 **Improved Locking Stability — Redis Simulation Layer & Deterministic Queue Tests**
+
+This release introduces a **fully simulated Redis environment** for testing and brings significant stability improvements to the locking subsystem—especially for the HybridLockManager queue-mode.
+
+---
+
+### 🧩 **Added**
+
+#### ✔ **`FakeRedisConnection` (Redis-Compatible In-Memory Driver)**
+
+A complete simulation of Redis lock behavior used in tests:
+
+* Supports `SET NX EX` semantics
+* TTL expiration measured in real time
+* Accurate `exists()` and atomic `del()`
+* Behaves exactly like a minimal Redis instance
+* Fully deterministic and requires **no real Redis server**
+
+#### ✔ **Healthy Adapter Enhancements**
+
+* `FakeHealthyAdapter` now returns `FakeRedisConnection`
+* Test suite uses real lock expiration + NX contention simulation
+
+---
+
+### 🛠 **Changed**
+
+#### ✔ Queue-mode lock behavior now deterministic
+
+* `HybridLockManager::waitAndAcquire()` fully respects TTL-based expiration
+* Eliminated timing flakiness in concurrent-resource tests
+* Queue tests now properly wait until lock1 TTL expires
+
+#### ✔ Updated RedisLockManager validation
+
+* Switched to **method-based detection** (`set`, `exists`, `del`)
+* Avoids strict instance checks (Redis / Predis)
+* Allows seamless testing with any mock object implementing Redis-like behavior
+
+---
+
+### 🧪 **Tests**
+
+* Updated: `HybridLockManagerTest`
+* Added: Timing-based TTL assertion logic
+* Improved: Consistency across PHP versions and test runners
+* Result: **100% stable queue-mode behavior**
+
+---
+
+### 📘 **Documentation**
+
+* Updated Phase Summary Table (Phase 15)
+* Added "Redis Simulation Layer" descriptions to README.full.md
+* Noted test improvements and lock-flow behavior under "Locking System"
+
+---
+
+### ✔ **Notes**
+
+* Fully backward compatible
+* No public API changes
+* No breaking modifications
+* Prepares the locking system for future distributed workload features
+
+---
+
+### 🧾 **Changelog Snapshot**
+
+**v1.0.7 — 2025-11-18**
+
+* Added: Redis simulation layer for testing (`FakeRedisConnection`)
+* Enhanced: HybridLock queue-mode timing & TTL logic
+* Improved: RedisLockManager compatibility checks
+* Updated: Test suite stability and lock expiration timing
+
+---
+
 ## [1.0.6] – 2025-11-17
 ### 🛠 Changed
 - Updated the raw-driver contract to allow flexible return types for

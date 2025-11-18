@@ -40,6 +40,19 @@ use PHPUnit\Framework\TestCase;
  */
 final class HybridLockManagerTest extends TestCase
 {
+
+    protected function setUp(): void
+    {
+        $dir = sys_get_temp_dir() . '/maatify/locks';
+
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+
+        foreach (glob("$dir/*.lock") ?: [] as $file) {
+            @unlink($file);
+        }
+    }
     /**
      * ✅ **Test Redis adapter usage when healthy.**
      *
@@ -107,23 +120,25 @@ final class HybridLockManagerTest extends TestCase
     {
         $adapter = new FakeHealthyAdapter();
 
-        $lock1 = new HybridLockManager('queue_lock', LockModeEnum::EXECUTION, adapter: $adapter);
-        $lock2 = new HybridLockManager('queue_lock', LockModeEnum::QUEUE, adapter: $adapter);
+        // TTL = 2 seconds
+        $lock1 = new HybridLockManager('queue_lock', LockModeEnum::EXECUTION, ttl: 3, adapter: $adapter);
+        $lock2 = new HybridLockManager('queue_lock', LockModeEnum::QUEUE, ttl: 3, adapter: $adapter);
 
-        // Lock1 acquires immediately
-        $lock1->acquire();
+        $lock1->acquire();  // lock is held for 2 sec
 
         $start = microtime(true);
-        $lock2->waitAndAcquire(100_000); // 0.1s delay simulation
+        $lock2->waitAndAcquire(200_000); // retry delay 0.2 sec
         $end = microtime(true);
 
         $elapsed = $end - $start;
 
-        $this->assertGreaterThan(0.0000001, $elapsed, sprintf(
-            'Lock2 should wait before acquiring (elapsed: %.6f seconds)',
-            $elapsed
-        ));
+        $this->assertGreaterThan(
+            1.5,
+            $elapsed,
+            "Lock2 must wait at least 1.5 seconds (actual: $elapsed)"
+        );
 
         $lock2->release();
     }
+
 }

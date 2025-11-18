@@ -108,8 +108,21 @@ final class RedisLockManager implements LockInterface
         try {
             $redis = $this->adapter->getConnection();
 
-            if (! $redis instanceof \Redis && ! $redis instanceof \Predis\Client) {
+            /*if (! $redis instanceof \Redis && ! $redis instanceof \Predis\Client) {
                 $this->logger->error('Invalid Redis connection instance in acquire()', [
+                    'type' => get_debug_type($redis),
+                    'key'  => $this->key,
+                ]);
+                return false;
+            }*/
+
+            if (
+                !is_object($redis)
+                || !method_exists($redis, 'set')
+                || !method_exists($redis, 'exists')
+                || !method_exists($redis, 'del')
+            ) {
+                $this->logger->error('Invalid Redis-like connection instance in acquire()', [
                     'type' => get_debug_type($redis),
                     'key'  => $this->key,
                 ]);
@@ -140,8 +153,21 @@ final class RedisLockManager implements LockInterface
         try {
             $redis = $this->adapter->getConnection();
 
-            if (! $redis instanceof \Redis && ! $redis instanceof \Predis\Client) {
+            /*if (! $redis instanceof \Redis && ! $redis instanceof \Predis\Client) {
                 $this->logger->error('Invalid Redis connection instance in isLocked()', [
+                    'type' => get_debug_type($redis),
+                    'key'  => $this->key,
+                ]);
+                return false;
+            }*/
+
+            if (
+                !is_object($redis)
+                || !method_exists($redis, 'set')
+                || !method_exists($redis, 'exists')
+                || !method_exists($redis, 'del')
+            ) {
+                $this->logger->error('Invalid Redis-like connection instance in isLocked()', [
                     'type' => get_debug_type($redis),
                     'key'  => $this->key,
                 ]);
@@ -171,8 +197,21 @@ final class RedisLockManager implements LockInterface
         try {
             $redis = $this->adapter->getConnection();
 
-            if (! $redis instanceof \Redis && ! $redis instanceof \Predis\Client) {
+            /*if (! $redis instanceof \Redis && ! $redis instanceof \Predis\Client) {
                 $this->logger->error('Invalid Redis connection instance in release()', [
+                    'type' => get_debug_type($redis),
+                    'key'  => $this->key,
+                ]);
+                return;
+            }*/
+
+            if (
+                !is_object($redis)
+                || !method_exists($redis, 'set')
+                || !method_exists($redis, 'exists')
+                || !method_exists($redis, 'del')
+            ) {
+                $this->logger->error('Invalid Redis-like connection instance in release()', [
                     'type' => get_debug_type($redis),
                     'key'  => $this->key,
                 ]);

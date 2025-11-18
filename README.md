@@ -16,8 +16,9 @@
 
 ---
 
-🏁 Stable Release v1.0.0 — The core foundational library of the Maatify.dev ecosystem providing standardized DTOs, validation, sanitization, date/time, locking, and text utilities for all backend modules.
-> 📦 This is the first official stable version (v1.0.0) of maatify/common, released on **2025-11-10**.
+🏁 Stable Release v1.0.7 — The core foundational library of the Maatify.dev ecosystem providing standardized DTOs, validation, sanitization, 
+date/time, locking, and text utilities for all backend modules.
+> 📦 This is the stable version (v1.0.7) of maatify/common, released on **2025-11-18**.
 
 > 🔗 [بالعربي 🇸🇦 ](./README-AR.md)
 
@@ -26,9 +27,9 @@
 ## 🧭 Version Information
 | Key             | Value               |
 |-----------------|---------------------|
-| Version         | **1.0.6 Stable**    |
-| Release Date    | 2025-11-17          |
-| PHP Requirement | ≥ 8.1               |
+| Version         | **1.0.7 Stable**    |
+| Release Date    | 2025-11-18          |
+| PHP Requirement | ≥ 8.4               |
 | License         | MIT                 |
 | Coverage        | 98 %                |
 | Tests Passed    | 66 (150 Assertions) |
@@ -40,15 +41,23 @@ This library provides reusable, framework-agnostic building blocks (DTOs, helper
 shared across all **Maatify** ecosystem packages such as `maatify/mongo-activity`, `maatify/psr-logger`, and others.
 
 ---
+
+### 🚀 What’s New in v1.0.7?
+- Improved RedisLockManager reliability
+- Fully simulated TTL-based Redis mock for tests
+- Queue mode waits correctly for TTL expiration
+- Stabilized HybridLockManager locking behavior
+
+---
 ## 📘 Documentation & Release Files
-| File                                                            | Description                              |
-|-----------------------------------------------------------------|------------------------------------------|
-| [`/docs/README.full.md`](docs/README.full.md)                   | Full combined documentation (Phases 1–8) |
-| [`/docs/enums.md`](docs/enums.md)                               | Detailed reference for Enums & Constants |
-| [`/docs/phases/README.phase7.md`](docs/phases/README.phase7.md) | Phase 7 breakdown and EnumHelper notes   |
-| [`CHANGELOG.md`](CHANGELOG.md)                                  | Complete version history                 |
-| [`CONTRIBUTING.md`](CONTRIBUTING.md)                            | Contribution guidelines                  |
-| [`VERSION`](VERSION)                                            | Current release version                  |
+| File                                                            | Description                               |
+|-----------------------------------------------------------------|-------------------------------------------|
+| [`/docs/README.full.md`](docs/README.full.md)                   | Full combined documentation (Phases 1–15) |
+| [`/docs/enums.md`](docs/enums.md)                               | Detailed reference for Enums & Constants  |
+| [`/docs/phases/README.phase7.md`](docs/phases/README.phase7.md) | Phase 7 breakdown and EnumHelper notes    |
+| [`CHANGELOG.md`](CHANGELOG.md)                                  | Complete version history                  |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md)                            | Contribution guidelines                   |
+| [`VERSION`](VERSION)                                            | Current release version                   |
 ---
 
 ## **Core Modules:**
@@ -878,20 +887,25 @@ src/
 
 ---
 
-# ✅ **📊 Updated Phase Summary Table (Final & Accurate)**
-
-| Phase | Title                                  | Status      | Files Created | Notes                                                                              |
-|-------|----------------------------------------|-------------|---------------|------------------------------------------------------------------------------------|
-| 1     | Pagination Module                      | ✅ Completed | 3             | Pagination DTOs & helpers                                                          |
-| 2     | Locking System                         | ✅ Completed | 6             | File / Redis / Hybrid lock managers                                                |
-| 3     | Security & Input Sanitization          | ✅ Completed | 3             | InputCleaner, HTMLPurifier wrapper, XSS-safe normalizers                           |
-| 3b    | Core Traits — Singleton System         | ✅ Completed | 1             | SingletonTrait implementation                                                      |
-| 4     | Text & Placeholder Utilities           | ✅ Completed | 8             | PlaceholderRenderer, TextFormatter, RegexHelper, SecureCompare                     |
-| 5     | Date & Time Utilities                  | ✅ Completed | 4             | HumanizeDifference, LocalizedDateFormatter, Timestamp helpers                      |
-| 6     | Validation & Filtering Tools           | ✅ Completed | 3             | Validator, Filter, ArrayHelper + full PHPUnit suite                                |
-| 7     | Enums & Constants Standardization      | ✅ Completed | 10 + 5 tests  | Unified Enum system, EnumHelper, JSONSerializableTrait, ValueEnum base             |
-| 8     | Adapter Interfaces & Contracts Upgrade | ✅ Completed | 4             | AdapterInterface driver expansion + full PSR-5 documentation + FakeAdapter updates |
-| 9     | Testing & Release Finalization         | ✅ Completed | 6             | CHANGELOG, CONTRIBUTING, VERSION, README.full.md, coverage reports, CI stability   |
+# ✅ **📊 Updated Phase Summary Table (Phases 1 → 15)**
+| Phase | Title                                        | Status      | Files Created | Notes                                                                                                      |
+|-------|----------------------------------------------|-------------|---------------|------------------------------------------------------------------------------------------------------------|
+| 1     | Pagination Module                            | ✅ Completed | 3             | Pagination DTOs & helpers                                                                                  |
+| 2     | Locking System                               | ✅ Completed | 6             | File / Redis / Hybrid lock managers                                                                        |
+| 3     | Security & Input Sanitization                | ✅ Completed | 3             | InputCleaner, HTMLPurifier wrapper, XSS-safe normalizers                                                   |
+| 3b    | Core Traits — Singleton System               | ✅ Completed | 1             | SingletonTrait implementation                                                                              |
+| 4     | Text & Placeholder Utilities                 | ✅ Completed | 8             | PlaceholderRenderer, TextFormatter, RegexHelper, SecureCompare                                             |
+| 5     | Date & Time Utilities                        | ✅ Completed | 4             | HumanizeDifference, LocalizedDateFormatter, Timestamp helpers                                              |
+| 6     | Validation & Filtering Tools                 | ✅ Completed | 3             | Validator, Filter, ArrayHelper + full PHPUnit suite                                                        |
+| 7     | Enums & Constants Standardization            | ✅ Completed | 10 + 5 tests  | Unified Enum system, EnumHelper, JSONSerializableTrait, ValueEnum base                                     |
+| 8     | Testing & Release (v1.0.0)                   | ✅ Completed | 6             | CHANGELOG, CONTRIBUTING, VERSION, README.full.md, CI integration, initial stable release                   |
+| 9     | Logger Stability Update                      | ✅ Completed | 1             | PSR-3 fallback logger improvements for HybridLockManager                                                   |
+| 10    | TapHelper Utility                            | ✅ Completed | 1             | Introduced TapHelper + full test coverage                                                                  |
+| 11    | Connectivity Foundation                      | ✅ Completed | 3             | ConnectionConfigDTO, ConnectionTypeEnum, improved DSN handling                                             |
+| 12    | Version Hotfix                               | ✅ Completed | 1             | Fixed version mismatch and updated VERSION file                                                            |
+| 13    | Mutable ConnectionConfigDTO                  | ✅ Completed | 2             | Removed readonly, added runtime overrides, enhanced DSN flexibility                                        |
+| 14    | Driver Contract Modernization                | ✅ Completed | 4             | Multi-driver AdapterInterface support (PDO, DBAL, MongoDB, Redis, Predis)                                  |
+| 15    | Redis Lock Testing Stability Update (v1.0.7) | ✅ Completed | 3             | FakeRedisConnection, improved FakeHealthyAdapter, realistic TTL simulation, fully deterministic lock tests |
 
 ---
 ## ✅ Verified Test Results
@@ -904,14 +918,26 @@ src/
 
 
 ## 🧾 Release Verification
-All files have been verified and finalized as part of **Phase 8 (v1.0.0 Stable)**.
+
+## v1.0.7 — Redis Lock Testing Stability Update
+- Added FakeRedisConnection with TTL simulation
+- Updated FakeHealthyAdapter → returns Redis-like mock connection
+- HybridLockManager queue-mode wait fixed
+- RedisLockManager now checks method availability instead of class type
+- All lock tests now deterministic and stable
+- README.phase15.md added
+- README.full.md updated for Phase 15
+- CHANGELOG updated to 1.0.7
+- VERSION updated to 1.0.7
+
+All files have been verified and finalized as part of **Phase 15 (v1.0.7 Stable)**.
 
 - ✅ `/docs/README.full.md` – full documentation merged
 - ✅ `/docs/enums.md` – enums and constants reference
 - ✅ `/docs/phases/README.phase7.md` – phase documentation
 - ✅ `CHANGELOG.md` – release history initialized
 - ✅ `CONTRIBUTING.md` – contributor guide added
-- ✅ `VERSION` – version `1.0.0` confirmed
+- ✅ `VERSION` – version `1.0.7` confirmed
 
 ---
 
