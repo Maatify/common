@@ -16,48 +16,90 @@
 
 ---
 
-🏁 Stable Release v1.0.7 — The core foundational library of the Maatify.dev ecosystem providing standardized DTOs, validation, sanitization, 
-date/time, locking, and text utilities for all backend modules.
-> 📦 This is the stable version (v1.0.7) of maatify/common, released on **2025-11-18**.
+## 🏁 Stable Release v1.0.8 — Repository Layer Foundation
 
+The core foundational library of the Maatify.dev ecosystem providing standardized DTOs, validation, sanitization,
+date/time, locking, text utilities, and now **a unified RepositoryInterface** powering all Maatify data layers.
+
+> 📦 This is the stable version (v1.0.8) of maatify/common, released on **2025-11-22**.
 > 🔗 [بالعربي 🇸🇦 ](./README-AR.md)
 
 ---
 
 ## 🧭 Version Information
+
 | Key             | Value               |
 |-----------------|---------------------|
-| Version         | **1.0.7 Stable**    |
-| Release Date    | 2025-11-18          |
+| Version         | **1.0.8 Stable**    |
+| Release Date    | 2025-11-22          |
 | PHP Requirement | ≥ 8.4               |
 | License         | MIT                 |
 | Coverage        | 98 %                |
 | Tests Passed    | 66 (150 Assertions) |
 
+---
 
 ## 🧩 Overview
 
-This library provides reusable, framework-agnostic building blocks (DTOs, helpers, traits, enums, and validators)
-shared across all **Maatify** ecosystem packages such as `maatify/mongo-activity`, `maatify/psr-logger`, and others.
+This library provides reusable, framework-agnostic building blocks (DTOs, helpers, traits, enums, validators, locking…)
+shared across all **Maatify** ecosystem packages such as:
+
+* `maatify/data-adapters`
+* `maatify/data-fakes`
+* `maatify/mongo-activity`
+* `maatify/psr-logger`
+* `maatify/bootstrap`
+
+> **New in v1.0.8:**
+> A unified **RepositoryInterface** that standardizes CRUD operations across MySQL, Mongo, Redis, Predis, and DBAL repositories.
 
 ---
 
-### 🚀 What’s New in v1.0.7?
-- Improved RedisLockManager reliability
-- Fully simulated TTL-based Redis mock for tests
-- Queue mode waits correctly for TTL expiration
-- Stabilized HybridLockManager locking behavior
+## 🚀 What’s New in v1.0.8 (Phase 16)
+
+### ⭐ Repository Layer Foundation
+
+Phase 16 introduces a standardized repository contract used across the entire Maatify ecosystem.
+
+### ✔ Added
+
+* **`RepositoryInterface`**
+
+    * `find()`
+    * `findAll()`
+    * `insert()`
+    * `update()`
+    * `delete()`
+    * `paginate()`
+
+### ✔ Updated
+
+* README.full.md
+* API Map
+* roadmap.json
+* CHANGELOG → **v1.0.8**
+* VERSION → **1.0.8**
+* Added `/docs/phases/README.phase16.md`
+
+### ✔ Compatibility
+
+* 100% backward-compatible
+* No breaking changes in existing adapters
+* Required for the upcoming **maatify/data-repository** package
 
 ---
+
 ## 📘 Documentation & Release Files
-| File                                                            | Description                               |
-|-----------------------------------------------------------------|-------------------------------------------|
-| [`/docs/README.full.md`](docs/README.full.md)                   | Full combined documentation (Phases 1–15) |
-| [`/docs/enums.md`](docs/enums.md)                               | Detailed reference for Enums & Constants  |
-| [`/docs/phases/README.phase7.md`](docs/phases/README.phase7.md) | Phase 7 breakdown and EnumHelper notes    |
-| [`CHANGELOG.md`](CHANGELOG.md)                                  | Complete version history                  |
-| [`CONTRIBUTING.md`](CONTRIBUTING.md)                            | Contribution guidelines                   |
-| [`VERSION`](VERSION)                                            | Current release version                   |
+
+| File                             | Description                            |
+|----------------------------------|----------------------------------------|
+| `/docs/README.full.md`           | Full documentation (Phases 1–16)       |
+| `/docs/enums.md`                 | Enums & constants reference            |
+| `/docs/phases/README.phase16.md` | Phase 16 — Repository Layer Foundation |
+| `CHANGELOG.md`                   | Version history (updated to 1.0.8)     |
+| `CONTRIBUTING.md`                | Contribution guidelines                |
+| `VERSION`                        | Current version → **1.0.8**            |
+
 ---
 
 ## **Core Modules:**
@@ -887,7 +929,7 @@ src/
 
 ---
 
-# ✅ **📊 Updated Phase Summary Table (Phases 1 → 15)**
+# ✅ **📊 Updated Phase Summary Table (Phases 1 → 16)**
 | Phase | Title                                        | Status      | Files Created | Notes                                                                                                      |
 |-------|----------------------------------------------|-------------|---------------|------------------------------------------------------------------------------------------------------------|
 | 1     | Pagination Module                            | ✅ Completed | 3             | Pagination DTOs & helpers                                                                                  |
@@ -906,6 +948,7 @@ src/
 | 13    | Mutable ConnectionConfigDTO                  | ✅ Completed | 2             | Removed readonly, added runtime overrides, enhanced DSN flexibility                                        |
 | 14    | Driver Contract Modernization                | ✅ Completed | 4             | Multi-driver AdapterInterface support (PDO, DBAL, MongoDB, Redis, Predis)                                  |
 | 15    | Redis Lock Testing Stability Update (v1.0.7) | ✅ Completed | 3             | FakeRedisConnection, improved FakeHealthyAdapter, realistic TTL simulation, fully deterministic lock tests |
+| 16    | Repository Layer Foundation (v1.0.8)         | ✅ Completed | 1             | Added `RepositoryInterface` with full CRUD contract + pagination & filters                                 |
 
 ---
 ## ✅ Verified Test Results
@@ -917,18 +960,70 @@ src/
 ---
 
 
-## 🧾 Release Verification
+# 🧾 **Release Verification — v1.0.8 (Phase 16)**
 
-## v1.0.7 — Redis Lock Testing Stability Update
-- Added FakeRedisConnection with TTL simulation
-- Updated FakeHealthyAdapter → returns Redis-like mock connection
-- HybridLockManager queue-mode wait fixed
-- RedisLockManager now checks method availability instead of class type
-- All lock tests now deterministic and stable
-- README.phase15.md added
-- README.full.md updated for Phase 15
-- CHANGELOG updated to 1.0.7
-- VERSION updated to 1.0.7
+### **Repository Layer Foundation**
+
+## ⭐ **v1.0.8 — RepositoryInterface Introduction & Core Repository Architecture**
+
+### ✔ What’s New
+
+This release introduces the **first unified repository contract** inside `maatify/common`,
+providing a clean, cross-adapter CRUD standard for all upcoming libraries.
+
+### 🔧 Added
+
+* **`Maatify\Common\Contracts\RepositoryInterface`**
+
+    * `find(int|string $id): ?array`
+    * `findAll(array $filters = []): array`
+    * `insert(array $data): int|string`
+    * `update(int|string $id, array $data): bool`
+    * `delete(int|string $id): bool`
+    * `paginate(int $page, int $perPage, array $filters = []): PaginationResultDTO`
+
+* Added Phase 16 documentation:
+
+    * `docs/phases/README.phase16.md`
+
+* Updated:
+
+    * `README.md`
+    * `README.full.md`
+    * `CHANGELOG.md` → now includes **v1.0.8**
+    * `VERSION` → updated from **1.0.7 → 1.0.8**
+
+### 🧪 Test Consistency
+
+All existing tests remained **100% green**, repository layer introduces **no breaking changes**.
+
+### 🛠 Compatibility Notes
+
+* Fully backward compatible
+* Ready foundation for `maatify/data-repository` library (Phase 17+)
+* Works seamlessly with MySQL / Mongo / Redis adapters
+
+---
+
+## ✅ **Files Verified in Phase 16 (v1.0.8)**
+
+| File                                    | Status                 |
+|-----------------------------------------|------------------------|
+| `src/Contracts/RepositoryInterface.php` | ✔ Added                |
+| `docs/phases/README.phase16.md`         | ✔ Added                |
+| `README.md`                             | ✔ Updated              |
+| `README.full.md`                        | ✔ Updated              |
+| `CHANGELOG.md`                          | ✔ Updated              |
+| `VERSION`                               | ✔ Updated to **1.0.8** |
+
+---
+
+## 🧩 **Final Status**
+
+**Phase 16 is completed successfully.**
+Repository Interface is now part of the Maatify Common Core and ready for integration with higher-level repository libraries.
+
+---
 
 All files have been verified and finalized as part of **Phase 15 (v1.0.7 Stable)**.
 
@@ -938,8 +1033,6 @@ All files have been verified and finalized as part of **Phase 15 (v1.0.7 Stable)
 - ✅ `CHANGELOG.md` – release history initialized
 - ✅ `CONTRIBUTING.md` – contributor guide added
 - ✅ `VERSION` – version `1.0.7` confirmed
-
----
 
 ---
 > 🔗 **Full documentation & release notes:** see [/docs/README.full.md](docs/README.full.md)

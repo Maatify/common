@@ -1,12 +1,13 @@
 <?php
+
 /**
  * @copyright   ©2025 Maatify.dev
- * @Liberary    maatify/data-repository
- * @Project     maatify:data-repository
+ * @Liberary    maatify/common
+ * @Project     maatify:common
  * @author      Mohamed Abdulalim (megyptm) <mohamed@maatify.dev>
- * @since       2025-11-16 09:00
+ * @since       2025-11-18 12:44
  * @see         https://www.maatify.dev Maatify.com
- * @link        https://github.com/Maatify/data-repository  view project on GitHub
+ * @link        https://github.com/Maatify/common  view project on GitHub
  * @note        Distributed in the hope that it will be useful - WITHOUT WARRANTY.
  */
 

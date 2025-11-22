@@ -5,6 +5,93 @@ This project follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## **[1.0.8] – 2025-11-22**
+
+### 🧩 **RepositoryInterface Foundation — Unified CRUD Contract**
+
+This release introduces the **universal repository contract** used across the entire Maatify data ecosystem, ensuring consistent CRUD behavior for:
+
+* maatify/data-adapters
+* maatify/data-fakes
+* maatify/data-repository
+
+The new `RepositoryInterface` establishes a stable foundation for all repository logic.
+
+---
+
+### 🧩 **Added**
+
+#### ✔ `RepositoryInterface`
+
+Located at:
+
+```
+src/Contracts/Repository/RepositoryInterface.php
+```
+
+Provides the following standardized methods:
+
+* `find(id): ?array`
+* `findBy(filters): array`
+* `findAll(): array`
+* `insert(data): int|string`
+* `update(id, data): bool`
+* `delete(id): bool`
+* `setAdapter(AdapterInterface $adapter): static`
+
+Fully typed, adapter-agnostic, and shared across multiple libraries.
+
+---
+
+### 🛠 **Changed**
+
+* Documentation updated to include **Phase 16**.
+* `README.full.md` updated with new Repository Contract module.
+* Roadmap updated (`phase16`) with contract specifications.
+
+---
+
+### 🧪 **Tests**
+
+* Static analysis validation (PHPStan level: max).
+* Compatibility tests with:
+
+    * FakeMySQLAdapter
+    * FakeMongoAdapter
+    * FakeRedisConnection
+    * FakeMySQLDbalAdapter
+
+No runtime tests required as this phase introduces only interface-level contracts.
+
+---
+
+### 📘 **Documentation**
+
+* Added new file: `/phases/README.phase16.md`
+* Updated: Architecture section (Repository Layer)
+* Updated: Phase table in README.full.md
+
+---
+
+### ✔ **Notes**
+
+* No breaking changes.
+* Fully backward compatible with all prior releases.
+* Mandatory dependency for phase1–phase5 in `maatify/data-fakes`.
+
+---
+
+### 🧾 **Changelog Snapshot**
+
+**v1.0.8 — 2025-11-22**
+
+* Added RepositoryInterface contract
+* Updated roadmap + full documentation
+* Ensured compatibility with data-fakes and data-adapters
+* No breaking changes — stable foundation for repository system
+
+---
+
 ## **[1.0.7] – 2025-11-18**
 
 ### 🧪 **Improved Locking Stability — Redis Simulation Layer & Deterministic Queue Tests**
